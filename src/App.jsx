@@ -1,10 +1,15 @@
-import './App.css'
-import Register from './pages/Register'
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './Routes';
+import './App.css';
+
 
 function App() {
   return (
-    <Register />
-  )
+    <Router>
+      <AppRoutes />
+    </Router>
+  );
 }
+
 
 export default App
