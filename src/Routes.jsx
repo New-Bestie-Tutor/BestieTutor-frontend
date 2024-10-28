@@ -1,15 +1,15 @@
-import { Route, Routes as RouterRoutes } from "react-router-dom";
-import Start from "./pages/Start";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+import { Routes, Route } from "react-router-dom";
+import { Start, UserAgreement, Register, Login } from "./pages";
 
 export default function AppRoutes() {
     return(
-        <RouterRoutes>
+        <Routes>
+            {/* Route: 컴포넌트 별로 원하는 url을 지정 */}
             <Route path="/" element={<Start />} />
+            <Route path="/userAgreement" element={<UserAgreement />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-        </RouterRoutes>
+        </Routes>
     );
 }
 
