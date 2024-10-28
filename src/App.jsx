@@ -1,15 +1,15 @@
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import Modal from 'react-modal';
 import AppRoutes from './Routes';
-import './App.css';
 
+Modal.setAppElement('#root');
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <AppRoutes />
-    </Router>
+    </BrowserRouter>
   );
 }
-
 
 export default App
