@@ -3,6 +3,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import Postcode from '../components/Postcode';
 import GoBack from '../components/GoBack';
+import { useState } from 'react';
+import axios from 'axios';
+import Postcode from '../components/Postcode';
+import GoBack from '../components/GoBack';
 import '../App.css';
 
 export default function Register() {
