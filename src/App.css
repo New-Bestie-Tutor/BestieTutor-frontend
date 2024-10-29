@@ -8,8 +8,8 @@
   
   body {
     font-family: 'Pretendard';
-    background-color: #f3f4f6; 
-    color: #333;
+    background-color: white; /*#f3f4f6*/
+    color: #000000; /*#333*/
     line-height: 1.6;
   }
   
@@ -127,3 +127,189 @@
     }
   }
   
+  /*Footer*/
+
+.Home {
+  text-align: center;
+  display : flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Footer{
+    padding: 20px;
+    margin-top: auto;
+}
+
+.footer-head h2 {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.button {
+    font-size: 0.9em;
+    color: #888;
+    margin: 5px 0 20px 0;
+    cursor: pointer;
+}
+
+.services {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.services a {
+    color: #888;
+    font-size: 0.9em;
+    text-decoration: none;
+}
+
+.services a:hover {
+    color: #000;
+}
+
+.copyright {
+    font-size: 0.8em;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* Login */
+/* 기본적인 로그인 화면 스타일 */
+.goBack{
+    margin-top: 40px;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+.align-left {
+    margin-left: 20px; /* 왼쪽에 정렬 위치를 통일 */
+    text-align: left;
+}
+
+/* 뒤로가기 버튼을 왼쪽에 정렬 */
+.back-button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    position: absolute;
+    left: 20px; /* align-left와 일치시키기 */
+    top: 20px;
+    cursor: pointer;
+}
+
+/* 제목과 부제목에 align-left 클래스를 적용하여 왼쪽 정렬 */
+.login-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.login-subtitle {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 60px;
+}
+
+/* input label에 align-left를 적용 */
+.input-label {
+    display: block;
+    font-size: 14px;
+    margin-top: 30px;
+    font-weight: 700;
+}
+
+/* 입력 필드 스타일 */
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    background: #F5F5F5;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.forgot-password {
+    color: #5FC99A;
+    font-size: 14px;
+    margin-top: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.login-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 40px;
+    background-color: #5FC99A;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.signup-text {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #888;
+}
+
+.signup-link {
+    color: #5FC99A;
+    text-decoration: none;
+}
+
+.divider {
+    margin: 20px 0;
+    font-size: 14px;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: #ccc;
+    margin: 0 10px;
+}
+
+
+.kakao-login {
+    width: 100%;
+    border: none;
+    background-color: white;
+}
+
+.kakao-login_image{
+    width: 90%;
+}
