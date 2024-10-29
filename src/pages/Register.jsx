@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import '../App.css';
 import { useState } from 'react';
+import axios from 'axios';
 import Postcode from '../components/Postcode';
 import GoBack from '../components/GoBack';
+import '../App.css';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -111,8 +112,7 @@ export default function Register() {
   };
 
   //다음 버튼 핸들러 - 모두 동의해야 다음 진행
-  const handleNext = () => {
-    console.log("주소값 : "+address.value);
+  const handleNext = async () => {
     if(!isNickname||!isPassword||!isPhone||!isEmail){
       alert("모든 정보를 입력해주세요.");
     } else if(!selectedGender.trim()) {
@@ -122,10 +122,31 @@ export default function Register() {
     } else if(!addressDetail.trim()) {
       setaddressMessage("상세 주소를 입력해주세요.")
     } else {
-      alert("회원가입을 축하드립니다.");
+      // alert("회원가입을 축하드립니다.");
       // navigate('/registrationSuccess');
+      try{
+        await register();
+      }catch(error){
+        console.error("Registration failed:", error);
+      }
     }
   };
+
+  async function register() {
+    console.log('Register function is called');
+    const fullAddress = address+" "+addressDetail;
+    const userData = {
+      email: email, 
+      password: password,
+      nickname: nickname,
+      phone: phone,
+      gender: selectedGender,
+      address: fullAddress,
+    };
+    const response = await axios.post('/user', userData);
+    console.log("Registration response:", response.data);
+    return response.data;
+  }
 
   return (
     <div className="container">
