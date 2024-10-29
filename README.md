@@ -16,7 +16,11 @@ Bestie Tutor 애플리케이션의 프론트 엔드 소스 코드입니다.
 git clone https://github.com/Bestie-Tutor/web-frontend.git
 cd web-frontend
 yarn
+yarn add react-router-dom
 yarn dev
+npm install react-icons --save
+yarn add axios
+
 </pre>
 
 #### Structure
