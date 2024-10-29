@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from "react-icons/fa6";
 import '../App.css';
 import IMAGES from "../images/images";
 import { Link } from "react-router-dom";
+import GoBack from '../components/GoBack';
+import axios from 'axios'; 
 
 export default function Login() {
     const navigate = useNavigate();
@@ -12,11 +13,6 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [redirect, setRedirect] = useState(false);
     //const {setUserInfo} = useContext(UserContext);
-
-    // 뒤로 가기 핸들러
-    const handleGoBack = () => {
-      navigate(-1);
-    };
 
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -49,13 +45,30 @@ export default function Login() {
     
     /***카카오로그인***/
     //카카오 로그인 이동페이지 주소
-    //const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
+    //const authUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code`;
 
+    
+    const kakaoLoginUrl = 'http://localhost:3000/user/login/kakao';
+    const handleKakaoLogin = () => {
+      window.location.href = kakaoLoginUrl;
+      console.log('카카오로그인 입장');
+  }; 
+/*
+  async function loginWithKakao() {
+    try {
+      // 서버에 로그인 API 요청
+      const response = await axios.get('/user/login/kakao');
+      
+      // 카카오 로그인 URL로 리디렉션
+      window.location.href = response.request.responseURL;
+    } catch (error) {
+      console.error("Kakao login error:", error);
+    }
+  }
+    */
     return (
         <div className="login-container">
-            <p className="goBack" onClick={handleGoBack}>
-                <FaArrowLeft className='goBackArrow'/>
-            </p>
+            <GoBack /> 
             <h1 className="login-title">로그인</h1>
             <p className="login-subtitle">이메일로 로그인해 주세요</p>
 
@@ -98,9 +111,7 @@ export default function Login() {
 
                 <div className="divider">Or with</div>
 
-                <button className="kakao-login" onClick={() => {
-                  window.location.href = KAKAO_AUTH_URL
-                }}>
+                <button type="button" className="kakao-login" onClick={handleKakaoLogin}>
                   <img src={IMAGES.kakao_login} alt="kakao_login" className="kakao-login_image" />
                 </button>
                 

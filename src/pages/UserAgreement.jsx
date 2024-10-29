@@ -1,20 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { CiCircleCheck } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa6";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useState } from 'react';
 import Modal from 'react-modal';
 import '../App.css';
+import GoBack from '../components/GoBack';
 
 export default function UserAgreement() {
     const navigate = useNavigate();
-
-    // 뒤로 가기 핸들러
-    const handleGoBack = () => {
-        navigate(-1);
-    };
-
     const [isChecked, setIsChecked] = useState(false);
     const [isSingleChecked, setSingleChecked] = useState([false, false]);
     const [isAgreementModal, setAgreementModal] = useState(false);
@@ -83,9 +77,7 @@ export default function UserAgreement() {
 
     return (
         <div className="container">
-            <p className="goBack" onClick={handleGoBack}>
-                <FaArrowLeft className='goBackArrow'/>
-            </p>
+            <GoBack />
             <h3 className="title agreeTitle">서비스 가입을 위해<br />약관에 동의해주세요</h3>
             
             <p className={`checkbox ${isChecked ? 'checked' : ''}`} onClick={handleAllCheck}>
