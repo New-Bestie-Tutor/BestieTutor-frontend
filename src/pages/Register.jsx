@@ -3,10 +3,6 @@ import { useState } from 'react';
 import axios from 'axios';
 import Postcode from '../components/Postcode';
 import GoBack from '../components/GoBack';
-import { useState } from 'react';
-import axios from 'axios';
-import Postcode from '../components/Postcode';
-import GoBack from '../components/GoBack';
 import '../App.css';
 
 export default function Register() {
@@ -126,8 +122,8 @@ export default function Register() {
     } else if(!addressDetail.trim()) {
       setaddressMessage("상세 주소를 입력해주세요.")
     } else {
-      // alert("회원가입을 축하드립니다.");
-      // navigate('/registrationSuccess');
+      alert("회원가입을 축하드립니다.");
+      navigate('/registrationSuccess');
       try{
         await register();
       }catch(error){

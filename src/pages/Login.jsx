@@ -103,7 +103,7 @@ export default function Login() {
                 </div>
 
                 <Link to="/findpw" className="forgot-password">비밀번호를 잊으셨나요?</Link>
-                <button type="submit" className="login-button">로그인</button>
+                <button type="submit" className="login-button" onClick={login}>로그인</button>
 
                 <p className="signup-text">
                     계정이 없으신가요? <Link to="/register" className="signup-link">계정만들기</Link>
