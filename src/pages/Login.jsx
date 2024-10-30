@@ -21,51 +21,30 @@ export default function Login() {
     
     async function login(event) {
       event.preventDefault(); /* 페이지가 변경되지 않도록 막기 */
-      const response = await fetch("http://localhost:7777/login", {
-        method: "POST",
-        body: JSON.stringify({email, password}),
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include',
-      });
+      console.log('Login function is called');
+      const userData = {
+        email: email, 
+        password: password
+      };
+      const response = await axios.post('/user/login', userData); 
+      console.log("Login response:", response.data);
       if (response.status === 200) {
-        response.json().then(userInfo => {
-          setUserInfo(userInfo);
           alert('로그인에 성공했습니다.');
-          setRedirect(true);
-        })
+          navigate('/home');
       }
       else {
         alert('로그인에 실패했습니다.');
       }
     }
-    /* React의 상태 관리를 통해 redirect가 true가 되는 순간 이동 */
-    if (redirect) {
-      return <Navigate to={'/home'} />
-    }
+    
     
     /***카카오로그인***/
-    //카카오 로그인 이동페이지 주소
-    //const authUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code`;
-
-    
     const kakaoLoginUrl = 'http://localhost:3000/user/login/kakao';
     const handleKakaoLogin = () => {
       window.location.href = kakaoLoginUrl;
       console.log('카카오로그인 입장');
   }; 
-/*
-  async function loginWithKakao() {
-    try {
-      // 서버에 로그인 API 요청
-      const response = await axios.get('/user/login/kakao');
-      
-      // 카카오 로그인 URL로 리디렉션
-      window.location.href = response.request.responseURL;
-    } catch (error) {
-      console.error("Kakao login error:", error);
-    }
-  }
-    */
+
     return (
         <div className="login-container">
             <GoBack /> 
