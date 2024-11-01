@@ -26,27 +26,23 @@ export default function Conversation() {
                 <div className='bettuChatText'>
                     <img src={IMAGES.bettu} alt="bettu" className="image chatImage" />
                     <div className='chatBubble'>
-                        베튜가 말합니다.
+                        안녕하세요, 수염! 오늘 내 가족에 대해 이야기해줄게요. 저희 가족은 총 네 명이에요.
                     </div>
                 </div>
                 <div className='chatBubble chatBubbleRight'>
                     <div className='userChatText'>
-                        min-width: 200px;: 최소 너비를 설정하여 내용이 너무 작아지지 않도록 합니다.
-                        max-width: 80%;: 최대 너비를 설정하여 브라우저의 너비에 따라 자동으로 줄어들 수 있도록 합니다. 
-                        필요에 따라 이 값을 조정할 수 있습니다.
+                        안녕하세요, 베튜! 네 명이라니, 가족이 궁금하네요. 누가 있나요?
                     </div>
                 </div>
                 <div className='bettuChatText'>
                     <img src={IMAGES.bettu} alt="bettu" className="image chatImage" />
                     <div className='chatBubble'>
-                        베튜가 말합니다.
+                        저희 부모님과 남동생이 있어요. 아버지는 회사원이고, 어머니는 전업주부세요. 그리고 남동생은 중학생이에요.
                     </div>
                 </div>
                 <div className='chatBubble chatBubbleRight'>
                     <div className='userChatText'>
-                        min-width: 200px;: 최소 너비를 설정하여 내용이 너무 작아지지 않도록 합니다.
-                        max-width: 80%;: 최대 너비를 설정하여 브라우저의 너비에 따라 자동으로 줄어들 수 있도록 합니다. 
-                        필요에 따라 이 값을 조정할 수 있습니다.
+                        아, 그렇군요! 아버지와 어머니는 어떤 취미가 있으세요?
                     </div>
                 </div>
             </div>
