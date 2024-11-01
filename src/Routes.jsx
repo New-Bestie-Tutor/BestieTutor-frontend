@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Start, UserAgreement, Register, Login,Home,FindPw } from "./pages";
+import { Start, UserAgreement, Register, Login, Home, FindPw, Conversation, RegistrationSuccess } from "./pages";
 
 export default function AppRoutes() {
     return(
@@ -11,6 +11,8 @@ export default function AppRoutes() {
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/findpw" element={<FindPw />} />
+            <Route path="/conversation" element={<Conversation />} />
+            <Route path="/registrationSuccess" element={<RegistrationSuccess />} />
         </Routes>
     );
 }

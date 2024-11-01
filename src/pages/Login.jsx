@@ -30,7 +30,8 @@ export default function Login() {
       console.log("Login response:", response.data);
       if (response.status === 200) {
           alert('로그인에 성공했습니다.');
-          navigate('/home');
+        //   navigate('/home');
+          navigate('/registrationSuccess');
       }
       else {
         alert('로그인에 실패했습니다.');
