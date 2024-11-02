@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import IMAGES from "../images/images";
+import GoBack from '../components/GoBack';
 
 export default function RegistrationSuccess() {
   const navigate = useNavigate();
     return (
       <div className="container start">
+        <GoBack />
         <div className="image-wrapper">
           <img src={IMAGES.bettu} alt="bettu" className="image" />
           <img src={IMAGES.raebin} alt="raebin" className="image" />

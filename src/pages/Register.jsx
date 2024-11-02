@@ -166,7 +166,7 @@ export default function Register() {
           {['male', 'female', 'hidden'].map(gender => (
             <button type='button'
             key={gender}
-            className={`button gender ${selectedGender === gender ? 'checked' : ''}`}
+            className={`gender ${selectedGender === gender ? 'checked' : ''}`}
             onClick={() => setSelectedGender(gender)}
             >
             {gender === 'male' ? '남성' : gender === 'female' ? '여성' : '비공개'}
