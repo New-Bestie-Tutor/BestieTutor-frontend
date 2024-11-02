@@ -23,6 +23,7 @@
     align-items: center;
     flex-direction: column;
     padding: 0px 20px;
+    /* position: relative; */
   }
   /* Start.css */
   .start{
@@ -53,7 +54,7 @@
   }
   .button {
     width: 100%;
-    max-width: 360px;
+    max-width: 340px;
     border: none; /* 기본 테두리 제거 */
     border-radius: 0.375rem; /* 모서리 둥글게 */
     font-size: 25px; /* 글자 크기 */
@@ -88,7 +89,7 @@
 .goBack{
   display: flex;
   cursor: pointer;
-  width: 360px;
+  width: 340px;
   text-align: left; 
 }
 
@@ -98,7 +99,7 @@
 
 .title {
   display: flex;
-  width: 360px;
+  width: 340px;
   text-align: left; 
   font-size: 25px;
 }
@@ -115,7 +116,7 @@
   display: flex;
   align-items: center; /*아이콘과 텍스트를 수직으로 중앙 정렬*/
   cursor: pointer; /* 클릭 가능하도록 커서 변경 */
-  width: 360px;
+  width: 340px;
   text-align: left;
   margin-left: 5px;
 }
@@ -140,7 +141,7 @@
   color: #4ED8B7;
 }
 .agreement-container{
-  width: 360px;
+  width: 340px;
   border-top: 2px solid #000000;
   background-color: #F5F5F5;
   padding: 10px 5px 10px 30px;
@@ -181,13 +182,14 @@
 .modalContent ul{
   padding-left: 20px;
 }
+
 /*Register.css*/
 .registerForm{
   margin-top: 25px;
-  width: 360px;
+  width: 340px;
 }
 .registerForm input{
-  width: 360px;
+  width: 100%;
   height: 30px;
   border: none;
   text-align: left; 
@@ -198,7 +200,7 @@
 .registerForm label{
   display: flex;
   align-items: center; /*수직 정렬*/
-  width: 360px;
+  width: 100%;
   text-align: left; 
   font-size: 20px;
   font-weight: bold;
@@ -275,7 +277,71 @@
   border-radius: 8px; /* 모서리 둥글게 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
 }
-  
+
+/* Conversation.css */
+.conversation-title{
+  margin-bottom: 20px;
+}
+.chat-container {
+  width: 360px;
+  display: flex;
+  flex-direction: column; /* 채팅 버블을 세로로 쌓기 */
+}
+.chatBubble
+{
+  display: inline-block;
+  position: relative;
+  max-width: 260px; /* 최대 너비 설정 */
+  height: auto; /* 높이를 자동으로 설정 */
+  padding: 10px; /* 내부 여백 추가 */
+  background: #F5F5F5;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+.chatBubble:after{
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 20px 15px 0; /*높이 / 너비 / 0 */
+  border-color: #F5F5F5 transparent;
+  display: block;
+  width: 0;
+  z-index: 1;
+  bottom: -20px;/*border-width 높이와 같게*/
+  left: 30px;/*수치가 작을 수록 작은 수*/
+}
+.chatBubbleRight {
+  transform: scaleX(-1); /*챗버블 좌우반전*/
+  background: #EBFFEE;
+  align-self: flex-end;/*오른쪽 정렬*/
+}
+.chatBubbleRight:after {
+  border-color: #EBFFEE transparent;
+}
+.bettuChatText{
+  display: flex; 
+  align-items: flex-start;
+}
+.userChatText{
+  transform: scaleX(-1); /*글자만 다시 원위치*/
+  text-align: left;
+}
+.chatImage{
+  width: 30px; 
+  height: 30px; 
+  border-radius: 50%; 
+  margin-right: 10px;
+}
+.userChatInput{
+  width: 200px;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  justify-content: space-between;
+  color: #4ED8B7;
+  cursor: pointer;
+}
+
   /* 반응형 레이아웃 */
   /* Mobile */
   @media (max-width: 768px) {
@@ -283,7 +349,7 @@
       width: 100%;
     }
     .button {
-      width: 360px; 
+      width: 340px; 
     }
   }
   /* Tablet */
@@ -435,4 +501,227 @@
 
 .kakao-login_image{
     width: 90%;
+}
+
+/****footer*****/
+.footer {
+  background-color: white;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  border-top: 1px solid #ddd;
+}
+
+.footer-container {
+  
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.footer-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  text-align: left;
+}
+
+.footer-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  font-size: 1.5em;
+  color: #333;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: #555;
+}
+
+.footer-info-toggle {
+  cursor: pointer;
+  color: #999;
+  font-size: 0.8em;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.footer-business-info {
+  margin: 10px 0;
+  font-size: 0.8em;
+  color: #999;
+  text-align: left;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: left;
+  gap: 15px;
+  margin: 10px 0;
+  font-size: 0.8em;
+}
+
+.footer-links a {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.8em;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  font-size: 0.8em;
+  text-align: left;
+  color: #999;
+  margin-top: 10px;
+}
+
+/*******Topic******/
+.topic-item {
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.topic-item.selected {
+  display: flex;
+  background-color: #e0f7e9;
+  border: 2px solid #b2e6c9;
+  width: 100px;  /* 원하는 원형 크기에 맞게 조절 */
+  height: 100px; /* 원하는 원형 크기에 맞게 조절 */
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.topic-list {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, 1fr); /* 기본적으로 4열 */
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh; /* 화면의 중앙에 배치하기 위해 전체 높이를 사용 */
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .topic-list {
+      grid-template-columns: repeat(2, 1fr); /* 중간 화면에서는 2열 */
+  }
+}
+
+@media (max-width: 600px) {
+  .topic-list {
+      grid-template-columns: 1fr; /* 작은 화면에서는 1열 */
+  }
+}
+.topic-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.topic-text {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #333;
+}
+.topic {
+  text-align: center;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.next-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 300px;
+  background-color: #4ED8B7;
+  color: white;
+  border: none;
+  border-radius: 0.375rem; /* 모서리 둥글게 */
+  font-size: 18px; /* 글자 크기 */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/***********SubTopic.jsx***********/
+.SubTopic {
+  text-align: center;
+  padding: 20px;
+}
+
+.sub-topic-container {
+  display: grid;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+  min-height: 60vh;
+  text-align: center;
+}
+@media (max-width: 1024px) {
+  .sub-topic-container {
+      grid-template-columns: repeat(1, 1fr); 
+  }
+}
+.level-selector {
+  margin-top: 20px;
+}
+
+.level-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 2px; /* Space between buttons */
+}
+
+.level-button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #e0f7e9;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.level-button.selected {
+  background-color: #4ED8B7;
+}
+
+
+/********SubTopicBox********/
+.sub-topic-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 10px;
+  width: 300px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  border-radius: 0.375rem;
+}
+
+.sub-topic-box.selected {
+  border-color: #4ED8B7;
 }
