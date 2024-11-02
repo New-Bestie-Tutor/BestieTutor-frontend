@@ -7,7 +7,7 @@ export default function RegistrationSuccess() {
   const navigate = useNavigate();
     return (
       <div className="container start">
-        <GoBack />
+        <GoBack className="goBack"/>
         <div className="image-wrapper">
           <img src={IMAGES.bettu} alt="bettu" className="image" />
           <img src={IMAGES.raebin} alt="raebin" className="image" />

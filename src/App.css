@@ -24,7 +24,6 @@
     align-items: center;
     flex-direction: column;
     padding: 0px 20px;
-    /* position: relative; */
   }
   /* Start.css */
   .start{
@@ -92,8 +91,9 @@
 .goBack{
   display: flex;
   cursor: pointer;
-  min-width: 340px;
+  min-width: 340px; 
   width: 70%;
+  /* width: 20px; */
   text-align: left; 
 }
 
@@ -311,17 +311,44 @@
 }
 
 /* Conversation.css */
+.conversation-container{
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+.conversation-header{
+  display: flex;
+  position: fixed;
+  align-items: center;
+  align-self: flex-start;
+  top: 0;
+  left: 50%;
+  width: 70%;
+  min-width: 340px;
+  transform: translateX(-50%);
+  height: 100px;
+  z-index: 1000;
+}
+.conversation-goBack{
+  cursor: pointer;
+  width: 20px;
+  text-align: left; 
+}
 .conversation-title{
-  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 700;
+  flex: 1;
+  text-align: center;
 }
 .chat-container {
-  /* width: 360px; */
   width: 70%;
+  min-width: 340px;
   display: flex;
   flex-direction: column; /* 채팅 버블을 세로로 쌓기 */
+  padding: 10px 5px;
+  overflow: auto;
+  height: 520px;
 }
-.chatBubble
-{
+.chatBubble{
   display: inline-block;
   position: relative;
   max-width: 260px; /* 최대 너비 설정 */
@@ -366,13 +393,29 @@
   margin-right: 10px;
 }
 .userChatInput{
-  width: 200px;
   display: flex;
   align-items: center;
   font-size: 30px;
-  justify-content: space-between;
   color: #4ED8B7;
   cursor: pointer;
+  position: fixed;
+  top: 89%;
+  left: 50%;
+  width: 20%;
+  min-width: 200px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  flex-direction: column;
+  height: 60px;
+}
+.userInput-status{
+  color: #000000;
+  font-size: 15px;
+}
+.icon-container{
+  justify-content: center;
+  display: flex;
+  gap: 50px;
 }
 
   /* 반응형 레이아웃 */

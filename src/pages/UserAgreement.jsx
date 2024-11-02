@@ -77,7 +77,7 @@ export default function UserAgreement() {
 
     return (
         <div className="container">
-            <GoBack />
+            <GoBack className="goBack"/>
             <h3 className="title agreeTitle">서비스 가입을 위해<br />약관에 동의해주세요</h3>
             
             <p className={`checkbox ${isChecked ? 'checked' : ''}`} onClick={handleAllCheck}>
