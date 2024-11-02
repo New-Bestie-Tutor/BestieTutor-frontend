@@ -505,7 +505,7 @@
 
 /****footer*****/
 .footer {
-  background-color: #f9f9f9;
+  background-color: white;
   padding: 20px;
   font-family: Arial, sans-serif;
   color: #333;
@@ -513,7 +513,7 @@
 }
 
 .footer-container {
-  max-width: 800px;
+  
   margin: 0 auto;
 }
 
@@ -547,30 +547,31 @@
 
 .footer-info-toggle {
   cursor: pointer;
-  color: #555;
-  font-size: 0.9em;
-  text-align: center;
+  color: #999;
+  font-size: 0.8em;
+  text-align: left;
   margin-bottom: 10px;
 }
 
 .footer-business-info {
   margin: 10px 0;
-  font-size: 0.9em;
-  color: #666;
-  text-align: center;
+  font-size: 0.8em;
+  color: #999;
+  text-align: left;
 }
 
 .footer-links {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   gap: 15px;
   margin: 10px 0;
+  font-size: 0.8em;
 }
 
 .footer-links a {
-  color: #333;
+  color: #999;
   text-decoration: none;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .footer-links a:hover {
@@ -579,7 +580,7 @@
 
 .footer-bottom {
   font-size: 0.8em;
-  text-align: center;
+  text-align: left;
   color: #999;
   margin-top: 10px;
 }
