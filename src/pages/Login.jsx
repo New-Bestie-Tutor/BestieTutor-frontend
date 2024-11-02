@@ -8,8 +8,8 @@ import axios from 'axios';
 
 export default function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('test1@test1.com');
+    const [password, setPassword] = useState('test1test1!');
     const [showPassword, setShowPassword] = useState(false);
     const [redirect, setRedirect] = useState(false);
     //const {setUserInfo} = useContext(UserContext);
@@ -58,8 +58,9 @@ export default function Login() {
                     type="email"
                     id="email"
                     className="input-field"
-                    placeholder="bread.su@gmail.com"
+                    placeholder="이메일을 입력해주세요."
                     value={email}
+                    // value='test1@test1.com'
                     onChange={handleEmailChange}
                 />
 
@@ -69,8 +70,9 @@ export default function Login() {
                         type={showPassword ? "text" : "password"}
                         id="password"
                         className="input-field"
-                        placeholder="bread1011"
+                        placeholder="비밀번호를 입력해주세요"
                         value={password}
+                        // value='test1test1!'
                         onChange={handlePasswordChange}
                     />
                     <button

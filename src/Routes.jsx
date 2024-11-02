@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Start, UserAgreement, Register, Login, Home, FindPw, Conversation, RegistrationSuccess } from "./pages";
+import { Start, UserAgreement, Register, Login, Home, FindPw, Conversation, RegistrationSuccess, Topic, SubTopic } from "./pages";
 
 export default function AppRoutes() {
     return(
@@ -13,6 +13,8 @@ export default function AppRoutes() {
             <Route path="/findpw" element={<FindPw />} />
             <Route path="/conversation" element={<Conversation />} />
             <Route path="/registrationSuccess" element={<RegistrationSuccess />} />
+            <Route path="/topic" element={<Topic />} />
+            <Route path="/subtopic" element={<SubTopic />} />
         </Routes>
     );
 }
