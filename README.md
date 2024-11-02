@@ -22,7 +22,7 @@ cd BestieTutor-frontend
 ### 3. React 패키지 설치
 필요한 패키지를 설치합니다.
 ```bash
-npm install react vite axios react-dom react-router-dom react-daum-postcode react-icons
+npm install
 ```
 
 ### 4. 서버 실행
