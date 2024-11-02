@@ -37,7 +37,7 @@ function Postcode({onChangeAddress, onChangeAddressDetail}) {
     <div>
       <div className='address-container'>
         <input id="address" name="address" value={address} className="address" type='text' placeholder='주소를 입력해주세요' onClick={() => setIsOpen(true)} readOnly/>
-        <button className="button gender" type='button' onClick={() => setIsOpen(true)}>주소 검색</button>
+        <button className="addressButton" type='button' onClick={() => setIsOpen(true)}>주소 검색</button>
       </div>
       {isOpen && (
         <div className="modal-overlay">
