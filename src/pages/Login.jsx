@@ -57,7 +57,7 @@ export default function Login() {
                     type="email"
                     id="email"
                     className="input-field"
-                    placeholder="bread.su@gmail.com"
+                    placeholder="email@gmail.com"
                     value={email}
                     onChange={handleEmailChange}
                 />
@@ -68,7 +68,7 @@ export default function Login() {
                         type={showPassword ? "text" : "password"}
                         id="password"
                         className="input-field"
-                        placeholder="bread1011"
+                        placeholder="password123*&"
                         value={password}
                         onChange={handlePasswordChange}
                     />
