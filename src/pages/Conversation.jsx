@@ -5,47 +5,66 @@ import { IoMdMic } from "react-icons/io";
 import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
 import '../App.css';
+import { useState } from 'react';
+import axios from 'axios';
 
 export default function Conversation() {
+  async function getResponse(text) {
+    const data = {
+      text: text
+    };
+    const response = await axios.post('/conversation/conversation', data);
+    if (response.status === 200) {
+      console.log(response.data);
+      setMessages(prevMessages => [...prevMessages, {sender: 'ai', text: response.data.gptResponse}]);
+    }
+    else {
+      alert('실패했습니다.');
+    }
+  }
   const navigate = useNavigate();
+  const [status, setStatus] = useState('');
+  const [messages, setMessages] = useState([
+    {sender: 'ai', text: "Hello! Let's talk."}
+  ]);
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+  recognition.lang = 'en-US';
   const stopConversation = () => {
     alert('대화를 종료합니다.');
   } 
   const speakToMic = () => {
-    alert('마이크가 켜졌습니다.');
+    recognition.start();
   } 
   const typing = () => {
     alert('문자를 입력해주세요.');
   } 
-  
+  recognition.onstart = () => {
+    setStatus('목소리를 듣고 있어요.');
+  };
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    console.log(transcript);
+    setMessages(prevMessages => [...prevMessages, {sender: 'me', text: transcript}]);
+    getResponse(transcript);
+  };
+  recognition.onend = () => {
+    setStatus('목소리를 정상적으로 인식했어요.');
+  };
     return (
         <div className="container">
             <GoBack /> 
             <h2 className="conversation-title">가족 소개하기</h2>
             <div className='chat-container'>
-                <div className='bettuChatText'>
-                    <img src={IMAGES.bettu} alt="bettu" className="image chatImage" />
-                    <div className='chatBubble'>
-                        안녕하세요, 수염! 오늘 내 가족에 대해 이야기해줄게요. 저희 가족은 총 네 명이에요.
+                {messages.map(message => (
+                    <div className={(message.sender === 'me' ? 'chatBubble chatBubbleRight' : 'bettuChatText')}>
+                        {message.sender === 'ai' && <img src={IMAGES.bettu} alt="bettu" className="image chatImage"/>}
+                        <div className={(message.sender === 'me' ? 'userChatText' : 'chatBubble')}>
+                            {message.text}
+                        </div>
                     </div>
-                </div>
-                <div className='chatBubble chatBubbleRight'>
-                    <div className='userChatText'>
-                        안녕하세요, 베튜! 네 명이라니, 가족이 궁금하네요. 누가 있나요?
-                    </div>
-                </div>
-                <div className='bettuChatText'>
-                    <img src={IMAGES.bettu} alt="bettu" className="image chatImage" />
-                    <div className='chatBubble'>
-                        저희 부모님과 남동생이 있어요. 아버지는 회사원이고, 어머니는 전업주부세요. 그리고 남동생은 중학생이에요.
-                    </div>
-                </div>
-                <div className='chatBubble chatBubbleRight'>
-                    <div className='userChatText'>
-                        아, 그렇군요! 아버지와 어머니는 어떤 취미가 있으세요?
-                    </div>
-                </div>
+                ))}
             </div>
+            {status}
             <div className='userChatInput'>
                 <FaXmark onClick={stopConversation} />
                 <IoMdMic onClick={speakToMic}/>
