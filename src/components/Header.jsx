@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
+import IMAGES from "../images/images";
 
 
 export default function Header() {
     const {userInfo, setUserInfo} = useContext(UserContext);
     /* 페이지가 로드되면서 자동으로 profile API 호출 */
     useEffect(() => {
-      fetch('http://localhost:7777/profile', {
+      fetch('http://localhost:3000/profile', {
         credentials: 'include',
       }).then(response => {
         /* 서버로부터 전달 받은 값으로 username 초기화 */
@@ -19,7 +20,7 @@ export default function Header() {
 
 
     function logout() {
-      fetch('http://localhost:7777/logout', {
+      fetch('http://localhost:3000/logout', {
         credentials: 'include',
         method: 'POST',
       });
@@ -32,7 +33,15 @@ export default function Header() {
 
     return (
       <header>
-        <Link to="/" className="logo">Bestie Tutor</Link>
+        <div className="header-top">
+                    <div className="header-title">
+                        <Link to="/">Bestie Tutor</Link>
+                    </div>
+                    <div className="header-mypage">
+                        
+                    </div>
+                </div>
+        
         <nav>
           {username && (
             <>
