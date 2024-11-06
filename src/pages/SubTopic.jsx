@@ -84,8 +84,10 @@ function SubTopic() {
 
     return (
         <div className="SubTopic">
-            <GoBack />
-            <h2>{mainTopic}</h2>
+            
+            <GoBack className='conversation-goBack'/> 
+            <p className="conversation-title">{mainTopic}</p>
+            
             <div className="sub-topic-container">
                 {subTopics.map((subTopic) => (
                     <SubTopicBox

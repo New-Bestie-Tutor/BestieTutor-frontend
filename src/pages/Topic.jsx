@@ -45,8 +45,10 @@ const Topic = () => {
 
     return (
         <div className="topic">
-            <GoBack /> 
-            <h2>주제를 선택해 주세요</h2>
+
+            <GoBack className='topic-goBack'/> 
+            <p className="conversation-title">주제를 선택해 주세요</p>
+
             <div className="topic-list">
                 {topics.map((topic) => (
                         <TopicItem
