@@ -1,8 +1,11 @@
 import React from 'react';
+import '../App.css'; 
 
 function Description({ text }) {
+  if (!text) return null; // text가 없으면 렌더링하지 않음
+
   return (
-    <div style={{ marginTop: '20px', padding: '20px' }}>
+    <div className="description-box">
       <p>{text}</p>
     </div>
   );

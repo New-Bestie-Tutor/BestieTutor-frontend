@@ -8,8 +8,10 @@ function SubTopicBox({ topic, isSelected, onSelect, selectedLevel, onLevelSelect
           onClick={onSelect}
           className={`sub-topic-box ${isSelected ? 'selected' : ''}`}
         >
-          <h3>{topic.name}</h3>
-          {/* Level Buttons */}
+          {/* 주제 이름 */}
+          <h3>{topic}</h3>
+
+          {/* 레벨 선택 버튼들 */}
           {isSelected && (
               <div className="level-section">
                   <div className="level-buttons">
@@ -27,7 +29,7 @@ function SubTopicBox({ topic, isSelected, onSelect, selectedLevel, onLevelSelect
                       ))}
                   </div>
 
-                  {/* Description */}
+                  {/* 설명 표시 */}
                   {description && <Description text={description} />}
               </div>
           )}
