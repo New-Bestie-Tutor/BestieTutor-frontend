@@ -29,9 +29,7 @@ export default function Login() {
       const response = await axios.post('/user/login', userData); 
       console.log("Login response:", response.data);
       if (response.status === 200) {
-          alert('로그인에 성공했습니다.');
-        //   navigate('/home');
-          navigate('/registrationSuccess');
+          navigate('/home');
       }
       else {
         alert('로그인에 실패했습니다.');

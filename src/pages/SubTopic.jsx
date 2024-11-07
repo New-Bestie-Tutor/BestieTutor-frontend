@@ -70,8 +70,8 @@ function SubTopic() {
         }
 
         if (valid) {
-            // 'conversation' 페이지로 데이터 전달
-            navigate('/conversation', {
+            // 'chooseCharacter' 페이지로 데이터 전달
+            navigate('/chooseCharacter', {
                 state: {
                     mainTopic,
                     selectedSubTopic: selectedSubTopic.name,
@@ -115,7 +115,7 @@ function SubTopic() {
                 className="next-button"
                 onClick={handleStartLearning}
             >
-                학습 시작하기
+                대화 친구 선택하기
             </button>
         </div>
     );
