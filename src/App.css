@@ -352,6 +352,7 @@
 .chatBubble{
   display: inline-block;
   position: relative;
+  min-width: 70px;
   max-width: 260px; /* 최대 너비 설정 */
   height: auto; /* 높이를 자동으로 설정 */
   padding: 10px; /* 내부 여백 추가 */
@@ -417,6 +418,22 @@
   justify-content: center;
   display: flex;
   gap: 50px;
+}
+.typingFrom{
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 5px;
+}
+.typingInput{
+  flex: 1;
+  height: 100%;
+  font-size: 15px;
+  border: none;
+  text-align: left; 
+}
+.typingSendButton{
+  font-size: 25px;
 }
 
   /* 반응형 레이아웃 */
