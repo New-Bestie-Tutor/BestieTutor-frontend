@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Start, UserAgreement, Register, Login, Home, FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, ChooseCharacter } from "./pages";
+import { Start, UserAgreement, Register, Login, Home, FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, ChooseCharacter, ChooseLanguage } from "./pages";
 
 export default function AppRoutes() {
     return(
@@ -16,6 +16,7 @@ export default function AppRoutes() {
             <Route path="/topic" element={<Topic />} />
             <Route path="/subtopic" element={<SubTopic />} />
             <Route path="/chooseCharacter" element={<ChooseCharacter />} />
+            <Route path="/chooseLanguage" element={<ChooseLanguage />} />
         </Routes>
     );
 }

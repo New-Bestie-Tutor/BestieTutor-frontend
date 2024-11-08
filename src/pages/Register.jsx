@@ -122,8 +122,7 @@ export default function Register() {
     } else if(!addressDetail.trim()) {
       setaddressMessage("상세 주소를 입력해주세요.")
     } else {
-      alert("회원가입을 축하드립니다.");
-      navigate('/registrationSuccess');
+      navigate('/chooseLanguage');
       try{
         await register();
       }catch(error){

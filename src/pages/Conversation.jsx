@@ -19,6 +19,7 @@ export default function Conversation() {
         selectedCharacter: location.state?.selectedCharacter
     }), [location.state]);
 
+    // 대화주제 & 캐릭터 선택 사항 console.log
     useEffect(() => {
       console.log("mainTopic:", mainTopic);
       console.log("selectedSubTopic:", selectedSubTopic);
