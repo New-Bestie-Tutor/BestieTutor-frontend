@@ -1,8 +1,6 @@
 import GoBack from '../components/GoBack';
-import CharacterItem from '../components/CharacterItem';
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import IMAGES from "../images/images";
 import '../App.css';
 
@@ -14,7 +12,7 @@ export default function ChooseLanguage() {
 
     const handleNextSurvey = () => {
         if (selectedLanguage) {
-            navigate('/chooseLevel', { state: { language: selectedLanguage } }); 
+            navigate('/learningGoal', { state: { language: selectedLanguage } }); 
         }
     };
     

@@ -7,8 +7,15 @@ const IMAGES = {
     취미: new URL('./취미.png', import.meta.url).href,
     여행: new URL('./여행.png', import.meta.url).href,
     English: new URL('./americanFlag.png', import.meta.url).href,
-    한국어: new URL('./koreaFlag.png', import.meta.url).href
-    mypage: new URL('./mypage.png', import.meta.url).href
+    한국어: new URL('./koreaFlag.png', import.meta.url).href,
+    mypage: new URL('./mypage.png', import.meta.url).href,
+    여행_준비: new URL('./bettu.png', import.meta.url).href,
+    학업: new URL('./bettu.png', import.meta.url).href,
+    생산적인_시간_활동: new URL('./bettu.png', import.meta.url).href,
+    사람들과_소통: new URL('./bettu.png', import.meta.url).href,
+    경력_개발: new URL('./bettu.png', import.meta.url).href,
+    취미_활동: new URL('./bettu.png', import.meta.url).href,
+    기타: new URL('./bettu.png', import.meta.url).href
 };
 
 export default IMAGES;
