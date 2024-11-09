@@ -2,7 +2,6 @@ import GoBack from '../components/GoBack';
 import CharacterItem from '../components/CharacterItem';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useMemo } from 'react';
 import axios from 'axios';
 import IMAGES from "../images/images";
 import '../App.css';
