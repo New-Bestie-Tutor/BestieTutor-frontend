@@ -8,3 +8,4 @@ export { default as Conversation } from "./Conversation.jsx";
 export { default as RegistrationSuccess } from "./RegistrationSuccess.jsx";
 export { default as Topic } from "./Topic.jsx";
 export { default as SubTopic } from "./SubTopic.jsx";
+export { default as ChooseCharacter } from "./ChooseCharacter.jsx";

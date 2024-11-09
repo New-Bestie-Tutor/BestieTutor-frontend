@@ -5,10 +5,28 @@ import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
 import { LuSendHorizonal } from "react-icons/lu";
 import '../App.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Conversation() {
+  const location = useLocation();
+    const { mainTopic, selectedSubTopic, selectedLevel, description, selectedCharacter } = useMemo(() => ({
+        mainTopic: location.state?.mainTopic,
+        selectedSubTopic: location.state?.selectedSubTopic,
+        selectedLevel: location.state?.selectedLevel,
+        description: location.state?.description,
+        selectedCharacter: location.state?.selectedCharacter
+    }), [location.state]);
+
+    useEffect(() => {
+      console.log("mainTopic:", mainTopic);
+      console.log("selectedSubTopic:", selectedSubTopic);
+      console.log("selectedLevel:", selectedLevel);
+      console.log("description:", description);
+      console.log("selectedCharacter:", selectedCharacter);
+  }, [mainTopic, selectedSubTopic, selectedLevel, description, selectedCharacter]);
+
   const [status, setStatus] = useState('');
   const [messages, setMessages] = useState([
       {sender: 'bettuText', text: "Hello! Let's talk."}
@@ -96,13 +114,13 @@ export default function Conversation() {
         <div className="container conversation-container">
             <div className='conversation-header'>
                 <GoBack className='conversation-goBack'/> 
-                <p className="conversation-title">가족 소개하기</p>
+                <p className="conversation-title">{description}</p>
             </div>
             <div className='chat-container'>
                 {messages.map((message, index) => (
                     <div key={message.id || index} 
                     className={(message.sender === 'userText' ? 'chatBubble chatBubbleRight' : 'bettuChatText')}>
-                        {message.sender === 'bettuText' && <img src={IMAGES.bettu} alt="bettu" className="image chatImage"/>}
+                        {message.sender === 'bettuText' && <img src={IMAGES[selectedCharacter]} alt={selectedCharacter} className="image chatImage"/>}
                         <div className={(message.sender === 'userText' ? 'userChatText' : 'chatBubble')}>
                             {message.text}
                         </div>
