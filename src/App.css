@@ -1020,3 +1020,25 @@ h2 {
   color: #555;
   cursor: pointer;
 }
+
+/*********home*********/
+.welcome-container{
+  background-color: #EBFFEE;
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.welcome-image{
+  width: 120px;
+  margin-left: 20px;
+}
+
+.welcome-txt{
+  display: flex;
+  font-size: 30px;
+  font-weight: 900;
+  color:#4ED8B7;
+  align-items: center;
+  margin-right: 50px;
+}

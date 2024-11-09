@@ -42,10 +42,14 @@ export default function Conversation() {
       }
   }, [messages]);
 
-  // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
-  async function getResponse(text) {
+   // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
+   async function getResponse(text) {
     const data = {
-      text: text
+      text: text,
+      conversationHistory: messages.map(message => ({
+        role: message.sender === 'userText' ? 'user' : 'assistant',
+        content: message.text
+      }))
     };
     const response = await axios.post('/conversation', data);
     if (response.status === 200) {
