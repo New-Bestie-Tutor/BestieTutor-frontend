@@ -760,8 +760,6 @@
   margin-top: 10px;
 }
 
-/**********Header********/
-
 
 /*******Topic******/
 .topic-item {
@@ -925,4 +923,125 @@ h2 {
   font-size: 15px;
   border-radius: 8px;
   font-weight: 600;
+}
+
+/********Header********/
+.header {
+  align-items: center;
+  background-color: white;
+  color: black;
+  position: relative;
+  width: 100%;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-title{
+  font-weight: 900;
+  color: #4ED8B7;
+  text-decoration: none;
+  font-size: 25px;
+}
+.header-links a,
+.header-mypage a,
+.header-mypage button {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #000;
+}
+.header-links {
+  margin-left: 15px;
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 13px;
+}
+.header-mypage {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.mypageimg{
+  width: 35px;
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.logout-button{
+  background-color: white;
+  border: none;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+
+}
+
+.header-item {
+  margin: 0 20px;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 18px;
+  position: relative;
+  justify-content: center;
+}
+
+.dropdown-container {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  display: block;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Dropdown content */
+.dropdown-content {
+  display: flex;
+  justify-content: space-around;
+  background-color: white;
+  text-align: center;
+}
+
+
+.dropdown-content p {
+  margin: 5px 0;
+}
+.dropdown-content h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.subtopic {
+  cursor: pointer;
+  margin: 4px 0;
+}
+
+.description {
+  font-style: italic;
+  margin-top: 5px;
+  color: #555;
+  cursor: pointer;
 }

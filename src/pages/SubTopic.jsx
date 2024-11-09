@@ -9,7 +9,6 @@ function SubTopic() {
     const navigate = useNavigate();
     const location = useLocation();
     const selectedTopic = location.state?.selectedTopic;
-
     const [mainTopic, setMainTopic] = useState(selectedTopic || '');
     const [subTopics, setSubTopics] = useState([]);
     const [selectedSubTopic, setSelectedSubTopic] = useState(null);
