@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
     FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, 
-    ChooseCharacter, ChooseLanguage, LearningGoal } from "./pages";
+    ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic } from "./pages";
 
 export default function AppRoutes() {
     return(
@@ -20,6 +20,8 @@ export default function AppRoutes() {
             <Route path="/chooseCharacter" element={<ChooseCharacter />} />
             <Route path="/chooseLanguage" element={<ChooseLanguage />} />
             <Route path="/learningGoal" element={<LearningGoal />} />
+            <Route path="/currentLevel" element={<CurrentLevel />} />
+            <Route path="/preferredTopic" element={<PreferredTopic />} />
         </Routes>
     );
 }

@@ -7,7 +7,7 @@ import '../App.css';
 
 export default function Register() {
   const navigate = useNavigate();
-  // 필수 입력 : password, nickname, phone, email, gender, address
+
   //초기값 세팅
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
@@ -38,9 +38,6 @@ export default function Register() {
   const [isPassword, setIsPassword] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
-  // const [isSelectedGender, setIsSelectedGender] = useState(false);
-  // const [isAddress, setIsAddress] = useState(false);
-  // const [isAddressDetail, setIsAddressDetail] = useState(false);
   
   const onChangeNickname = (e) => {
     const currentNickname = e.target.value;
@@ -122,9 +119,19 @@ export default function Register() {
     } else if(!addressDetail.trim()) {
       setaddressMessage("상세 주소를 입력해주세요.")
     } else {
-      navigate('/chooseLanguage');
       try{
-        await register();
+        // await register();
+        // navigate('/chooseLanguage');
+
+        // 회원가입 함수 호출
+        const result = await register();
+
+        // 성공적으로 회원가입이 완료되었는지 확인
+        if (result && result.message === '회원가입 성공') {
+            navigate('/chooseLanguage'); // 회원가입 성공 시 페이지 이동
+        } else {
+            console.error("회원가입에 문제가 발생했습니다.");
+        }
       }catch(error){
         console.error("Registration failed:", error);
       }
@@ -134,14 +141,16 @@ export default function Register() {
   async function register() {
     console.log('Register function is called');
     const fullAddress = address+" "+addressDetail;
+
     const userData = {
       email: email, 
       password: password,
       nickname: nickname,
       phone: phone,
       gender: selectedGender,
-      address: fullAddress,
+      address: fullAddress
     };
+
     const response = await axios.post('/user', userData); 
     console.log("Registration response:", response.data);
     return response.data;

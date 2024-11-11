@@ -20,21 +20,23 @@ export default function Login() {
 
     
     async function login(event) {
-      event.preventDefault(); /* 페이지가 변경되지 않도록 막기 */
-      console.log('Login function is called');
-      const userData = {
-        email: email, 
-        password: password
-      };
-      const response = await axios.post('/user/login', userData); 
-      console.log("Login response:", response.data);
-      if (response.status === 200) {
-          navigate('/home');
+        event.preventDefault(); /* 페이지가 변경되지 않도록 막기 */
+        console.log('Login function is called');
+        const userData = {
+          email: email, 
+          password: password
+        };
+        const response = await axios.post('/user/login', userData); 
+        const redirectUrl = response.data.redirectUrl;
+        console.log("Login response:", response.data);
+        if (response.status === 200) {
+            navigate(redirectUrl);
+        }
+        else {
+          alert('로그인에 실패했습니다.');
+        }
       }
-      else {
-        alert('로그인에 실패했습니다.');
-      }
-    }
+  
     
     
     /***카카오로그인***/
@@ -58,7 +60,6 @@ export default function Login() {
                     className="input-field"
                     placeholder="이메일을 입력해주세요."
                     value={email}
-                    // value='test1@test1.com'
                     onChange={handleEmailChange}
                 />
 
@@ -70,7 +71,6 @@ export default function Login() {
                         className="input-field"
                         placeholder="비밀번호를 입력해주세요"
                         value={password}
-                        // value='test1test1!'
                         onChange={handlePasswordChange}
                     />
                     <button

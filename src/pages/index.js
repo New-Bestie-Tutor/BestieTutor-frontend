@@ -11,3 +11,5 @@ export { default as SubTopic } from "./SubTopic.jsx";
 export { default as ChooseCharacter } from "./ChooseCharacter.jsx";
 export { default as ChooseLanguage } from "./ChooseLanguage.jsx";
 export { default as LearningGoal } from "./LearningGoal.jsx";
+export { default as CurrentLevel } from "./CurrentLevel.jsx";
+export { default as PreferredTopic } from "./PreferredTopic.jsx";
