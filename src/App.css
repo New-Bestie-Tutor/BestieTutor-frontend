@@ -767,6 +767,10 @@
     cursor: pointer;
 }
 
+.login-error-message{
+  color: red;
+}
+
 .signup-text {
     margin-top: 15px;
     font-size: 14px;
