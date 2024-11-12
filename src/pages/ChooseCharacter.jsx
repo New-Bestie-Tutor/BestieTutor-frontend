@@ -34,7 +34,7 @@ export default function ChooseCharacter() {
 
     
     useEffect(() => {
-        fetchCharacters(); // 컴포넌트가 마운트될 때 주제 목록을 불러옴
+        fetchCharacters(); // 컴포넌트가 마운트될 때 캐릭터 목록을 불러옴
     }, []);
 
     const handleCharacterClick = (name) => {
@@ -43,7 +43,6 @@ export default function ChooseCharacter() {
 
     
     const handleStartLearning = () => {
-        //setIsClicked(true); // 버튼 클릭 시 경고 메시지 표시
         let valid = true;
         
         // 캐릭터 선택 여부 확인
