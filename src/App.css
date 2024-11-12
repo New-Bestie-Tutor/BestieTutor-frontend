@@ -195,7 +195,6 @@
 
 /*Register.css*/
 .registerForm{
-  margin-top: 25px;
   width: 50%;
   min-width: 340px;
 }
@@ -487,8 +486,157 @@
   color: #333;
 }
 
+/* ChooseLanguage.css */
+.language-list {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(2, 1fr); /* 기본적으로 4열 */
+  justify-items: center;/*grid*/
+  text-align: center;
+  min-width: 340px;
+  align-items: flex-end;
+  width: 80%;
+}
+.language-item{
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 10px;
+  
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+
+}
+
+.language-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* LearningGoal.css */
+.goal-list {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(2, 1fr); 
+  justify-items: center;/*grid*/
+  text-align: center;
+  min-width: 340px;
+  align-items: flex-end;
+  width: 80%;
+  min-height: 60vh;
+  margin-top: 10px;
+}
+.goal-item {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  margin: 10px;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  width: 90%;
+  height: 80%;
+  
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.goal-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+.goal-icon{
+  width: 15%;
+  height: 100%;
+  object-fit: contain;
+}
+.goal-text{
+  font-size: 1.3em;
+  color: #333;
+}
+
+/* CurrentLevel.css */
+.level-list{
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(1, 1fr); 
+  justify-items: center;/*grid*/
+  text-align: center;
+  min-width: 340px;
+  align-items: flex-end;
+  width: 80%;
+  min-height: 60vh;
+}
+.level-item {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  margin: 10px;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  width: 50%;
+  height: 80%;
+  text-align: center;
+  justify-content: center;
+  
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.level-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* PreferredTopic.css */
+.preferredTopic-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  width: 70%;
+  height: 90%;
+  text-align: center;
+  justify-content: center;
+  
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.preferredTopic-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+.preferredTopic-icon{
+  width: 30%;
+  height: 100%;
+  object-fit: contain;
+}
+
   /* 반응형 레이아웃 */
   /* Mobile */
+  @media (max-width: 360px) {
+    .character-wrapper, .conversation-title, .next-button{
+      min-width: 100% !important;
+    }
+    .goal-text{
+      font-size: 1em;
+    }
+    .level-item {
+      width: 90%;
+    }
+    .preferredTopic-icon{
+      width: 70%;
+    }
+    .preferredTopic-item {
+      width: 90%;
+      height: 80%;
+    }
+  }
   @media (max-width: 768px) {
     .container{
       width: 100%;
@@ -499,6 +647,13 @@
     }
     .gender{
       width: 50%;
+    }
+    .preferredTopic-item {
+      width: 90%;
+      height: 80%;
+    }
+    .preferredTopic-icon{
+      width: 60%;
     }
   }
   /* Tablet */
@@ -610,6 +765,10 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.login-error-message{
+  color: red;
 }
 
 .signup-text {
@@ -1019,4 +1178,26 @@ h2 {
   margin-top: 5px;
   color: #555;
   cursor: pointer;
+}
+
+/*********home*********/
+.welcome-container{
+  background-color: #EBFFEE;
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.welcome-image{
+  width: 120px;
+  margin-left: 20px;
+}
+
+.welcome-txt{
+  display: flex;
+  font-size: 30px;
+  font-weight: 900;
+  color:#4ED8B7;
+  align-items: center;
+  margin-right: 50px;
 }

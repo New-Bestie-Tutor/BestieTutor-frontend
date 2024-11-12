@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Footer from "../components/Footer"
 import Header from "../components/Header"
+import IMAGES from "../images/images";
 import '../App.css'
 
 export default function Home() {
@@ -8,8 +9,10 @@ export default function Home() {
   return (
     <div className="Home">
         <Header />
-        홈화면
-        <button onClick={() => navigate('/topic')}>주제선택하기</button>
+        <div className="welcome-container">
+          <h2 className="welcome-txt">Welcome, Bestie!</h2>
+          <img src={IMAGES.bettu} alt="bettu" className="welcome-image" />
+        </div>
         <Footer />
     </div>
   );
