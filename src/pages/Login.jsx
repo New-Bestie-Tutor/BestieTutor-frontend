@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { UserContext } from "../UserContext";
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import IMAGES from "../images/images";
@@ -12,31 +13,39 @@ export default function Login() {
     const [password, setPassword] = useState('test1test1!');
     const [showPassword, setShowPassword] = useState(false);
     const [redirect, setRedirect] = useState(false);
-    //const {setUserInfo} = useContext(UserContext);
+    const {setUserInfo} = useContext(UserContext);
 
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-    
-    async function login(event) {
-        event.preventDefault(); /* 페이지가 변경되지 않도록 막기 */
-        console.log('Login function is called');
-        const userData = {
-          email: email, 
-          password: password
-        };
-        const response = await axios.post('/user/login', userData); 
-        const redirectUrl = response.data.redirectUrl;
-        console.log("Login response:", response.data);
-        if (response.status === 200) {
-            navigate(redirectUrl);
-        }
-        else {
-          alert('로그인에 실패했습니다.');
-        }
+    const handleFocus = (field) => {
+      if (field === 'email' && email === 'test1@test1.com') {
+          setEmail('');
       }
-  
+      if (field === 'password' && password === 'test1test1!') {
+          setPassword('');
+      }
+  };
+
+    async function login(event) {
+      event.preventDefault(); /* 페이지가 변경되지 않도록 막기 */
+      console.log('Login function is called');
+      const userData = {
+        email: email, 
+        password: password
+      };
+      const response = await axios.post('/user/login', userData, { withCredentials: true });
+      const redirectUrl = response.data.redirectUrl;
+      console.log("Login response:", response.data);
+      if (response.status === 200) {
+          setUserInfo(response.data);
+          navigate(redirectUrl);
+      }
+      else {
+        alert('로그인에 실패했습니다.');
+      }
+    }
     
     
     /***카카오로그인***/
@@ -60,6 +69,8 @@ export default function Login() {
                     className="input-field"
                     placeholder="이메일을 입력해주세요."
                     value={email}
+                    // value='test1@test1.com'
+                    onFocus={() => handleFocus('email')}
                     onChange={handleEmailChange}
                 />
 
@@ -71,6 +82,8 @@ export default function Login() {
                         className="input-field"
                         placeholder="비밀번호를 입력해주세요"
                         value={password}
+                        onFocus={() => handleFocus('password')}
+                        // value='test1test1!'
                         onChange={handlePasswordChange}
                     />
                     <button

@@ -10,7 +10,7 @@ export default function Header() {
   const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const { userInfo, setUserInfo } = useContext(UserContext);
-  const username = userInfo?.username;
+  const username = userInfo?.email;
   const navigate = useNavigate();
 
   // Fetch topics from the backend
@@ -18,20 +18,38 @@ export default function Header() {
     try {
       const response = await axios.get('/topic/');
       if (response.status === 200) {
-        setTopics(response.data); // Corrected to update topics state
+        setTopics(response.data);
       }
     } catch (error) {
       console.error("Failed to fetch topics:", error);
     }
   };
 
+  // Function to fetch profile info
+  const fetchProfile = async () => {
+    try {
+      const response = await axios.get('/user/profile', { withCredentials: true });
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error("Failed to fetch profile:", error);
+    }
+  };
+
   useEffect(() => {
     fetchTopics();
+    fetchProfile();
   }, []);
 
+  useEffect(() => {
+    if (!userInfo) {
+      alert("로그아웃 상태이므로 초기화면으로 이동합니다.");
+      navigate('/');
+    }
+  }, [userInfo, navigate]);
+
   const logout = async () => {
-    await axios.post("/logout");
-    setUserInfo(null);
+    await axios.post("/user/logout");
+    setUserInfo(null); 
   };
 
   const handleTopicClick = (id) => {
@@ -40,13 +58,12 @@ export default function Header() {
 
   const handleSubtopicClick = (mainTopic, subTopicName) => {
     navigate('/subtopic', { state: { selectedTopic: mainTopic, subTopic: subTopicName } });
-};
-
+  };
 
   return (
     <div className="header">
       <div className="header-top">
-        <div class="header-left">
+        <div className="header-left">
           <Link to="/home" className="header-title">Bestie Tutor</Link>
           <div className="header-links">
             <Link to="/about">소개</Link>
@@ -55,8 +72,12 @@ export default function Header() {
           </div>
         </div>
         <div className="header-mypage">
-          <button onClick={logout} className="logout-button">로그아웃</button>
-          <Link to="/mypage"><img src={IMAGES.mypage} alt="mypage" className="mypageimg" /></Link>
+          {username ? (
+            <>
+              <button onClick={logout} className="logout-button">로그아웃</button>
+              <Link to="/mypage"><img src={IMAGES.mypage} alt="mypage" className="mypageimg" /></Link>
+            </>
+          ) : null}
         </div>
       </div>
 
