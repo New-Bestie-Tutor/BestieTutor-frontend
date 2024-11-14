@@ -51,7 +51,7 @@ export default function PreferredTopic() {
             const result = await preference();
             // 성공적으로 설문이 완료되었는지 확인
             if (result && result.message === '선호도 조사 완료') {
-                navigate('/registrationSuccess'); 
+                navigate('/home'); 
             } else {
                 console.error("선호도 조사에 문제가 발생했습니다.");
             }

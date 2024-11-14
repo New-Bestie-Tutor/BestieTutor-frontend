@@ -120,15 +120,12 @@ export default function Register() {
       setaddressMessage("상세 주소를 입력해주세요.")
     } else {
       try{
-        // await register();
-        // navigate('/chooseLanguage');
-
         // 회원가입 함수 호출
         const result = await register();
 
         // 성공적으로 회원가입이 완료되었는지 확인
         if (result && result.message === '회원가입 성공') {
-            navigate('/chooseLanguage'); // 회원가입 성공 시 페이지 이동
+            navigate('/registrationSuccess');
         } else {
             console.error("회원가입에 문제가 발생했습니다.");
         }
