@@ -13,6 +13,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [emailValid, setEmailValid] = useState(null);
   const [selectedGender, setSelectedGender] = useState('');
   
   // Postcode에서 주소 값 가져오기
@@ -107,6 +108,12 @@ export default function Register() {
       setIsEmail(true);
     }
   };
+
+  // const checkEmailDuplicate = async () => {
+  //   try{
+  //     const response = await 
+  //   }
+  // }
 
   //다음 버튼 핸들러 - 모두 동의해야 다음 진행
   const handleNext = async () => {

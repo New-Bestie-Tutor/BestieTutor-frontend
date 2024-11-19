@@ -6,12 +6,13 @@ import { FaXmark } from "react-icons/fa6";
 import { LuSendHorizonal } from "react-icons/lu";
 import '../App.css';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import React, { useContext } from 'react';
-import { UserContext } from '../usercontext';
+import { UserContext } from '../UserContext';
 
 export default function Conversation() {
+  const navigate = useNavigate();
   const { userInfo } = useContext(UserContext);
   const location = useLocation();
     const { mainTopic, selectedSubTopic, selectedLevel, description, selectedCharacter } = useMemo(() => ({
@@ -104,6 +105,7 @@ export default function Conversation() {
   recognition.lang = 'ko-KR';
   // recognition.lang = 'ja-JP';
   // recognition.lang = 'ko-KR';
+  // recognition.lang = 'en-US';
   
   // 음성 인식 시작
   const speakToMic = () => {
@@ -151,6 +153,8 @@ export default function Conversation() {
   // 대화 종료
   const stopConversation = () => {
     alert('대화를 종료합니다.');
+    navigate('/home'); 
+
   } 
     return (
         <div className="container conversation-container">

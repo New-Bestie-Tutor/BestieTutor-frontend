@@ -7,8 +7,11 @@ export default function CurrentLevel() {
     const navigate = useNavigate();
     const location = useLocation();
     const { language, goals } = location.state;
+    const displayLanguage = 
+            language === 'English' ? '영어' :
+            language === 'Japanese' ? '일본어' : '한국어';
 
-    const levels = ['영어를 처음 배워요', '기본적인 대화를 할 수 있어요', '다양한 주제에 대해 이야기할 수 있어요'];
+    const levels = [`${displayLanguage}를 처음 배워요`, '기본적인 대화를 할 수 있어요', '다양한 주제에 대해 이야기할 수 있어요'];
     const [selectedLevel, setSelectedLevel] = useState(null);
 
     const handleNextSurvey = () => {
