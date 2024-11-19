@@ -8,8 +8,11 @@ import '../App.css';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import React, { useContext } from 'react';
+import { UserContext } from '../usercontext';
 
 export default function Conversation() {
+  const { userInfo } = useContext(UserContext);
   const location = useLocation();
     const { mainTopic, selectedSubTopic, selectedLevel, description, selectedCharacter } = useMemo(() => ({
         mainTopic: location.state?.mainTopic,
@@ -19,7 +22,6 @@ export default function Conversation() {
         selectedCharacter: location.state?.selectedCharacter
     }), [location.state]);
 
-    // 대화주제 & 캐릭터 선택 사항 console.log
     useEffect(() => {
       console.log("mainTopic:", mainTopic);
       console.log("selectedSubTopic:", selectedSubTopic);
@@ -43,28 +45,63 @@ export default function Conversation() {
       }
   }, [messages]);
 
-   // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
-   async function getResponse(text) {
-    const data = {
-      text: text,
-      conversationHistory: messages.map(message => ({
-        role: message.sender === 'userText' ? 'user' : 'assistant',
-        content: message.text
-      }))
-    };
-    const response = await axios.post('/conversation', data);
-    if (response.status === 200) {
-      console.log(response.data);
-      setMessages(prevMessages => [...prevMessages, {sender: 'bettuText', text: response.data.gptResponse}]);
-    }
-    else {
-      alert('실패했습니다.');
+    // 오디오 재생 함수
+    const playAudio = (audioBase64) => {
+      const audio = new Audio(`data:audio/mp3;base64,${audioBase64}`);
+      audio.play();
+  };
+
+  // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
+  async function getResponse(text) {
+    try {
+      const data = {
+        text: text,
+        conversationHistory: messages.map(message => ({
+          role: message.sender === 'userText' ? 'user' : 'assistant',
+          content: message.text
+        })),
+        mainTopic,
+        subTopic: selectedSubTopic,
+        difficulty: selectedLevel,
+        characterName: selectedCharacter
+      };
+  
+      const response = await axios.post(
+        '/conversation/getResponse', 
+        data, 
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+  
+      if (response.status === 200) {
+        const { gptResponse, audio } = response.data;
+        console.log('GPT Response:', gptResponse);
+        setMessages(prevMessages => [
+          ...prevMessages, 
+          { sender: 'bettuText', text: gptResponse }
+        ]);
+        playAudio(audio);
+      } else {
+        console.error('응답 오류:', response);
+        alert('서버 요청이 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('에러 발생:', error);
+      if (error.response) {
+        console.error('서버 응답 데이터:', error.response.data);
+      }
+      alert('응답을 처리하는 중 오류가 발생했습니다: ${error.message}');
     }
   }
-  
+
+
+
   // 음성 인식 설정
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
-  recognition.lang = 'en-US';
+  recognition.lang = 'ko-KR';
   // recognition.lang = 'ja-JP';
   // recognition.lang = 'ko-KR';
   
