@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Postcode from '../components/Postcode';
 import GoBack from '../components/GoBack';
@@ -15,17 +15,9 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [emailValid, setEmailValid] = useState(null);
   const [selectedGender, setSelectedGender] = useState('');
-  
-  // Postcode에서 주소 값 가져오기
   const [address, setAddress] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
-
-  const addressChangeHandler = (newAddress) => {
-    setAddress(newAddress);
-  }
-  const addressDetailChangeHandler = (newAddressDetail) => {
-    setAddressDetail(newAddressDetail);
-  }
+  
   //오류메세지 초기값 세팅
   const [nicknameMessage, setNicknameMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
@@ -39,6 +31,10 @@ export default function Register() {
   const [isPassword, setIsPassword] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
+
+  const getMessageClass = (isValid) => {
+    return isValid ? 'message valid' : 'message invalid';
+  };
   
   const onChangeNickname = (e) => {
     const currentNickname = e.target.value;
@@ -95,36 +91,77 @@ export default function Register() {
   };
 
   const onChangeEmail = (e) => {
-    const currentEmail = e.target.value;
-    setEmail(currentEmail);
-    const emailRegExp =
-    /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-    
-    if (!emailRegExp.test(currentEmail)) {
-      setEmailMessage("이메일의 형식이 올바르지 않습니다.");
-      setIsEmail(false);
-    } else {
-      setEmailMessage("사용 가능한 이메일 입니다.");
-      setIsEmail(true);
-    }
+    setEmail(e.target.value);
   };
 
-  // const checkEmailDuplicate = async () => {
-  //   try{
-  //     const response = await 
-  //   }
-  // }
+  const onBlurEmail = async () => {
+    const emailRegExp =
+    /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
 
+    //이메일 형식 유효성 검사 진행
+    if (!emailRegExp.test(email)) {
+      setEmailMessage("이메일의 형식이 올바르지 않습니다.");
+      setIsEmail(false);
+      setEmailValid(false);
+    } else {
+      //이메일 형식이 올바르면 중복 검사 진행
+      try{
+        const response = await axios.post('/user/checkEmailDuplicate', { email });
+        setEmailValid(!response.data.isDuplicate);//서버에서 이메일 사용 가능 여부 반환
+        
+        if(response.data.isDuplicate){
+          setEmailMessage('이미 존재하는 이메일입니다.');
+          setIsEmail(false);
+        } else {
+          setEmailMessage('사용 가능한 이메일 입니다.');
+          setIsEmail(true);
+        }
+        
+      } catch(error){
+        console.log("Error checking email: ", error);
+      }
+    }
+  }
+
+  const handleGender = (gender) => {
+    setSelectedGender(gender);
+    if(gender === 'male'){
+      setGenderMessage('남성을 선택했습니다.');
+    } else if(gender === 'female'){
+      setGenderMessage('여성을 선택했습니다.');
+    } else {
+      setGenderMessage('성별을 비공개로 설정했습니다.');
+    }
+  }
+
+  // Postcode에서 주소 값 가져오기
+  const addressChangeHandler = (newAddress) => {
+    setAddress(newAddress);
+    if(address.trim()){
+      setaddressMessage('주소가 입력되었습니다.')
+    }
+  }
+  const addressDetailChangeHandler = (newAddressDetail) => {
+    setAddressDetail(newAddressDetail);
+    if(address.trim()){
+      setaddressMessage('상세주소가 입력되었습니다.')
+    }
+  }
+  
   //다음 버튼 핸들러 - 모두 동의해야 다음 진행
   const handleNext = async () => {
     if(!isNickname||!isPassword||!isPhone||!isEmail){
-      alert("모든 정보를 입력해주세요.");
+      alert("정보를 정확하게 입력해주세요.");
+      return;
     } else if(!selectedGender.trim()) {
       setGenderMessage("성별을 입력해주세요.");
-    } else if(!address.trim()) {
-      setaddressMessage("주소를 입력해주세요.")
-    } else if(!addressDetail.trim()) {
-      setaddressMessage("상세 주소를 입력해주세요.")
+      return;
+    } else if(!address.trim() || !addressDetail.trim()) {
+      setaddressMessage("모든 주소를 입력해주세요.");
+      return;
+    } else if(emailValid === false){
+      alert('이미 사용 중인 이메일 입니다.');
+      return;
     } else {
       try{
         // 회원가입 함수 호출
@@ -165,27 +202,27 @@ export default function Register() {
       <GoBack className="goBack" /> 
       <h2 className="title">회원가입</h2>
       <form className='registerForm'>
-        <label>닉네임 <span className="message">{nicknameMessage}</span> </label>
+        <label>닉네임 <span className={getMessageClass(isNickname)}>{nicknameMessage}</span> </label>
         <input id="nickname" name="nickname" value={nickname} onChange={onChangeNickname} type='text' placeholder='닉네임을 입력해주세요'/>
-        <label>이메일 <span className="message">{emailMessage}</span> </label>
-        <input id="email" name="email" value={email} onChange={onChangeEmail} type='text' placeholder='이메일을 입력해주세요'/>
-        <label>비밀번호 <span className="message">{passwordMessage}</span> </label>
+        <label>이메일 <span className={getMessageClass(isEmail)}>{emailMessage}</span> </label>
+        <input id="email" name="email" value={email} onChange={onChangeEmail} onBlur={onBlurEmail} type='text' placeholder='이메일을 입력해주세요'/>
+        <label>비밀번호 <span className={getMessageClass(isPassword)}>{passwordMessage}</span> </label>
         <input id="password" name="password" value={password} onChange={onChangePassword} type='password' placeholder='비밀번호를 입력해주세요'/>
-        <label>연락처 <span className="message">{phoneMessage}</span> </label>
+        <label>연락처 <span className={getMessageClass(isPhone)}>{phoneMessage}</span> </label>
         <input id="phone" name="phone" value={phone} onChange={addHyphen} placeholder='연락처를 입력해주세요'/>
-        <label>성별 <span className="message">{genderMessage}</span> </label>
+        <label>성별 <span className={getMessageClass(selectedGender.trim())}>{genderMessage}</span> </label>
         <div className='gender-container'>
           {['male', 'female', 'hidden'].map(gender => (
             <button type='button'
             key={gender}
             className={`gender ${selectedGender === gender ? 'checked' : ''}`}
-            onClick={() => setSelectedGender(gender)}
+            onClick={() => handleGender(gender)}
             >
             {gender === 'male' ? '남성' : gender === 'female' ? '여성' : '비공개'}
           </button>
         ))}
         </div>
-        <label>주소 <span className="message">{addressMessage}</span> </label>
+        <label>주소 <span className={getMessageClass(address.trim() && addressDetail.trim())}>{addressMessage}</span> </label>
         <Postcode onChangeAddress={addressChangeHandler} onChangeAddressDetail={addressDetailChangeHandler}/>
       </form>
       <button type='button' className="button next" onClick={handleNext}>계정 생성</button>
