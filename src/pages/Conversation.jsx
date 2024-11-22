@@ -31,9 +31,7 @@ export default function Conversation() {
   }, [mainTopic, selectedSubTopic, selectedLevel, description, selectedCharacter]);
 
   const [status, setStatus] = useState('');
-  const [messages, setMessages] = useState([
-      {sender: 'bettuText', text: "Hello! Let's talk."}
-  ]);
+  const [messages, setMessages] = useState([]);
   const [typingVisible, setTypingVisible] = useState(false);// 타이핑 모드에서 input창 표시
   const [typingInput, setTypingInput] = useState('');// 사용자 입력 텍스트를 저장
   const chatEndRef = useRef(null);
