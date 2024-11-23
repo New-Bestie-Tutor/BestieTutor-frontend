@@ -68,16 +68,27 @@ export default function Conversation() {
         characterName: selectedCharacter,
       };
 
-      const response = await axios.post('/conversation/getResponse', data, {
+      const addUserMessageRequest = axios.post('/conversation/addUserMessage', data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
 
-      if (response.status === 200) {
-        const { gptResponse, messageId } = response.data;
-        addMessage('bettu', gptResponse); // 베튜 메시지 추가
+      const request = axios.post('/conversation/getResponse', data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
+      const response = await request;
+      if (response.status === 200) {
+        const { gptResponse } = response.data;
+        addMessage('bettu', gptResponse); // 베튜 메시지 추가
+      }
+
+      const addUserMessageResponse = await addUserMessageRequest;
+      if (addUserMessageResponse.status === 200) {
+        const { messageId } = addUserMessageResponse.data;
         if (messageId) {
           fetchFeedback(messageId); // 피드백 메시지 추가
         }
