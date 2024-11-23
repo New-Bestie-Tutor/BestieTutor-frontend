@@ -1201,3 +1201,142 @@ h2 {
   align-items: center;
   margin-right: 50px;
 }
+
+/*** feedback ***/
+/* 전체 컨테이너 스타일 */
+.feedback-container {
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+/* 헤더 */
+.feedback-header {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  align-self: flex-start;
+  top: 0;
+  left: 50%;
+  width: 90%;
+  min-width: 340px;
+  transform: translateX(-50%);
+  height: 100px;
+  z-index: 1000;
+  margin-top: 30px;
+}
+
+.feedback-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 auto;
+  text-align: center;
+  flex: 1;
+}
+
+.goBack-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* 메시지와 피드백을 감싸는 컨테이너 */
+.message-container {
+  display: flex;
+  flex-direction: column; /* 채팅 버블을 세로로 쌓기 */
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.message-container.user {
+  align-items: flex-end; /* 사용자 메시지 오른쪽 정렬 */
+}
+
+/* 메시지 버블 */
+.feedback-bubble {
+  display: inline-block;
+  position: relative;
+  min-width: 70px;
+  max-width: 260px; /* 최대 너비 설정 */
+  height: auto; /* 높이를 자동으로 설정 */
+  padding: 10px; /* 내부 여백 추가 */
+  background: #F5F5F5;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+/* 대화 내용 컨테이너 == chat-container */
+.feedback-chat {
+  width: 70%;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column; /* 채팅 버블을 세로로 쌓기 */
+  padding: 10px 5px;
+  overflow: auto;
+  height: 520px;
+}
+
+/* 메시지 버블 */
+.feedback-bubble {
+  display: inline-block;
+  position: relative;
+  min-width: 70px;
+  max-width: 260px; /* 최대 너비 설정 */
+  height: auto; /* 높이를 자동으로 설정 */
+  padding: 10px; /* 내부 여백 추가 */
+  background: #F5F5F5;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.feedback-bubble.assistant {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 35px;
+}
+
+.feedback-bubble.user {
+  display: flex;
+  justify-content: flex-end;
+  background: #ebffee;
+}
+
+/* 텍스트 */
+.bubble-text {
+  font-size: 16px;
+  color: #333;
+  word-break: break-word;
+}
+
+/* 프로필 이미지 */
+.feedback-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px; /* 이미지와 텍스트 간격 조정 */
+  position: absolute;
+  left: -35px; /* 이미지가 버블 밖에 위치하도록 */
+  top: 0; /* 세로 위치 */
+}
+
+/* 피드백 코멘트 */
+.feedback-comment {
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.4;
+  border-radius: 5px;
+}
+
+.feedback-comment.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #66bb6a;
+}
+
+.feedback-comment.error {
+  background: #ffebee;
+  color: #d32f2f;
+  border-left: 4px solid #e57373;
+}
