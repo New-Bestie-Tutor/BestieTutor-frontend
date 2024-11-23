@@ -219,9 +219,15 @@
   display: flex;
   margin-left: 7px;
   font-size: 12px;
-  color: lightcoral;
   align-items: center;
 }
+.invalid{
+  color: lightcoral;
+}
+.valid{
+  color: lightgreen;
+}
+
 .gender-container{
   display: grid;
   justify-content: center; 
