@@ -185,7 +185,7 @@ export default function Conversation() {
                       onChange={(e) => setTypingInput(e.target.value)}
                       placeholder='메시지를 입력해주세요.'
                       className='typingInput'/>
-                    <LuSendHorizonal onClick={submitTyping} className='typingSendButton' />
+                    <img src={IMAGES.sendMessage} onClick={submitTyping} className='typingSendButton' />
                   </form>
                 )}
                 <div className='icon-container'>
