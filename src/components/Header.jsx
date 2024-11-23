@@ -81,6 +81,7 @@ export default function Header() {
         </div>
       </div>
 
+    
       <div className="header-content">
         {topics.map((topic) => (
           <div
@@ -91,27 +92,27 @@ export default function Header() {
             {topic.mainTopic}
           </div>
         ))}
-      </div>
 
-      {showDropdown && (
-        <div className="dropdown-container" onMouseLeave={() => setShowDropdown(false)}>
-          <div className="dropdown-content">
-            {topics.map((topic) => (
-              <div key={topic.mainTopic}>
-                {topic.subTopics.map((subTopic) => (
-                  <p
-                    key={subTopic.name}
-                    onClick={() => handleSubtopicClick(topic.mainTopic, subTopic.name)}
-                    className="dropdown-subtopic"
-                  >
-                    {subTopic.name}
-                  </p>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+        {showDropdown && (
+                <div className="dropdown-container" onMouseLeave={() => setShowDropdown(false)}>
+                  <div className="dropdown-content">
+                    {topics.map((topic) => (
+                      <div key={topic.mainTopic}>
+                        {topic.subTopics.map((subTopic) => (
+                          <p
+                            key={subTopic.name}
+                            onClick={() => handleSubtopicClick(topic.mainTopic, subTopic.name)}
+                            className="dropdown-subtopic"
+                          >
+                            {subTopic.name}
+                          </p>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+      </div>
     </div>
   );
 }

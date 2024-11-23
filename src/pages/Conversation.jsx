@@ -44,21 +44,46 @@ export default function Conversation() {
   }, [messages]);
 
    // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
-   async function getResponse(text) {
-    const data = {
-      text: text,
-      conversationHistory: messages.map(message => ({
-        role: message.sender === 'userText' ? 'user' : 'assistant',
-        content: message.text
-      }))
-    };
-    const response = await axios.post('/conversation', data);
-    if (response.status === 200) {
-      console.log(response.data);
-      setMessages(prevMessages => [...prevMessages, {sender: 'bettuText', text: response.data.gptResponse}]);
-    }
-    else {
-      alert('실패했습니다.');
+  async function getResponse(text) {
+    try {
+      const data = {
+        text: text,
+        conversationHistory: messages.map(message => ({
+          role: message.sender === 'userText' ? 'user' : 'assistant',
+          content: message.text
+        })),
+        mainTopic,
+        subTopic: selectedSubTopic,
+        difficulty: selectedLevel,
+        characterName: selectedCharacter
+      };
+  
+      const response = await axios.post(
+        '/conversation', 
+        data, 
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+  
+      if (response.status === 200) {
+        console.log(response.data);
+        setMessages(prevMessages => [
+          ...prevMessages, 
+          { sender: 'bettuText', text: response.data.gptResponse }
+        ]);
+      } else {
+        console.error('응답 오류:', response);
+        alert('서버 요청이 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('에러 발생:', error);
+      if (error.response) {
+        console.error('서버 응답 데이터:', error.response.data);
+      }
+      alert('응답을 처리하는 중 오류가 발생했습니다.');
     }
   }
   

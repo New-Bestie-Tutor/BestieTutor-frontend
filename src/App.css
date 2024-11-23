@@ -1,8 +1,11 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 /* 기본 Reset */
+
+
 * {
     margin: 0;
-    padding: 0;
+    padding: 0; 
     box-sizing: border-box;
   }
   
@@ -10,7 +13,9 @@
     font-family: 'Pretendard';
     background-color: white;
     color: #333;
+    
     line-height: 1.6;
+    
   }
 
   .container{
@@ -25,6 +30,7 @@
     flex-direction: column;
     padding: 0px 20px;
   }
+
   /* Start.css */
   .start{
     text-align: center;
@@ -953,12 +959,12 @@
   text-align: center;
   padding: 20px;
 }
-
+/*
 h2 {
   font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 20px;
-}
+}*/
 .next-button {
   margin-top: 20px;
   padding: 10px 20px;
@@ -974,11 +980,7 @@ h2 {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-.topic-goBack{
-  margin-top: 20px;
-  cursor: pointer;
-  text-align: left; 
-}
+ 
 /***********SubTopic.jsx***********/
 .SubTopic {
   text-align: center;
@@ -1073,6 +1075,7 @@ h2 {
   align-items: center;
   justify-content: space-between;
   padding: 10px;
+  margin-left: 10px;
 }
 
 .header-left {
@@ -1124,7 +1127,8 @@ h2 {
   justify-content: space-around;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-
+  text-align: center;
+  font-size: 15px;
 }
 
 .header-item {
@@ -1132,8 +1136,7 @@ h2 {
   text-align: center;
   cursor: pointer;
   padding: 10px;
-  font-size: 18px;
-  position: relative;
+  font-size: 15px;
   justify-content: center;
 }
 
@@ -1156,6 +1159,7 @@ h2 {
   justify-content: space-around;
   background-color: white;
   text-align: center;
+  cursor: pointer;
 }
 
 
@@ -1173,31 +1177,5 @@ h2 {
   margin: 4px 0;
 }
 
-.description {
-  font-style: italic;
-  margin-top: 5px;
-  color: #555;
-  cursor: pointer;
-}
 
-/*********home*********/
-.welcome-container{
-  background-color: #EBFFEE;
-  display: flex;
-  justify-content: center;
-  padding-top: 60px;
-}
-
-.welcome-image{
-  width: 120px;
-  margin-left: 20px;
-}
-
-.welcome-txt{
-  display: flex;
-  font-size: 30px;
-  font-weight: 900;
-  color:#4ED8B7;
-  align-items: center;
-  margin-right: 50px;
-}
+ 
