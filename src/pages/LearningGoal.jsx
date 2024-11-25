@@ -47,8 +47,7 @@ export default function LearningGoal() {
                     <div 
                         key={index}
                         className='goal-item' 
-                        // style={{ backgroundColor: selectedGoals.includes(goal) ? '#b8f0d2' : 'rgba(0, 0, 0, 0.03)' }} 
-                        style={{ backgroundColor: selectedGoals.includes(goal) ? '#4ED8B7' : '#EBFFEE' }} 
+                        style={{ backgroundColor: selectedGoals.includes(goal) ? '#EBFFEE' : '#FAFAFC' }}
                         onClick={() => handleGoalClick(goal)}
                     >
                         <img src={IMAGES[goal.replace(/ /g, '_')]} alt={goal.replace(/ /g, '_')} className="goal-icon" />

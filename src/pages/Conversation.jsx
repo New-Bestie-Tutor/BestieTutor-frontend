@@ -154,7 +154,7 @@ export default function Conversation() {
 
   // 음성 인식 설정
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
-  recognition.lang = 'ko-KR';
+  // recognition.lang = 'ko-KR';
   // recognition.lang = 'ja-JP';
   // recognition.lang = 'ko-KR';
   // recognition.lang = 'en-US';
