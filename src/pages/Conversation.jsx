@@ -80,18 +80,18 @@ export default function Conversation() {
         },
       });
 
-      const response = await request;
-      if (response.status === 200) {
-        const { gptResponse } = response.data;
-        addMessage('bettu', gptResponse); // 베튜 메시지 추가
-      }
-
       const addUserMessageResponse = await addUserMessageRequest;
       if (addUserMessageResponse.status === 200) {
         const { messageId } = addUserMessageResponse.data;
         if (messageId) {
           fetchFeedback(messageId); // 피드백 메시지 추가
         }
+      }
+
+      const response = await request;
+      if (response.status === 200) {
+        const { gptResponse } = response.data;
+        addMessage('bettu', gptResponse); // 베튜 메시지 추가
       }
     } catch (error) {
       console.error('응답 처리 중 오류:', error);
@@ -146,13 +146,15 @@ export default function Conversation() {
         {chatFlow.map((message, index) => {
           if (message.type === 'bettu') {
             return (
-              <div key={index} className="chatBubble bettuChatText">
+              <div key={index} className="chatMessage">
                 <img
                   src={IMAGES[selectedCharacter]}
                   alt={selectedCharacter}
                   className="image chatImage"
                 />
-                <div className="chatBubble">{message.text}</div>
+                <div className="chatBubble">
+                  <div className="bettuChatText">{message.text}</div>
+                </div>
               </div>
             );
           } else if (message.type === 'user') {
@@ -169,13 +171,21 @@ export default function Conversation() {
                 ? JSON.stringify(message.text.feedback, null, 2) // 객체를 보기 쉽게 문자열로 변환
                 : '';
 
+            // 문장 부호 제거 
+            const sanitizedText = text
+              .replace(/\\n/g, '')
+              .replace(/\n/g, '')
+              .replace(/\s+/g, ' ')
+              .replace(/\\/g, '')
+              .replace(/["]/g, '');
+
             return (
-              <div key={index} className="chatBubble feedbackBubble">
-                {text.split("\n").map((line, i) => (
-                  <p key={i} className="feedback-line">
-                    {line}
-                  </p>
-                ))}
+              <div
+                key={index}
+                className="chatBubble chatBubbleRight"
+                style={{ color: '#2e7d32', borderRight: '4px solid #66bb6a' }}
+              >
+                <p className="userChatText">{sanitizedText}</p>
               </div>
             );
           }
