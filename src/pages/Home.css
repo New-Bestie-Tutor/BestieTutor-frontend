@@ -16,28 +16,28 @@
 
   body {
     font-family: 'Pretendard';
-    background-color: white;
+    background-color:white;
     color: #333;
   }
 
 
 .greeting-section{
     display: flex;
-    margin-bottom: 40px;
-    height: 150px;
+    margin-bottom: 2.5rem;
+    height: 9.375rem;
     flex-direction: column;
     justify-content: center;
-    margin-left: 30px;
+    margin-left: 1.875rem;
   }
   
   .greeting-section h2 {
-    font-size: 22px;
+    font-size: 1.375rem;
     font-weight: bold;
-    margin-bottom: 4px;
+    margin-bottom: 0.25rem;
   }
   
   .greeting-section p {
-    font-size: 16px;
+    font-size: 1rem;
     color: gray;
     margin: 0;
   }
@@ -46,70 +46,77 @@
     color: #4ED8B7;
     cursor: pointer;
     position: relative;
-    left: 8px;
+    left: 0.5rem;
     text-decoration: none;
   }
 
   /*************friendliness-section************/
-  @scope(.friendliness-section){
-    :scope {
+
+    .friendliness-section {
         background: linear-gradient(to bottom, #ff8019,#ff5e00); /* Gradient direction and colors */
-        display: flex; /* 자식 요소들을 가로로 배치 */
-        align-items: center; /* 세로로 중앙 정렬 */
-        position: relative;
-        height: 450px;
-        padding: 0 20px;
+        display: grid; 
+        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas:
+        'logo . s2 .'
+        'gotoTopicTxt intimacy_image intimacy_image speechbubble_box'
+        'start intimacy_image intimacy_image .'
+        'intimacy_box intimacy_image intimacy_image .';
+        height: 30rem;
+        padding: 0 1.5rem;
     }
     
-    p {
-        text-align: center;
-      }
        
-      .intimacy_image{
-        position: absolute;
-        width: 600px;
-        right: 240px;
-        bottom: 0px;
+    .intimacy_image {
+        grid-area: intimacy_image;
+        align-self: end;
+        width: 100%; /* 부모 크기에 따라 조정 */
+        max-width:38rem;
+        min-width: 486px;
+        position: relative;
+        left: 15%; /* 상대 위치 */
     }
     
     .speechbubble_box {
-        position: absolute; /* 전체 섹션 기준 위치를 조정 */
-        left: 1100px; 
-        bottom: 230px;
-        width: 300px; /* 말풍선 이미지와 동일한 크기 */
-        height: auto;
-        text-align: center;
-      }
+        grid-area: speechbubble_box;
+        width: 19rem; /* 화면 크기에 따라 동적 조정 */
+        max-width: 19rem; /* 최대 크기 제한 */
+        position: relative;
+        right: 5%; /* 상대 위치 */
+        bottom: 1.5rem;
+    }
+    
       
       .intimacy_speechbubble {
         width: 100%; /* 부모 크기 기준으로 맞춤 */
-        height: auto;
       }
       
       .intimacy_text {
-        position: absolute; /* 부모(speechbubble_box)를 기준으로 배치 */
-        top: 43%; /* 부모 박스의 정중앙 기준 */
-        left: 50%;
-        transform: translate(-50%, -50%); /* 중앙 정렬 */
         font-family: 'EF_jejudoldam';
-        font-size: 25px;
+        align-self: center;
+        font-size: 1.6rem;
         font-weight: 700;
         color: #4ED8B7;
-        text-align: center;
+        position: absolute;
+        bottom: 37%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+        z-index:100;
       }
       
     .intimacy_box{
+        grid-area:intimacy_box;
         display: flex;
         flex-direction: column;
         align-self: flex-end;
         align-items: flex-start;
         color: white;
         font-family: 'galmuri9';
-        gap:4px;
-        position: absolute;
-        left: 100px;
-        bottom: 50px; 
+        gap:0.2rem;
+        position: relative;
+        left: 8rem;
+        bottom: 3rem;
     }
     .time{
         display: block;
@@ -118,82 +125,150 @@
     .logo{
         color: #502320;
         font-weight: 900;
-        font-size: 18px;
-        position: absolute;
-        left: 100px;
-        top: 100px;
-    
+        font-size: 1.3rem;
+        grid-area: logo;
+        align-self: end;    
+        justify-self: start;
+        position: relative;
+        left: 8rem;
+        top: 1rem;
     }
 
-    .gototopictxt{
+    .gotoTopicTxt{
         color: #502320;
         font-weight: 600;
-        font-size: 38px;
+        font-size: 2.3rem;
         text-align: left;
-        position: absolute;
-        left: 100px;
-        top: 145px;
         line-height: 1.2;
-        
+        white-space: nowrap;
+        grid-area: gotoTopicTxt;
+        justify-self: start;
+        align-self: center;
+        position: relative;
+        left: 8rem;
     }
     
+    .gotoTopic{
+        grid-area: start;
+        justify-self: start;
+        position: relative;
+        left: 8rem;
+        bottom: 1rem;
+    }
     .start {
-        width: 90px;
-        position: absolute;
-        left: 100px;
-        top: 260px;
+        width: 5.5rem;  
       }
       
     .gototopic:hover{
         text-decoration: none;
         color: #8000ff;
     }
-  }
-  @media (max-width: 768px) {
-    .intimacy_betu {
-      width: 100%; /* Adjust to smaller screens */
+
+
+  @media (max-width: 1120px) {
+    .logo{
+        left: 1rem;
     }
-    .speechbubble_box {
-      width: 200px; /* Scale down speech bubble */
-      left: 50%; /* Center-align */
-      transform: translateX(-50%);
+    .gotoTopicTxt{
+        left: 1rem;
     }
-    .intimacy_text {
-      font-size: 20px; /* Reduce text size */
+    .gotoTopic{
+        left: 1rem;
     }
+    .intimacy_box{
+        left: 1rem;
+    }
+
   }
 
-  
-  @media (max-width: 480px) {
-    .friendliness-section {
-      padding: 10px;
+  @media (max-width: 990px) {
+    .logo{
+        font-size: 1.2rem;
+        top: 1rem;
+        
     }
-  
-    .intimacy_text {
-      font-size: 18px;
+    .gotoTopicTxt{
+        font-size: 200%;
     }
-  
-    .gototopic {
-      font-size: 24px;
+    .gotoTopic{
+        top:0.6rem;
+    }
+    .intimacy_image{
+        left:0rem;
+    }
+    .speechbubble_box{
+        grid-area: s2;
+        align-self: end;
+        width: 15rem;
+        top: 1rem;
+    }
+    .intimacy_text{
+        font-size: 1.3rem;
+    }
+    .intimacy_box p {
+        white-space: normal; /* 텍스트 줄바꿈 */
+      }
+      .next-goal {
+        display: block; /* 다음 목표 부분만 줄바꿈 */
+        margin-top: 0.5rem; /* 간격 조정 */
+      }
+  }
+  @media (max-width: 666px){
+    .logo{
+        font-size: 1rem;
+        top: 1rem; 
+    }
+    .gotoTopicTxt{
+        font-size: 150%;
+    }
+    .gotoTopic{
+        grid-area: gotoTopicTxt;
+        align-self: end;
+        top: 0.8rem;
+    }
+    .start {
+        width: 4.5rem;  
+      }
+      
+    .intimacy_image{
+        min-width: 200px;
+    }
+    .speechbubble_box{
+        grid-area: intimacy_image;
+        align-self: start;
+        justify-self: end;
+        width: 11rem;
+        top: 5rem;
+    }
+    .intimacy_text{
+        font-size: 0.9rem;
+    }
+    .intimacy_box p {
+        font-size: 0.8rem;
+      }
+  }
+  @media (max-width: 500px){
+    .speechbubble_box{
+        top: 8rem;
+        left: 1.7rem;
     }
   }
-  
 
   /*************record section**********/
   @scope(.records-section){
     :scope {
-        margin: 200px 30px 100px 30px;
+        margin: 12.5rem 1.875rem 6.25rem 1.875rem;
     }
     h3{
-        font-size: 18px;
-        font-weight: bold;
-        margin-top: 20px;
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin-top: 1.25rem; 
     }
 
   .records-container {
     display: flex;
-    gap: 20px;
-    margin-top: 10px;
+    gap: 1.25rem;
+    margin-top: 0.625rem;
     align-items: center;
     position: relative;
   }
@@ -203,50 +278,52 @@
   }
   
   .record-card {
-    background-color: #fff;
-    box-shadow: 2px 4px 12px #00000014;
-    border-radius: 18px;
+    background-color: #fafafc;
+    box-shadow: 0.125rem 0.25rem 0.75rem #00000014;
+    border-radius: 1.125rem;
     position: relative;
-    padding: 30px;
-    width: 110px;
-    height: 180px;
+    padding: 1.875rem;
+    width: 6.875rem; 
+    height: 11.25rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-width: calc(100% / 3); /* Adjust visibleCount here */
-    margin: 0 10px;
+    margin: 0 0.625rem;
     flex-shrink: 0;
   }
 
   .record-category{
     position: absolute;
-    top: 10px;
+    top: 0.625rem;
   }
   .record-date{
     position: absolute;
-    top: 10px;
-    right: 30px;
+    top: 0.625rem;
+    right: 1.875rem;
   }
   .record-topic{
     position: absolute;
-    top: 35px;
-    left:30px;
+    top: 2.1875rem;
+    left: 1.875rem;
   }
+
   .records-wrapper {
     display: flex;
     overflow: hidden;
     width: 100%;
+    height: 18.75rem;
     scroll-behavior: smooth;
     transform: translateX(calc(-100% * var(--scrollIndex)));
   }
   
   .record-category{
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: black;
   }
   
   .record-topic{
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   
   .record-time{
@@ -255,7 +332,7 @@
   
   .record-header {
     display: flex;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: gray;
     justify-content: space-between;
     align-items: center;
@@ -264,19 +341,19 @@
   .record-header-top {
     display: flex;
     justify-content: space-between; 
-    gap: 10px; 
+    gap: 0.625rem;
   }
   
   .record-time {
     text-align: right;
-    margin-top: 5px; 
+    margin-top: 0.3125rem;
     font-size: 0.9rem; 
     color: gray; 
   }
 
   .record-content{
     position:relative;
-    bottom: 20px;
+    bottom: 1.25rem;
   }
   .arrow {
     background: none;
@@ -287,25 +364,25 @@
   }
 
   
-  @media (max-width: 600px) {
+  @media (max-width: 648px) {
     .record-header-top {
       flex-direction: column; 
       align-items: flex-start; 
     }
   
     .record-time {
-      margin-top: 3px;
+      margin-top: 0.1875rem;
       font-size: 0.8rem;
     }
   }
   
   .level-badge {
     display: inline;
-    padding: 2px 4px;
+    padding: 0.125rem 0.25rem;
     color: white;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: bold;
-    margin-right: 5px;
+    margin-right: 0.3125rem; 
   }
   
   .level-badge.easy {
@@ -323,5 +400,5 @@
   
   .record-title{
     font-weight: 700;
-    font-size: 20px;
+    font-size: 1.25rem;
   }

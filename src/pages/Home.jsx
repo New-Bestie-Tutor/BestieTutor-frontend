@@ -156,24 +156,26 @@ export default function Home() {
 
         <section className="friendliness-section">
           <p className="logo">Bestie Tutor</p>
-          <p className="gototopictxt">베튜랑 더 <br />친해지러가기</p>
-          <Link to="/topic" className="gototopic">
+          <p className="gotoTopicTxt">베튜랑 더 <br />친해지러가기</p>
+          <Link to="/topic" className="gotoTopic">
             <img src={IMAGES.start} alt="start" className="start" />
             </Link>
-          <div className="intimacy_betu">
+          
             <img src={image} alt="친밀도 단계 이미지" className="intimacy_image" />
             <div className="speechbubble_box">
               <img src={IMAGES.베튜말풍선} alt="intimacy_speechbubble" className="intimacy_speechbubble" />
               <p className="intimacy_text">{text}</p>
             </div>
-          </div>
-          <div className="intimacy_box">
-            <p className="time">♥ 친밀도: {totalTime}</p>
-            <p>
-              다음 목표까지:{" "}
-              {nextGoal > 0 ? `${nextGoal}분 남음` : "친밀도 100 달성!"}
-            </p>
-          </div>
+          
+            <div className="intimacy_box">
+              <p className="time">♥ 친밀도: {totalTime}</p>
+              <p>
+                다음 목표까지:{" "}
+                <span className="next-goal">
+                  {nextGoal > 0 ? `${nextGoal}분 남음` : "친밀도 100 달성!"}
+                </span>
+              </p>
+            </div>
         </section>
 
         <section className="records-section">
