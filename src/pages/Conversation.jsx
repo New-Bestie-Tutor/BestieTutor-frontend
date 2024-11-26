@@ -7,7 +7,6 @@ import { LuSendHorizonal } from "react-icons/lu";
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../App.css';
 
 export default function Conversation() {
   const location = useLocation();
@@ -32,7 +31,6 @@ export default function Conversation() {
   const [chatFlow, setChatFlow] = useState([
     { type: 'bettu', text: "Hello! Let's talk.", createdAt: new Date() },
   ]); // 전체 메시지 배열
-  const [currentStage, setCurrentStage] = useState('bettu'); // 현재 단계 ('bettu', 'user', 'feedback')
   const [typingVisible, setTypingVisible] = useState(false); // 타이핑 모드에서 input창 표시
   const [typingInput, setTypingInput] = useState(''); // 사용자 입력 텍스트를 저장
   const chatEndRef = useRef(null);
