@@ -7,8 +7,11 @@ import { LuSendHorizonal } from "react-icons/lu";
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useContext } from 'react';
+import { UserContext } from '../UserContext';
 
 export default function Conversation() {
+  const { userInfo } = useContext(UserContext);
   const location = useLocation();
   const {
     mainTopic,
