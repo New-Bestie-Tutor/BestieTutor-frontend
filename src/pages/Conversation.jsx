@@ -5,7 +5,7 @@ import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
 import { LuSendHorizonal } from "react-icons/lu";
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css';
 
@@ -36,6 +36,7 @@ export default function Conversation() {
   const [typingVisible, setTypingVisible] = useState(false); // 타이핑 모드에서 input창 표시
   const [typingInput, setTypingInput] = useState(''); // 사용자 입력 텍스트를 저장
   const chatEndRef = useRef(null);
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   // 메시지가 추가될 때 자동 스크롤
   useEffect(() => {
@@ -206,7 +207,13 @@ export default function Conversation() {
           </form>
         )}
         <div className="icon-container">
-          <FaXmark onClick={() => setTypingVisible(false)} />
+          <FaXmark onClick={() => {
+              setTypingVisible(false);
+              setStatus('');
+              alert('대화를 종료합니다.');
+              navigate('/home');
+            }
+          } />
           <IoMdMic onClick={() => recognition.start()} />
           <MdKeyboard onClick={() => setTypingVisible(true)} />
         </div>
