@@ -24,7 +24,8 @@ const IMAGES = {
     after10days: new URL('./after10days.png', import.meta.url).href,
     after30days: new URL('./after30days.png', import.meta.url).href,
     베튜말풍선: new URL('./베튜말풍선.png', import.meta.url).href,
-    start: new URL('./start.png', import.meta.url).href
+    start: new URL('./start.png', import.meta.url).href,
+    global: new URL('./global.png', import.meta.url).href
 };
 
 export default IMAGES;

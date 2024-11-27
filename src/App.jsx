@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import AppRoutes from './Routes';
 import './App.css';
 import { UserContextProvider } from './UserContext';
+import { LanguageProvider } from "./LanguageContext";
 
 Modal.setAppElement('#root');
 
@@ -12,9 +13,11 @@ function App() {
   axios.defaults.withCredentials = true;
   return (
     <UserContextProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <LanguageProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </LanguageProvider>
     </UserContextProvider>
   );
 }
