@@ -255,14 +255,25 @@
   }
 
   /*************record section**********/
-  @scope(.records-section){
-    :scope {
+    .records-section {
         margin: 12.5rem 1.875rem 6.25rem 1.875rem;
     }
-    h3{
+
+    .records-top{
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+    }
+
+    .records-top h3{
     font-size: 1.125rem;
     font-weight: bold;
     margin-top: 1.25rem; 
+    }
+
+    .view-all-records{
+        text-decoration: none;
+        color: #333;
     }
 
   .records-container {
@@ -272,11 +283,7 @@
     align-items: center;
     position: relative;
   }
-  .intimacy_image {
-    overflow-clip-margin: unset;
-    overflow: visible;
-  }
-  
+
   .record-card {
     background-color: #fafafc;
     box-shadow: 0.125rem 0.25rem 0.75rem #00000014;
@@ -285,7 +292,7 @@
     padding: 1.875rem;
     width: 6.875rem; 
     height: 11.25rem;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
     min-width: calc(100% / 3); /* Adjust visibleCount here */
@@ -309,13 +316,17 @@
   }
 
   .records-wrapper {
-    display: flex;
-    overflow: hidden;
+    overflow: scroll;
+    overflow-x: auto;
+    white-space: nowrap;
     width: 100%;
     height: 18.75rem;
     scroll-behavior: smooth;
-    transform: translateX(calc(-100% * var(--scrollIndex)));
+    gap: 0.625rem;
   }
+  .records-wrapper::-webkit-scrollbar{
+    display: none; 
+}
   
   .record-category{
     font-size: 0.9375rem;
@@ -361,7 +372,7 @@
     font-size: 2rem;
     cursor: pointer;
   }
-  }
+
 
   
   @media (max-width: 648px) {
