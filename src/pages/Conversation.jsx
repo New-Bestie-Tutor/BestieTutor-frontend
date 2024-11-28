@@ -12,6 +12,7 @@ import { UserContext } from '../UserContext';
 
 export default function Conversation() {
   const { userInfo } = useContext(UserContext);
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const location = useLocation();
   const {
     mainTopic,
@@ -31,36 +32,91 @@ export default function Conversation() {
   );
 
   const [status, setStatus] = useState('');
-  const [chatFlow, setChatFlow] = useState([
-    { type: 'bettu', text: "Hello! Let's talk.", createdAt: new Date() },
-  ]); // 전체 메시지 배열
+  const [messages, setMessages] = useState([]);
   const [typingVisible, setTypingVisible] = useState(false); // 타이핑 모드에서 input창 표시
   const [typingInput, setTypingInput] = useState(''); // 사용자 입력 텍스트를 저장
   const chatEndRef = useRef(null);
-  const navigate = useNavigate(); // useNavigate 훅 사용
 
   // 메시지가 추가될 때 자동 스크롤
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [chatFlow]);
+  }, [messages]);
+
+  // 첫 발화 요청
+  useEffect(() => {
+    if (mainTopic && selectedSubTopic && selectedLevel && selectedCharacter) {
+      InitialMessage(); // 첫 발화 요청
+    }
+  }, []);
+
+  let isFetching = false;
+
+  // 서버로 첫 발화 요청을 보내고 응답을 받아오는 비동기 함수
+  async function InitialMessage() {
+    if (isFetching) return; // 중복 호출 방지
+    isFetching = true;
+    try {
+      const data = {
+        mainTopic,
+        subTopic: selectedSubTopic,
+        difficulty: selectedLevel,
+        characterName: selectedCharacter,
+      };
+  
+      console.log("Request Data:", data); // 디버깅용
+  
+      const response = await axios.post(
+        'http://localhost:3000/conversation/initialize',
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+  
+      if (response.status === 200) {
+        const { gptResponse, audio } = response.data;
+        console.log('GPT Response:', gptResponse);
+        addMessage('bettu', gptResponse);
+        playAudio(audio);
+      } else {
+        console.error('응답 오류:', response);
+        alert('서버 요청이 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('첫 발화 처리 중 오류:', error);
+      if (error.response) {
+        console.error('서버 응답 데이터:', error.response.data);
+      }
+      alert(`첫 발화 요청 중 오류가 발생했습니다: ${error.message}`);
+    }
+  }
+
+  // 오디오 재생 함수
+  const playAudio = (audioBase64) => {
+    const audio = new Audio(`data:audio/mp3;base64,${audioBase64}`);
+    audio.onended = () => console.log("Audio finished playing."); // 디버깅
+    audio.play();
+  };
 
   // 메시지 추가 함수
-  function addMessage(type, text) {
-    setChatFlow((prev) => [
-      ...prev,
-      { type, text, createdAt: new Date() },
+  const addMessage = (sender, text) => {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender, text, timestamp: new Date() }
     ]);
-  }
+  };
 
   // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
   async function getResponse(text) {
     try {
-      addMessage('user', text); // 사용자 메시지 추가
+      //addMessage('user', text); // 사용자 메시지 추가
       const data = {
         text,
-        conversationHistory: chatFlow.map((message) => ({
+        conversationHistory: messages.map((message) => ({
           role: message.type === 'user' ? 'user' : 'assistant',
           content: message.text,
         })),
@@ -118,22 +174,114 @@ export default function Conversation() {
     }
   }
 
+  // 음성 인식 설정 및 이벤트 핸들러
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition)();
+  recognition.lang = 'en-US';
+  // recognition.lang = 'ko-KR';
+  // recognition.lang = 'ja-JP';
+  // recognition.lang = 'ko-KR';
+  // recognition.lang = 'en-US';
+
+  // 음성 인식 시작
+  const speakToMic = () => {
+    if (typingVisible) {
+      setTypingVisible(false);
+    }
+    recognition.start();
+  }
+
+  // 음성 인식 이벤트 핸들러
+  recognition.onstart = () => {
+    setStatus('목소리를 듣고 있어요.');
+  };
+
+  // 인식된 음성 텍스트로 변환 & 서버로 텍스트를 전송하는 함수 호출
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    console.log(transcript);
+    setMessages(prevMessages => [...prevMessages, { sender: 'user', text: transcript }]);
+    getResponse(transcript);
+  };
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    getResponse(transcript); // 서버로 전송
+  };
+
+  // 음성 인식 종료
+  recognition.onend = () => {
+    setStatus('목소리를 정상적으로 인식했어요.');
+  };
+
+  // 타이핑: input 입력창을 표시
+  const typing = () => {
+    if (status) {
+      setStatus('');
+    }
+    setTypingVisible(true);
+  };
+  const submitTyping = () => {
+    typingInputHandler();
+  };
+
   // 타이핑된 텍스트 메시지 추가 및 서버로 전송
   const typingInputHandler = (e) => {
-    e.preventDefault();
+    // 입력한 텍스트를 사용자 메시지로 추가
+    setMessages(prevMessages => [...prevMessages, { sender: 'user', text: typingInput }]);
+    console.log(typingInput);
     getResponse(typingInput.trim());
     setTypingInput(''); // 입력창 초기화
     setTypingVisible(false); // 입력창 숨기기
   };
 
-  // 음성 인식 설정 및 이벤트 핸들러
-  const recognition = new (window.SpeechRecognition ||
-    window.webkitSpeechRecognition)();
-  recognition.lang = 'en-US';
+  // 대화 종료
+  const stopConversation = () => {
+    alert('대화를 종료합니다.');
+    navigate('/home');
+  }
 
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    getResponse(transcript); // 서버로 전송
+  // 메세지 정렬: bettu - user - feedback 
+  const renderMessage = (message, index) => {
+    switch (message.sender) {
+      case 'bettu':
+        return (
+          <div key={index} className="chatMessage">
+            <img
+              src={IMAGES[selectedCharacter]}
+              alt={selectedCharacter}
+              className="image chatImage"
+            />
+            <div className="chatBubble">
+              <div className="bettuChatText">{message.text}</div>
+            </div>
+          </div>
+        );
+
+      case 'user':
+        return (
+          <div key={index} className="chatBubble chatBubbleRight">
+            <div className="userChatText">{message.text}</div>
+          </div>
+        );
+
+      case 'feedback':
+        const sanitizedText = (JSON.stringify(message.text.feedback, null, 2) || '')
+          .replace(/\\n/g, '')
+          .replace(/\n/g, '')
+          .replace(/\s+/g, ' ')
+          .replace(/\\/g, '')
+          .replace(/["]/g, '');
+
+        return (
+          <div key={index} className="chatBubble feedbackBubbleRight">
+            <p className="userChatText">{sanitizedText}</p>
+          </div>
+        );
+
+      default:
+        return null;
+    }
   };
 
   return (
@@ -145,50 +293,8 @@ export default function Conversation() {
 
       <div className="chat-container">
         {/* 메시지 출력 */}
-        {chatFlow.map((message, index) => {
-          if (message.type === 'bettu') {
-            return (
-              <div key={index} className="chatMessage">
-                <img
-                  src={IMAGES[selectedCharacter]}
-                  alt={selectedCharacter}
-                  className="image chatImage"
-                />
-                <div className="chatBubble">
-                  <div className="bettuChatText">{message.text}</div>
-                </div>
-              </div>
-            );
-          } else if (message.type === 'user') {
-            return (
-              <div key={index} className="chatBubble chatBubbleRight">
-                <div className="userChatText">{message.text}</div>
-              </div>
-            );
-          } else if (message.type === 'feedback') {
-            const text =
-              typeof message.text === 'string'
-                ? message.text
-                : typeof message.text === 'object'
-                ? JSON.stringify(message.text.feedback, null, 2) // 객체를 보기 쉽게 문자열로 변환
-                : '';
-
-            // 문장 부호 제거 
-            const sanitizedText = text
-              .replace(/\\n/g, '')
-              .replace(/\n/g, '')
-              .replace(/\s+/g, ' ')
-              .replace(/\\/g, '')
-              .replace(/["]/g, '');
-
-            return (
-              <div key={index} className="chatBubble feedbackBubbleRight">
-                <p className="userChatText">{sanitizedText}</p>
-              </div>
-            );
-          }
-          return null;
-        })}
+        {messages
+          .map((message, index) => renderMessage(message, index))}
 
         <div ref={chatEndRef}></div>
       </div>
@@ -208,15 +314,9 @@ export default function Conversation() {
           </form>
         )}
         <div className="icon-container">
-          <FaXmark onClick={() => {
-              setTypingVisible(false);
-              setStatus('');
-              alert('대화를 종료합니다.');
-              navigate('/home');
-            }
-          } />
-          <IoMdMic onClick={() => recognition.start()} />
-          <MdKeyboard onClick={() => setTypingVisible(true)} />
+          <FaXmark onClick={stopConversation} />
+          <IoMdMic onClick={speakToMic} />
+          <MdKeyboard onClick={typing} />
         </div>
       </div>
     </div>
