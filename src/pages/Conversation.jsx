@@ -113,7 +113,7 @@ export default function Conversation() {
   // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
   async function getResponse(text) {
     try {
-      //addMessage('user', text); // 사용자 메시지 추가
+      addMessage('user', text); // 사용자 메시지 추가
       const data = {
         text,
         conversationHistory: messages.map((message) => ({
@@ -148,8 +148,9 @@ export default function Conversation() {
 
       const response = await request;
       if (response.status === 200) {
-        const { gptResponse } = response.data;
+        const { gptResponse, audio } = response.data;
         addMessage('bettu', gptResponse); // 베튜 메시지 추가
+        playAudio(audio);
       }
     } catch (error) {
       console.error('응답 처리 중 오류:', error);
@@ -177,8 +178,8 @@ export default function Conversation() {
   // 음성 인식 설정 및 이벤트 핸들러
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
-  recognition.lang = 'en-US';
-  // recognition.lang = 'ko-KR';
+  // recognition.lang = 'en-US';
+  recognition.lang = 'ko-KR';
   // recognition.lang = 'ja-JP';
   // recognition.lang = 'ko-KR';
   // recognition.lang = 'en-US';
@@ -200,13 +201,7 @@ export default function Conversation() {
   recognition.onresult = (event) => {
     const transcript = event.results[0][0].transcript;
     console.log(transcript);
-    setMessages(prevMessages => [...prevMessages, { sender: 'user', text: transcript }]);
     getResponse(transcript);
-  };
-
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    getResponse(transcript); // 서버로 전송
   };
 
   // 음성 인식 종료
@@ -221,15 +216,9 @@ export default function Conversation() {
     }
     setTypingVisible(true);
   };
-  const submitTyping = () => {
-    typingInputHandler();
-  };
 
   // 타이핑된 텍스트 메시지 추가 및 서버로 전송
   const typingInputHandler = (e) => {
-    // 입력한 텍스트를 사용자 메시지로 추가
-    setMessages(prevMessages => [...prevMessages, { sender: 'user', text: typingInput }]);
-    console.log(typingInput);
     getResponse(typingInput.trim());
     setTypingInput(''); // 입력창 초기화
     setTypingVisible(false); // 입력창 숨기기
