@@ -4,13 +4,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* box-sizing: content-box; 전역설정 제외할 때 적용*/
   }
   
   body {
     font-family: 'Pretendard';
     background-color: white;
     color: #333;
-    line-height: 1.6;
+    /* line-height: 1.6; */
+    /* line-height: normal; 전역설정 제외할 때 적용*/
   }
 
   .container{
@@ -356,7 +358,7 @@
   flex-direction: column; /* 채팅 버블을 세로로 쌓기 */
   padding: 10px 5px;
   overflow: auto;
-  height: 520px;
+  height: 500px;
 }
 .chatBubble{
   display: inline-block;
@@ -419,7 +421,7 @@
   color: #4ED8B7;
   cursor: pointer;
   position: fixed;
-  top: 89%;
+  top: 90%;
   left: 50%;
   width: 20%;
   min-width: 200px;
@@ -440,18 +442,38 @@
 .typingFrom{
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 3px;
   margin-bottom: 5px;
+  width: 670px; 
+  position: relative;
 }
 .typingInput{
   flex: 1;
-  height: 100%;
+  width: 600px; 
+  min-height: 40px; /* 기본 높이 */
+  max-height: 100px; /* 최대 높이 */
+  resize: none; /* 사용자가 크기를 변경하지 못하도록 설정 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
   font-size: 15px;
-  text-align: left; 
-  border-color: #4ED8B7;
+  line-height: 1.6;
+  border: 2px solid #4ED8B7;
+  border-radius: 5px;
+  outline: none;
+
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  left: 10;
 }
 .typingSendButton{
-  font-size: 25px;
+  height: 30px;
+  width: 30px;
+
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  right: 0;
 }
 
 /* ChooseCharacter.css */
@@ -488,6 +510,9 @@
 .character-item.selected {
   display: flex;
   transform: scale(1.2); /* 10% 확대 */
+}
+.character-item.selected .character-text {
+  color: #4ED8B7;
 }
 
 .character-text {
@@ -674,11 +699,23 @@
     .goal-text{
       font-size: 1em;
     }
+    .typingInput{
+      width: 280px;
+    }
+    .typingFrom{
+      width: 350px; 
+    }
   }
   /* Tablet */
   @media (min-width: 768px){
     .container{
       width: 100%;
+    }
+    .typingInput{
+      width: 450px;
+    }
+    .typingFrom{
+      width: 520px; 
     }
   }
   /* Desktop */

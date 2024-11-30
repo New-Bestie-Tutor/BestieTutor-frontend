@@ -15,7 +15,8 @@ const IMAGES = {
     사람들과_소통: new URL('./사람들과소통.png', import.meta.url).href,
     경력_개발: new URL('./경력개발.png', import.meta.url).href,
     취미_활동: new URL('./취미.png', import.meta.url).href,
-    기타: new URL('./기타.png', import.meta.url).href
+    기타: new URL('./기타.png', import.meta.url).href,
+    sendMessage: new URL('./sendMessage.png', import.meta.url).href
 };
 
 export default IMAGES;

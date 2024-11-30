@@ -3,15 +3,11 @@ import IMAGES from '../images/images';
 import { IoMdMic } from "react-icons/io";
 import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
-import { LuSendHorizonal } from "react-icons/lu";
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import React, { useContext } from 'react';
-import { UserContext } from '../UserContext';
 
 export default function Conversation() {
-  const { userInfo } = useContext(UserContext);
   const navigate = useNavigate(); // useNavigate 훅 사용
   const location = useLocation();
   const {
@@ -178,10 +174,8 @@ export default function Conversation() {
   // 음성 인식 설정 및 이벤트 핸들러
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
-  // recognition.lang = 'en-US';
   recognition.lang = 'ko-KR';
   // recognition.lang = 'ja-JP';
-  // recognition.lang = 'ko-KR';
   // recognition.lang = 'en-US';
 
   // 음성 인식 시작
@@ -215,6 +209,10 @@ export default function Conversation() {
       setStatus('');
     }
     setTypingVisible(true);
+  };
+
+  const submitTyping = () => {
+    typingInputHandler();
   };
 
   // 타이핑된 텍스트 메시지 추가 및 서버로 전송
@@ -281,7 +279,6 @@ export default function Conversation() {
       </div>
 
       <div className="chat-container">
-        {/* 메시지 출력 */}
         {messages
           .map((message, index) => renderMessage(message, index))}
 
@@ -292,14 +289,18 @@ export default function Conversation() {
         <p className="userInput-status">{status}</p>
         {typingVisible && (
           <form onSubmit={typingInputHandler} className="typingFrom">
-            <input
-              type="text"
+            <textarea
+              // type="text"
               value={typingInput}
-              onChange={(e) => setTypingInput(e.target.value)}
+              onChange={(e) => {
+                setTypingInput(e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
               placeholder="메시지를 입력해주세요."
               className="typingInput"
             />
-            <LuSendHorizonal onClick={typingInputHandler} className="typingSendButton" />
+            <img src={IMAGES.sendMessage} onClick={submitTyping} className='typingSendButton' />
           </form>
         )}
         <div className="icon-container">
