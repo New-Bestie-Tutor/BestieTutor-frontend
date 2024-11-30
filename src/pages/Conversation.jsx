@@ -6,11 +6,8 @@ import { FaXmark } from "react-icons/fa6";
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import React, { useContext } from 'react';
-// import { UserContext } from '../UserContext';
 
 export default function Conversation() {
-  // const { userInfo } = useContext(UserContext);
   const navigate = useNavigate(); // useNavigate 훅 사용
   const location = useLocation();
   const {

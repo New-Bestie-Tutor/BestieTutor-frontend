@@ -421,7 +421,7 @@
   color: #4ED8B7;
   cursor: pointer;
   position: fixed;
-  top: 95%;
+  top: 90%;
   left: 50%;
   width: 20%;
   min-width: 200px;
@@ -510,6 +510,9 @@
 .character-item.selected {
   display: flex;
   transform: scale(1.2); /* 10% 확대 */
+}
+.character-item.selected .character-text {
+  color: #4ED8B7;
 }
 
 .character-text {
