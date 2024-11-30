@@ -652,6 +652,90 @@
   object-fit: contain;
 }
 
+/*myPage.css*/
+.mypage-container{
+  width: 100%;
+  min-width: 360px;
+  overflow: hidden;
+  text-align: center;
+  background-color: #eaf9f3;
+}
+.profile-header {
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mypage-profile {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+}
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  width: 50%;
+  min-width: 360px;
+}
+
+.stat {
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column; 
+  padding-right: 20px;
+}
+
+.stat span {
+  font-size: 11px;
+  color: #b0b0b0;
+}
+
+.mypage-menu {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #ffffff;
+}
+
+.mypage-menu li {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 18px;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
+.mypage-menu a{
+  text-decoration: none;
+  color: #000;
+}
+
+.mypage-menu li span {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.mypage-menu li:hover {
+  background-color: #f0f0f0;
+}
+.mypage-service{
+  width: 18px;
+}
+
   /* 반응형 레이아웃 */
   /* Mobile */
   @media (max-width: 360px) {
@@ -704,6 +788,9 @@
     }
     .typingFrom{
       width: 350px; 
+    }
+    .profile-stats {
+      min-width: 280px;
     }
   }
   /* Tablet */

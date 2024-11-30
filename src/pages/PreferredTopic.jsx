@@ -27,11 +27,11 @@ export default function PreferredTopic() {
 
     const fetchUser = async () => {
         try {
-            const response = await axios.get('/user/getUserId', {
+            const response = await axios.get('/user/getUserInfo', {
                 withCredentials: true, // 쿠키 자동 포함
             });
         if (response.status === 201) {
-            setUser(response.data.userId);
+            setUser(response.data.userInfo);
         } else {
             console.error("userId 불러오는데 실패했습니다.", response.status);
         }

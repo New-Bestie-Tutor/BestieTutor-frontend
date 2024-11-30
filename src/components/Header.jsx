@@ -75,7 +75,7 @@ export default function Header() {
           {username ? (
             <>
               <button onClick={logout} className="logout-button">로그아웃</button>
-              <Link to="/mypage"><img src={IMAGES.mypage} alt="mypage" className="mypageimg" /></Link>
+              <Link to="/myPage"><img src={IMAGES.mypage} alt="mypage" className="mypageimg" /></Link>
             </>
           ) : null}
         </div>

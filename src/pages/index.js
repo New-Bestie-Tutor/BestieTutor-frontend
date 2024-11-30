@@ -13,3 +13,4 @@ export { default as ChooseLanguage } from "./ChooseLanguage.jsx";
 export { default as LearningGoal } from "./LearningGoal.jsx";
 export { default as CurrentLevel } from "./CurrentLevel.jsx";
 export { default as PreferredTopic } from "./PreferredTopic.jsx";
+export { default as MyPage } from "./MyPage.jsx";
