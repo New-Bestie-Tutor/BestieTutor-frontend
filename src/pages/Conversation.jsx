@@ -68,7 +68,7 @@ export default function Conversation() {
       console.log("Request Data:", data); // 디버깅용
   
       const response = await axios.post(
-        'http://localhost:3000/conversation/initialize',
+        '/conversation/initialize',
         data,
         {
           headers: {
