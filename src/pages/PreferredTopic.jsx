@@ -99,8 +99,7 @@ export default function PreferredTopic() {
                     <div 
                         key={topic._id}
                         className='preferredTopic-item' 
-                        // style={{ backgroundColor: selectedTopics.includes(topic.mainTopic) ? '#b8f0d2' : 'rgba(0, 0, 0, 0.02)' }} 
-                        style={{ backgroundColor: selectedTopics.includes(topic.mainTopic) ? '#4ED8B7' : '#EBFFEE' }}
+                        style={{ backgroundColor: selectedTopics.includes(topic.mainTopic) ? '#EBFFEE' : '#FAFAFC' }}
                         onClick={() => handleTopicClick(topic.mainTopic)}
                     >
                         <img src={IMAGES[topic.mainTopic]} alt={topic.mainTopic} className="preferredTopic-icon" />
