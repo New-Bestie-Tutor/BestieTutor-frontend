@@ -10,12 +10,14 @@ import '../App.css'
 export default function MyPage() {
   const navigate = useNavigate();
   const { userInfo } = useContext(UserContext);
-  const [user, setUser] = useState(null);
-  const userId = userInfo?.userId;
+  const [user, setUser] = useState({});
 
-  const fetchUser = async () => {
+const fetchUser = async () => {
     try {
-        const response = await axios.get('/user/getUser', {userId});
+        const userId = userInfo?.userId;
+        const response = await axios.get('/user/getUser', {
+            params: { userId },
+        });
     if (response.status === 200) {
         setUser(response.data);
     } else {
@@ -30,7 +32,6 @@ export default function MyPage() {
     if (userInfo?.userId) { 
         fetchUser();  
       }
-      console.log(user.nickname);
   }, [userInfo]);
 
   return (
