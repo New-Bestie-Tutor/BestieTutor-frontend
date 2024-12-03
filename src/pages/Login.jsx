@@ -9,8 +9,8 @@ import axios from 'axios';
 
 export default function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState('test1@test1.com');
-    const [password, setPassword] = useState('test1test1!');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
     const { setUserInfo } = useContext(UserContext);
