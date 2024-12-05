@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
     FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, 
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
-    MyPage, Profile } from "./pages";
+    MyPage, Profile, Review } from "./pages";
 import Feedback from "./pages/Feedback";
 
 export default function AppRoutes() {
@@ -27,6 +27,7 @@ export default function AppRoutes() {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/review" element={<Review />} />
         </Routes>
     );
 }
