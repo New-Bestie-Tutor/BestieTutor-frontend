@@ -226,11 +226,9 @@ export default function Conversation() {
 
   // 대화 종료
   const stopConversation = () => {
-    // setConverseId('6753f2e06dedc4c3bcc1f901');
+    setConverseId('6753f2e06dedc4c3bcc1f901');
     console.log('converseId', converseId);
     updateEndTime(converseId);
-    alert('대화를 종료합니다.');
-    // navigate('/home');
   }
 
   // EndTime Update
@@ -239,7 +237,8 @@ export default function Conversation() {
       const response = await axios.put('/conversation/updateEndTime', { converseId });
 
       if (response.status === 200) {
-        console.log('EndTime Update Success');
+        alert('대화를 종료합니다.');
+        navigate('/home');
       }
     } catch (error) {
       console.error('피드백 로드 중 오류:', error);
