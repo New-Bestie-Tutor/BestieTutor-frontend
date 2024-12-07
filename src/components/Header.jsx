@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useContext, useState } from "react";
 import { UserContext } from "../UserContext";
 import IMAGES from "../images/images";
-import axios from 'axios';
+import axios from '../axiosConfig'; 
 import '../App.css';
 
 export default function Header() {
@@ -11,6 +11,7 @@ export default function Header() {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const username = userInfo?.email;
+  const [isFetched, setIsFetched] = useState(false);
   const navigate = useNavigate();
 
   // Fetch topics from the backend
@@ -29,6 +30,7 @@ export default function Header() {
   const fetchProfile = async () => {
     try {
       const response = await axios.get('/user/profile', { withCredentials: true });
+
       setUserInfo(response.data);
     } catch (error) {
       console.error("Failed to fetch profile:", error);
@@ -36,16 +38,20 @@ export default function Header() {
   };
 
   useEffect(() => {
-    fetchTopics();
-    fetchProfile();
+    const temp = async () => {
+      await fetchProfile();
+      await fetchTopics();
+      setIsFetched(true);
+    };
+    temp();
   }, []);
 
   useEffect(() => {
-    if (!userInfo) {
+    if (isFetched && !userInfo) {
       alert("로그아웃 상태이므로 초기화면으로 이동합니다.");
       navigate('/');
     }
-  }, [userInfo, navigate]);
+  }, [isFetched, userInfo, navigate]); 
 
   const logout = async () => {
     await axios.post("/user/logout");
