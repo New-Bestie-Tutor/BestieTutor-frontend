@@ -16,7 +16,19 @@ const IMAGES = {
     경력_개발: new URL('./경력개발.png', import.meta.url).href,
     취미_활동: new URL('./취미.png', import.meta.url).href,
     기타: new URL('./기타.png', import.meta.url).href,
-    sendMessage: new URL('./sendMessage.png', import.meta.url).href
+    time0: new URL('./time0.png', import.meta.url).href,
+    time10: new URL('./time10.png', import.meta.url).href,
+    time30: new URL('./time30.png', import.meta.url).href,
+    time60: new URL('./time60.png', import.meta.url).href,
+    time120: new URL('./time120.png', import.meta.url).href,
+    after10days: new URL('./after10days.png', import.meta.url).href,
+    after30days: new URL('./after30days.png', import.meta.url).href,
+    베튜말풍선: new URL('./베튜말풍선.png', import.meta.url).href,
+    start: new URL('./start.png', import.meta.url).href,
+    global: new URL('./global.png', import.meta.url).href,
+    sendMessage: new URL('./sendMessage.png', import.meta.url).href,
+    scrollButtonLeft: new URL('./scrollButtonLeft.png', import.meta.url).href,
+    scrollButtonRight: new URL('./scrollButtonRight.png', import.meta.url).href
 };
 
 export default IMAGES;
