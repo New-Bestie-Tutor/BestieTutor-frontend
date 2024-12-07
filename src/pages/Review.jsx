@@ -18,7 +18,6 @@ export default function Review() {
     const fetchConversations = async () => {
         try {
             const userEmail = userInfo?.email;
-            console.log(userEmail);
             if (!userEmail) {
                 console.error('이메일 값이 없습니다.');
                 return;
@@ -68,16 +67,17 @@ export default function Review() {
                 {paginatedConversations.map((conversation) => {
                     // topic_description에서 Topic, subTopic, difficulty 추출
                     const [topic, subTopic, difficulty] = conversation.topicDescription.split(' - ');
+                    const description = conversation.description;
 
                     return (
-                        <div key={conversation.conversationId} style={styles.card}>
-                            <div style={styles.icon}>
+                        <div className='review-card' key={conversation.conversationId}>
+                            <div className='review-icon'>
                                 <img src={IMAGES[topic]} alt="icon" width="30" />
                             </div>
                             <div>
                                 <h3>{topic}</h3>
                                 <p>
-                                    {subTopic} | {difficulty}
+                                    {subTopic} | {difficulty} | {description}
                                 </p>
                                 <p>
                                     {/* 소요시간 */}
@@ -91,7 +91,7 @@ export default function Review() {
                     );
                 })}
             </div>
-            <div style={styles.pagination}>
+            <div className='review-pagination'>
                 {Array.from({ length: Math.ceil(conversations.length / itemsPerPage) }, (_, index) => (
                     <button
                         key={index}
