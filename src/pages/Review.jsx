@@ -18,7 +18,6 @@ export default function Review() {
     const fetchConversations = async () => {
         try {
             const userEmail = userInfo?.email;
-            console.log(userEmail);
             if (!userEmail) {
                 console.error('이메일 값이 없습니다.');
                 return;
@@ -68,6 +67,16 @@ export default function Review() {
                 {paginatedConversations.map((conversation) => {
                     // topic_description에서 Topic, subTopic, difficulty 추출
                     const [topic, subTopic, difficulty] = conversation.topicDescription.split(' - ');
+                    const description = conversation.description;
+                    const startTime = new Date(conversation.startTime);
+                    const endTime = new Date(conversation.endTime);
+
+                    // 소요 시간 계산 (차이: 밀리초)
+                    const durationInMilliseconds = endTime.getTime() - startTime.getTime();
+
+                    // 분, 초로 변환
+                    const minutes = Math.floor((durationInMilliseconds % (1000 * 60 * 60)) / (1000 * 60)); // 분
+                    const seconds = Math.floor((durationInMilliseconds % (1000 * 60)) / 1000); // 초
 
                     return (
                         <div key={conversation.conversationId} style={styles.card}>
@@ -77,11 +86,10 @@ export default function Review() {
                             <div>
                                 <h3>{topic}</h3>
                                 <p>
-                                    {subTopic} | {difficulty}
+                                    {subTopic} | {difficulty} | {description}
                                 </p>
                                 <p>
-                                    {/* 소요시간 */}
-                                    {/* {new Date(conversation.startTime).toLocaleString()} - {new Date(conversation.endTime).toLocaleString()} */}
+                                    {`${minutes}분 ${seconds}초`}
                                 </p>
                                 <p>
                                     {new Date(conversation.startTime).toLocaleString()}
