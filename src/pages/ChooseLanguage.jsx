@@ -28,7 +28,7 @@ export default function ChooseLanguage() {
                     <div 
                         key={index}
                         className='language-item' 
-                        style={{ backgroundColor: selectedLanguage === language ? '#4ED8B7' : '#EBFFEE' }} 
+                        style={{ backgroundColor: selectedLanguage === language ? '#EBFFEE' : '#FAFAFC' }} 
                         onClick={() => setSelectedLanguage(language)}
                     >
                         <img src={IMAGES[language]} alt={language} className="character-icon" />

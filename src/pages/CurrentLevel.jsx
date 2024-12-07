@@ -32,7 +32,7 @@ export default function CurrentLevel() {
                     <div 
                         key={index}
                         className='level-item' 
-                        style={{ backgroundColor: selectedLevel === level ? '#4ED8B7' : '#EBFFEE' }} 
+                        style={{ backgroundColor: selectedLevel === level ? '#EBFFEE' : '#FAFAFC' }} 
                         onClick={() => setSelectedLevel(level)}
                     >
                         <p className="goal-text">{level}</p>

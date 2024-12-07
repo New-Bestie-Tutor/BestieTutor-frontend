@@ -7,16 +7,15 @@
     margin: 0;
     padding: 0; 
     box-sizing: border-box;
-    
+    /* box-sizing: content-box; 전역설정 제외할 때 적용*/
   }
   
   body {
     font-family: 'Pretendard';
     background-color: white;
     color: #333;
-    /*
-    line-height: 1.6;
-    */
+    /* line-height: 1.6; */
+    /* line-height: normal; 전역설정 제외할 때 적용*/
   }
 
   .container{
@@ -363,7 +362,7 @@
   flex-direction: column; /* 채팅 버블을 세로로 쌓기 */
   padding: 10px 5px;
   overflow: auto;
-  height: 520px;
+  height: 500px;
 }
 .chatBubble{
   display: inline-block;
@@ -426,7 +425,7 @@
   color: #4ED8B7;
   cursor: pointer;
   position: fixed;
-  top: 89%;
+  top: 90%;
   left: 50%;
   width: 20%;
   min-width: 200px;
@@ -447,18 +446,38 @@
 .typingFrom{
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 3px;
   margin-bottom: 5px;
+  width: 670px; 
+  position: relative;
 }
 .typingInput{
   flex: 1;
-  height: 100%;
+  width: 600px; 
+  min-height: 40px; /* 기본 높이 */
+  max-height: 100px; /* 최대 높이 */
+  resize: none; /* 사용자가 크기를 변경하지 못하도록 설정 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
   font-size: 15px;
-  text-align: left; 
-  border-color: #4ED8B7;
+  line-height: 1.6;
+  border: 2px solid #4ED8B7;
+  border-radius: 5px;
+  outline: none;
+
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  left: 10;
 }
 .typingSendButton{
-  font-size: 25px;
+  height: 30px;
+  width: 30px;
+
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  right: 0;
 }
 
 /* ChooseCharacter.css */
@@ -495,6 +514,9 @@
 .character-item.selected {
   display: flex;
   transform: scale(1.2); /* 10% 확대 */
+}
+.character-item.selected .character-text {
+  color: #4ED8B7;
 }
 
 .character-text {
@@ -634,6 +656,95 @@
   object-fit: contain;
 }
 
+/*myPage.css*/
+.mypage-container{
+  width: 100%;
+  min-width: 360px;
+  overflow: hidden;
+  text-align: center;
+  background-color: #eaf9f3;
+}
+.profile-header {
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mypage-profile {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+}
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  width: 50%;
+  min-width: 360px;
+}
+
+.stat {
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column; 
+  padding-right: 20px;
+}
+
+.stat span {
+  font-size: 11px;
+  color: #b0b0b0;
+}
+
+.mypage-menu {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #ffffff;
+}
+
+.mypage-menu li {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 18px;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
+.mypage-menu a{
+  text-decoration: none;
+  color: #000;
+}
+
+.mypage-menu li span {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.mypage-menu li:hover {
+  background-color: #f0f0f0;
+}
+.mypage-service{
+  width: 18px;
+}
+
+/* Profile.css */
+.profile-container{
+  min-height: 78vh !important;
+}
+
   /* 반응형 레이아웃 */
   /* Mobile */
   @media (max-width: 360px) {
@@ -681,11 +792,29 @@
     .goal-text{
       font-size: 1em;
     }
+    .typingInput{
+      width: 280px;
+    }
+    .typingFrom{
+      width: 350px; 
+    }
+    .profile-stats {
+      min-width: 280px;
+    }
+    .profile-container{
+      min-height: 93vh !important;
+    }
   }
   /* Tablet */
   @media (min-width: 768px){
     .container{
       width: 100%;
+    }
+    .typingInput{
+      width: 450px;
+    }
+    .typingFrom{
+      width: 520px; 
     }
   }
   /* Desktop */
