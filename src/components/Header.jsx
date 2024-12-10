@@ -1,24 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useContext, useState } from "react";
-import { LanguageContext } from "../LanguageContext";
 import { UserContext } from "../UserContext";
 import IMAGES from "../images/images";
-import axios from 'axios';
+import axios from '../axiosConfig'; 
 import '../App.css';
 
 export default function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const { userLanguage, setUserLanguage } = useContext(LanguageContext);
   const { userInfo, setUserInfo } = useContext(UserContext);
-  const [currentTopic, setCurrentTopic] = useState(null);
   const username = userInfo?.email;
+  const [isFetched, setIsFetched] = useState(false);
   const navigate = useNavigate();
-
-  const handleLanguageChange = (language) => {
-    setUserLanguage(language); // Update language context
-  };
 
   // Fetch topics from the backend
   const fetchTopics = async () => {
@@ -44,7 +38,7 @@ export default function Header() {
 
   useEffect(() => {
     fetchTopics();
-    fetchProfile();
+    // fetchProfile();
   }, []);
 
   useEffect(() => {
@@ -59,16 +53,6 @@ export default function Header() {
     setUserInfo(null); 
   };
 
-  const handleMouseEnter = (topic) => {
-    setCurrentTopic(topic); // 현재 topic 저장
-    setShowDropdown(true); // 드롭다운 표시
-  };
-
-  const handleMouseLeave = () => {
-    setCurrentTopic(null); // 선택 초기화
-    setShowDropdown(false);
-  };
-
   const handleTopicClick = (id) => {
     setSelectedTopic(id);
   };
@@ -76,8 +60,6 @@ export default function Header() {
   const handleSubtopicClick = (mainTopic, subTopicName) => {
     navigate('/subtopic', { state: { selectedTopic: mainTopic, subTopic: subTopicName } });
   };
-
-  const selectedLanguage = userLanguage === "ko" ? '한국어' : 'English';
 
   return (
     <div className="header">
@@ -113,49 +95,38 @@ export default function Header() {
           </div>
         </div>
       </div>
-        
 
+      <div className="header-content">
+        {topics.map((topic) => (
+          <div
+            className="header-item"
+            key={topic._id}
+            onMouseEnter={() => setShowDropdown(true)}
+          >
+            {topic.mainTopic}
+          </div>
+        ))}
+      </div>
 
-      <div className="header-content"
-    >
-    {topics.map((topic) => (
-      <div
-        key={topic._id}
-        className={`header-item ${
-          currentTopic
-            ? currentTopic.mainTopic === topic.mainTopic
-              ? "active"
-              : "inactive"
-            : ""
-        }`}
-        onMouseEnter={() => {
-          handleMouseEnter(topic)
-        }}
-      >
-      {topic.mainTopic}
-    </div>
-      ))}
-
-
-      {showDropdown && currentTopic && (
-        <div className="dropdown-container" 
-        onMouseEnter={() => setShowDropdown(true)} // 드롭다운 유지
-        onMouseLeave={handleMouseLeave} // 드롭다운 숨기기
-        >
+      {showDropdown && (
+        <div className="dropdown-container" onMouseLeave={() => setShowDropdown(false)}>
           <div className="dropdown-content">
-          {currentTopic.subTopics.map((subTopic) => (
-            <p
-              key={subTopic.name}
-              onClick={() => handleSubtopicClick(currentTopic.mainTopic, subTopic.name)}
-              className="dropdown-subtopic"
-            >
-              {subTopic.name}
-            </p>
-          ))}
+            {topics.map((topic) => (
+              <div key={topic.mainTopic}>
+                {topic.subTopics.map((subTopic) => (
+                  <p
+                    key={subTopic.name}
+                    onClick={() => handleSubtopicClick(topic.mainTopic, subTopic.name)}
+                    className="dropdown-subtopic"
+                  >
+                    {subTopic.name}
+                  </p>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       )}
-    </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axiosConfig'; 
 
 export default function Conversation() {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -64,13 +64,8 @@ export default function Conversation() {
       console.log("Request Data:", data); // 디버깅용
   
       const response = await axios.post(
-        'http://localhost:3000/conversation/initialize',
+        '/conversation/initialize',
         data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }
       );
   
       if (response.status === 200) {
@@ -123,12 +118,9 @@ export default function Conversation() {
         characterName: selectedCharacter,
       };
 
-      const addUserMessageRequest = axios.post('/conversation/addUserMessage', data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const addUserMessageRequest = axios.post('/conversation/addUserMessage', data);
 
+      const request = axios.post('/conversation/getResponse', data);
       const addUserMessageResponse = await addUserMessageRequest;
       if (addUserMessageResponse.status === 200) {
         const { messageId, conversationId } = addUserMessageResponse.data;
@@ -137,12 +129,6 @@ export default function Conversation() {
           fetchFeedback(messageId); // 피드백 메시지 추가
         }
       }
-
-      const request = axios.post('/conversation/getResponse', data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
 
       const response = await request;
       if (response.status === 200) {
@@ -158,11 +144,7 @@ export default function Conversation() {
   // 피드백 메시지 로드
   async function fetchFeedback(messageId) {
     try {
-      const response = await axios.get(`/feedback/${messageId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const response = await axios.get(`/feedback/${messageId}`);
 
       if (response.status === 200) {
         const feedbackText = response.data.feedback || '피드백을 가져올 수 없습니다.';
@@ -176,9 +158,9 @@ export default function Conversation() {
   // 음성 인식 설정 및 이벤트 핸들러
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
-  recognition.lang = 'ko-KR';
-  // recognition.lang = 'ja-JP';
-  // recognition.lang = 'en-US';
+    // recognition.lang = 'en-US';
+    recognition.lang = 'ko-KR';
+    // recognition.lang = 'ja-JP';
 
   // 음성 인식 시작
   const speakToMic = () => {

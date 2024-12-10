@@ -52,6 +52,10 @@ export default function Review() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedConversations = sortedConversations.slice(startIndex, startIndex + itemsPerPage);
 
+  const reviewHandelr = (conversationId) => {
+    navigate('/feedback', { state: { conversationId: conversationId } });
+  }
+
   return (
     <div className="Home">
         <Header />
@@ -79,7 +83,7 @@ export default function Review() {
                     const seconds = Math.floor((durationInMilliseconds % (1000 * 60)) / 1000); // 초
 
                     return (
-                        <div className='review-card' key={conversation.conversationId}>
+                        <div key={conversation.conversationId}  onClick={() => reviewHandelr(conversation.conversationId)} className='review-card'>
                             <div className='review-icon'>
                                 <img src={IMAGES[topic]} alt="icon" width="30" />
                             </div>
@@ -119,24 +123,3 @@ export default function Review() {
     </div>
 );
 }
-
-// 스타일 예시
-const styles = {
-card: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '10px',
-    padding: '10px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-},
-icon: {
-    marginRight: '10px',
-},
-pagination: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '20px',
-},
-};
-

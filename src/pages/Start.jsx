@@ -5,7 +5,7 @@ import IMAGES from "../images/images";
 export default function Start() {
   const navigate = useNavigate();
     return (
-      <div className="container start">
+      <div className="container startPage">
         <div className="image-wrapper">
           <img src={IMAGES.bettu} alt="bettu" className="image" />
           <img src={IMAGES.raebin} alt="raebin" className="image" />

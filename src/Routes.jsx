@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
     FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, 
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
-    MyPage, Profile, Review } from "./pages";
-import Feedback from "./pages/Feedback";
+    MyPage, Profile, Review, Feedback } from "./pages";
+// import Feedback from "./pages/Feedback";
 
 export default function AppRoutes() {
     return(
