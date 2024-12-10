@@ -17,10 +17,10 @@ export default function Feedback() {
 
   // `converseId`는 나중에 전달된다고 가정
   // const converseId = "6745dd9719cc6b128e61da00"; // 테스트용 하드코딩 값
+  const location = useLocation();
   const converseId = location.state?.conversationId;
   console.log('converseId',converseId);
 
-  const location = useLocation();
   console.log("Location State: ", location.state);
   
   const { 

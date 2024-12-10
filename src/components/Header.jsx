@@ -29,7 +29,19 @@ export default function Header() {
   // Function to fetch profile info
   const fetchProfile = async () => {
     try {
-      const response = await axios.get('/user/profile', { withCredentials: true });
+      // const response = await axios.get('/user/profile', { withCredentials: true });
+      const token = localStorage.getItem('token'); // 토큰 저장 위치에 따라 수정
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const response = await axios.get('/user/profile', {
+      headers: {
+        Authorization: `Bearer ${token}`, // Bearer 토큰 설정
+      },
+    });
+
+    console.log(response.data);
 
       setUserInfo(response.data);
     } catch (error) {

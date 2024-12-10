@@ -32,7 +32,7 @@
   }
 
   /* Start.css */
-  .start{
+  .startPage{
     text-align: center;
   }
   
@@ -744,6 +744,24 @@
 .profile-container{
   min-height: 78vh !important;
 }
+
+  /* review.css */
+  .review-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  .review-icon {
+    margin-right: 10px;
+  }
+  .review-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
 
   /* 반응형 레이아웃 */
   /* Mobile */

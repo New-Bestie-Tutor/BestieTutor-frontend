@@ -83,8 +83,8 @@ export default function Review() {
                     const seconds = Math.floor((durationInMilliseconds % (1000 * 60)) / 1000); // 초
 
                     return (
-                        <div key={conversation.conversationId}  onClick={() => reviewHandelr(conversation.conversationId)} style={styles.card}>
-                            <div style={styles.icon}>
+                        <div key={conversation.conversationId}  onClick={() => reviewHandelr(conversation.conversationId)} className='review-card'>
+                            <div className='review-icon'>
                                 <img src={IMAGES[topic]} alt="icon" width="30" />
                             </div>
                             <div>
@@ -103,7 +103,7 @@ export default function Review() {
                     );
                 })}
             </div>
-            <div style={styles.pagination}>
+            <div className='review-pagination'>
                 {Array.from({ length: Math.ceil(conversations.length / itemsPerPage) }, (_, index) => (
                     <button
                         key={index}
@@ -123,24 +123,3 @@ export default function Review() {
     </div>
 );
 }
-
-// 스타일 예시
-const styles = {
-card: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '10px',
-    padding: '10px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-},
-icon: {
-    marginRight: '10px',
-},
-pagination: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '20px',
-},
-};
-
