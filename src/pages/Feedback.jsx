@@ -14,26 +14,22 @@ export default function Feedback() {
   const [messages, setMessages] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [conversation, setConversation] = useState(null);
-
-  // `converseId`는 나중에 전달된다고 가정
-  // const converseId = "6745dd9719cc6b128e61da00"; // 테스트용 하드코딩 값
-  const converseId = "6745c2b3b73237fc97ce2438";
-
   const location = useLocation();
-  console.log("Location State: ", location.state);
-  
+
   const { 
     mainTopic, 
     selectedSubTopic, 
     selectedLevel, 
     description, 
-    selectedCharacter 
+    selectedCharacter,
+    converseId 
   } = useMemo(() => ({
       mainTopic: location.state?.mainTopic,
       selectedSubTopic: location.state?.selectedSubTopic,
       selectedLevel: location.state?.selectedLevel,
       description: location.state?.description,
-      selectedCharacter: location.state?.selectedCharacter
+      selectedCharacter: location.state?.selectedCharacter,
+      converseId: location.state?.conversationId
   }), [location.state]);
   
   // 기본 이미지 설정
@@ -47,8 +43,6 @@ export default function Feedback() {
       try {
         const response = await axios.get(`/conversation/getConversationById/${converseId}`);
         const { conversation } = response.data;
-
-        console.log(conversation);
 
         // 데이터 설정
         setMessages(conversation.messages);

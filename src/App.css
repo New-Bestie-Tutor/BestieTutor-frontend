@@ -7,7 +7,6 @@
     margin: 0;
     padding: 0; 
     box-sizing: border-box;
-    /* box-sizing: content-box; 전역설정 제외할 때 적용*/
   }
   
   body {
@@ -15,7 +14,6 @@
     background-color: white;
     color: #333;
     /* line-height: 1.6; */
-    /* line-height: normal; 전역설정 제외할 때 적용*/
   }
 
   .container{
@@ -32,7 +30,7 @@
   }
 
   /* Start.css */
-  .start{
+  .startPage{
     text-align: center;
   }
   
@@ -745,6 +743,24 @@
   min-height: 78vh !important;
 }
 
+  /* review.css */
+  .review-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  .review-icon {
+    margin-right: 10px;
+  }
+  .review-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
   /* 반응형 레이아웃 */
   /* Mobile */
   @media (max-width: 360px) {
@@ -1404,35 +1420,14 @@ h2 {
   margin: 4px 0;
 }
 
+
 .description {
   font-style: italic;
   margin-top: 5px;
   color: #555;
   cursor: pointer;
-}
-
-/*********home*********/
-.welcome-container{
-  background-color: #EBFFEE;
-  display: flex;
-  justify-content: center;
-  padding-top: 60px;
-}
-
-.welcome-image{
-  width: 120px;
-  margin-left: 20px;
-}
-
-.welcome-txt{
-  display: flex;
-  font-size: 30px;
-  font-weight: 900;
-  color:#4ED8B7;
-  align-items: center;
-  margin-right: 50px;
-}
-
+  }
+  
 /*** feedback ***/
 /* 전체 컨테이너 스타일 */
 .feedback-container {
