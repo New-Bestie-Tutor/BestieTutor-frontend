@@ -41,7 +41,7 @@ export default function Login() {
           // accessToken 로컬 스토리지에 저장
           localStorage.setItem('accessToken', response.data.accessToken); 
 
-          setUserInfo(response.data);
+          setUserInfo(response.data.user);
           navigate(response.data.redirectUrl || '/home');
         }
       } catch (error) {
@@ -64,7 +64,6 @@ export default function Login() {
     useEffect(() => {
       const queryParams = new URLSearchParams(window.location.search);
       const code = queryParams.get('code');
-      // console.log(code); 
 
       if (code) {
           handleKakaoCallback(code);
@@ -85,10 +84,9 @@ export default function Login() {
                 localStorage.setItem('accessToken', accessToken);
 
                 // 사용자 정보 업데이트
-                setUserInfo(user);
-
-                // 리다이렉트
-                navigate(redirectUrl);            }
+                setUserInfo(user); 
+                navigate(redirectUrl);            
+              }
         } catch (error) {
             console.error('카카오 로그인 실패:', error);
             alert('로그인에 실패했습니다. 다시 시도해주세요.');
