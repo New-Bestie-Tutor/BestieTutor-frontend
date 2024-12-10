@@ -53,7 +53,7 @@ const fetchUser = async () => {
                 <Link to="/premium"><li><span>👑</span>프리미엄 업그레이드</li></Link>
                 <Link to="/settings"><li><span>⚙️</span>설정</li></Link>
                 <Link to="/inquiry"><li><span>❓</span>문의하기</li></Link>
-                <Link to="/about"><li><span><img src={IMAGES.bettu} alt="Mascot" className="mypage-service" /></span>서비스 소개</li></Link>
+                <Link to="/about"><li><span><img src={IMAGES.bettu} alt="Mascot" className="mypage-service" /></span>Bestie Tutor 서비스 소개</li></Link>
             </ul>
         </div>
         <Footer />

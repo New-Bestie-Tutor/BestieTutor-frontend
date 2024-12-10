@@ -5,7 +5,7 @@ import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axiosConfig'; 
 
 export default function Conversation() {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -64,13 +64,8 @@ export default function Conversation() {
       console.log("Request Data:", data); // 디버깅용
   
       const response = await axios.post(
-        'http://localhost:3000/conversation/initialize',
+        '/conversation/initialize',
         data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }
       );
   
       if (response.status === 200) {
@@ -106,6 +101,7 @@ export default function Conversation() {
     ]);
   };
 
+  const [converseId, setConverseId] = useState('');
   // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
   async function getResponse(text) {
     try {
@@ -122,26 +118,18 @@ export default function Conversation() {
         characterName: selectedCharacter,
       };
 
-      const addUserMessageRequest = axios.post('/conversation/addUserMessage', data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      const request = axios.post('/conversation/getResponse', data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const addUserMessageRequest = axios.post('/conversation/addUserMessage', data);
 
       const addUserMessageResponse = await addUserMessageRequest;
       if (addUserMessageResponse.status === 200) {
-        const { messageId } = addUserMessageResponse.data;
+        const { messageId, conversationId } = addUserMessageResponse.data;
+        setConverseId(conversationId);
         if (messageId) {
           fetchFeedback(messageId); // 피드백 메시지 추가
         }
       }
-
+      
+      const request = axios.post('/conversation/getResponse', data);
       const response = await request;
       if (response.status === 200) {
         const { gptResponse, audio } = response.data;
@@ -156,11 +144,7 @@ export default function Conversation() {
   // 피드백 메시지 로드
   async function fetchFeedback(messageId) {
     try {
-      const response = await axios.get(`/feedback/${messageId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const response = await axios.get(`/feedback/${messageId}`);
 
       if (response.status === 200) {
         const feedbackText = response.data.feedback || '피드백을 가져올 수 없습니다.';
@@ -174,9 +158,9 @@ export default function Conversation() {
   // 음성 인식 설정 및 이벤트 핸들러
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
-  recognition.lang = 'ko-KR';
-  // recognition.lang = 'ja-JP';
-  // recognition.lang = 'en-US';
+    // recognition.lang = 'en-US';
+    recognition.lang = 'ko-KR';
+    // recognition.lang = 'ja-JP';
 
   // 음성 인식 시작
   const speakToMic = () => {
@@ -224,8 +208,22 @@ export default function Conversation() {
 
   // 대화 종료
   const stopConversation = () => {
-    alert('대화를 종료합니다.');
-    navigate('/home');
+    console.log('converseId', converseId);
+    updateEndTime(converseId);
+  }
+
+  // EndTime Update
+  async function updateEndTime(converseId) {
+    try {
+      const response = await axios.put('/conversation/updateEndTime', { converseId });
+
+      if (response.status === 200) {
+        alert('대화를 종료합니다.');
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error('피드백 로드 중 오류:', error);
+    }
   }
 
   // 메세지 정렬: bettu - user - feedback 

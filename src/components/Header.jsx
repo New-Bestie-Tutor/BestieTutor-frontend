@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { LanguageContext } from "../LanguageContext";
 import { UserContext } from "../UserContext";
 import IMAGES from "../images/images";
-import axios from 'axios';
+import axios from '../axiosConfig'; 
 import '../App.css';
 
 export default function Header() {
@@ -14,6 +14,7 @@ export default function Header() {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [currentTopic, setCurrentTopic] = useState(null);
   const username = userInfo?.email;
+  // const [isFetched, setIsFetched] = useState(false);
   const navigate = useNavigate();
 
   const handleLanguageChange = (language) => {
@@ -44,7 +45,7 @@ export default function Header() {
 
   useEffect(() => {
     fetchTopics();
-    fetchProfile();
+    // fetchProfile();
   }, []);
 
   useEffect(() => {
@@ -67,7 +68,7 @@ export default function Header() {
   const handleMouseLeave = () => {
     setCurrentTopic(null); // 선택 초기화
     setShowDropdown(false);
-  };
+  }
 
   const handleTopicClick = (id) => {
     setSelectedTopic(id);
@@ -113,49 +114,45 @@ export default function Header() {
           </div>
         </div>
       </div>
-        
 
-
-      <div className="header-content"
-    >
-    {topics.map((topic) => (
-      <div
-        key={topic._id}
-        className={`header-item ${
-          currentTopic
-            ? currentTopic.mainTopic === topic.mainTopic
-              ? "active"
-              : "inactive"
-            : ""
-        }`}
-        onMouseEnter={() => {
-          handleMouseEnter(topic)
-        }}
-      >
-      {topic.mainTopic}
-    </div>
-      ))}
-
+      <div className="header-content">
+        {topics.map((topic) => (
+          <div
+            key={topic._id}
+            className={`header-item ${
+              currentTopic
+                ? currentTopic.mainTopic === topic.mainTopic
+                  ? "active"
+                  : "inactive"
+                : ""
+            }`}
+            onMouseEnter={() => {
+              handleMouseEnter(topic)
+            }}
+          >
+          {topic.mainTopic}
+        </div>
+          ))}
 
       {showDropdown && currentTopic && (
-        <div className="dropdown-container" 
-        onMouseEnter={() => setShowDropdown(true)} // 드롭다운 유지
-        onMouseLeave={handleMouseLeave} // 드롭다운 숨기기
-        >
-          <div className="dropdown-content">
-          {currentTopic.subTopics.map((subTopic) => (
-            <p
-              key={subTopic.name}
-              onClick={() => handleSubtopicClick(currentTopic.mainTopic, subTopic.name)}
-              className="dropdown-subtopic"
-            >
-              {subTopic.name}
-            </p>
-          ))}
-          </div>
-        </div>
-      )}
-    </div>
+              <div className="dropdown-container" 
+              onMouseEnter={() => setShowDropdown(true)} // 드롭다운 유지
+              onMouseLeave={handleMouseLeave} // 드롭다운 숨기기
+              >
+                <div className="dropdown-content">
+                {currentTopic.subTopics.map((subTopic) => (
+                  <p
+                    key={subTopic.name}
+                    onClick={() => handleSubtopicClick(currentTopic.mainTopic, subTopic.name)}
+                    className="dropdown-subtopic"
+                  >
+                    {subTopic.name}
+                  </p>
+                ))}
+                </div>
+              </div>
+            )}
+      </div>
     </div>
   );
 }

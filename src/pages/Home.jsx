@@ -171,7 +171,7 @@ useEffect(() => {
         <section className="records-section">
           <div className="records-top">
           <h3>기록</h3>
-          <Link to="/findpw" className="view-all-records">더보기</Link>
+          <Link to="/review" className="view-all-records">더보기</Link>
           </div>
           <div className="records-container">
             <div className="records-wrapper">

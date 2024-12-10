@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from "../UserContext";
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
@@ -28,6 +28,7 @@ export default function Login() {
       }
     };
 
+    // 일반 로그인
     async function login(event) {
       event.preventDefault(); 
       setErrorMessage(''); 
@@ -37,7 +38,10 @@ export default function Login() {
         const response = await axios.post('/user/login', userData, { withCredentials: true });
         
         if (response.status === 200) {
-          setUserInfo(response.data);
+          // accessToken 로컬 스토리지에 저장
+          localStorage.setItem('accessToken', response.data.accessToken); 
+
+          setUserInfo(response.data.user);
           navigate(response.data.redirectUrl || '/home');
         }
       } catch (error) {
@@ -50,12 +54,45 @@ export default function Login() {
       }
     }
 
-    /***카카오로그인***/
+    // 카카오 로그인 요청
     const kakaoLoginUrl = 'http://localhost:3000/user/login/kakao';
     const handleKakaoLogin = () => {
       window.location.href = kakaoLoginUrl;
-      console.log('카카오로그인 입장');
     }; 
+
+    // 콜백 처리
+    useEffect(() => {
+      const queryParams = new URLSearchParams(window.location.search);
+      const code = queryParams.get('code');
+
+      if (code) {
+          handleKakaoCallback(code);
+          // URL에서 `code` 제거
+          window.history.replaceState(null, '', window.location.pathname);
+      }
+    }, []);
+
+    // 카카오 로그인 콜백
+    async function handleKakaoCallback(code) {
+        try {
+            const response = await axios.get('/user/login/kakao/callback?code=' + code);
+
+            if (response.status === 200) {
+                const { accessToken, user, redirectUrl } = response.data;
+
+                // 로컬 스토리지에 토큰 저장
+                localStorage.setItem('accessToken', accessToken);
+
+                // 사용자 정보 업데이트
+                setUserInfo(user); 
+                navigate(redirectUrl);            
+              }
+        } catch (error) {
+            console.error('카카오 로그인 실패:', error);
+            alert('로그인에 실패했습니다. 다시 시도해주세요.');
+            navigate('/login'); // 실패 시 로그인 페이지로 이동
+        }
+    }
 
     return (
         <div className="login-container">

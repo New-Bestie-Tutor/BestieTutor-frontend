@@ -11,100 +11,87 @@ import axios from 'axios';
 
 
 export default function Feedback() {
-    // 하드코딩된 대화와 피드백 데이터
-    const messages = [
-        { sender: 'assistant', text: "Hey, I was just about to call you. What's up?" },
-        { sender: 'user', text: 'Hi, how are you?', feedback: { type: 'success', text: '친절하고 자연스럽게 말하셨어요.' } },
-        { sender: 'assistant', text: "I'm good. How's your work week?" },
-        {
-        sender: 'user',
-        text: "It's really hard week.",
-        feedback: { type: 'error', text: '문법적으로는 맞지만, 더 자연스럽게 말하려면 "It’s been a really hard week"라고 말해보세요.' },
-        },
-        {
-        sender: 'assistant',
-        text: "I'm sorry to hear that. What do you want to do for dinner on Friday night?",
-        },
-    ];
+  const [messages, setMessages] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [conversation, setConversation] = useState(null);
+  const location = useLocation();
 
-    const location = useLocation();
-    console.log("Location State: ", location.state);
-    const { 
-      mainTopic, 
-      selectedSubTopic, 
-      selectedLevel, 
-      description, 
-      selectedCharacter 
-    } = useMemo(() => ({
-        mainTopic: location.state?.mainTopic,
-        selectedSubTopic: location.state?.selectedSubTopic,
-        selectedLevel: location.state?.selectedLevel,
-        description: location.state?.description,
-        selectedCharacter: location.state?.selectedCharacter
-    }), [location.state]);
+  const { 
+    mainTopic, 
+    selectedSubTopic, 
+    selectedLevel, 
+    description, 
+    selectedCharacter,
+    converseId 
+  } = useMemo(() => ({
+      mainTopic: location.state?.mainTopic,
+      selectedSubTopic: location.state?.selectedSubTopic,
+      selectedLevel: location.state?.selectedLevel,
+      description: location.state?.description,
+      selectedCharacter: location.state?.selectedCharacter,
+      converseId: location.state?.conversationId
+  }), [location.state]);
+  
+  // 기본 이미지 설정
+  const characterImage = selectedCharacter 
+    ? IMAGES[selectedCharacter] 
+    : IMAGES['bettu']; // 'bettu'가 기본 이미지 키라고 가정
 
-    // 기본 이미지 설정
-    const characterImage = selectedCharacter 
-        ? IMAGES[selectedCharacter] 
-        : IMAGES['bettu']; // 'bettu'가 기본 이미지 키라고 가정
+  // converse_id 로 대화 기록 가져오기 
+  useEffect(() => {
+    const fetchConversation = async() => {
+      try {
+        const response = await axios.get(`/conversation/getConversationById/${converseId}`);
+        const { conversation } = response.data;
 
+        // 데이터 설정
+        setMessages(conversation.messages);
+        setFeedbacks(conversation.feedbacks);
+        setConversation({
+          topicDescription: conversation.topicDescription,
+          startTime: conversation.startTime,
+        });
+      } catch (error) {
+        console.error("Failed to fetch conversation: ", error);
+      }
+    };
 
-    // 대화주제 & 캐릭터 선택 사항 console.log
-    useEffect(() => {
-      console.log("mainTopic:", mainTopic);
-      console.log("selectedSubTopic:", selectedSubTopic);
-      console.log("selectedLevel:", selectedLevel);
-      console.log("description:", description);
-      console.log("selectedCharacter:", selectedCharacter);
-    }, [mainTopic, selectedSubTopic, selectedLevel, description, selectedCharacter]);
+    fetchConversation();
+  }, [converseId]);
 
-
+  // 메시지와 피드백 매핑
+  const messagesWithFeedback = messages.map((message) => ({
+    ...message,
+    feedback: feedbacks.find((fb) => fb.messageId === message.messageId),
+  }));
+  
   return (
-<div className="container feedback-container">
-{/* 헤더 */}
-<div className="feedback-header">
-<button className="goBack-button">✕</button>
-<h2 className="feedback-title">Small talk</h2>
-</div>
+    <div className="container conversation-container">
+      {/* 헤더 */}
+      <div className="feedback-header">
+        <GoBack className="conversation-goBack" />
+        <p className="conversation-title">{description}</p>
+      </div>
 
+      {/* 대화 내용 */}
+      <div className="chat-container">
+        {messagesWithFeedback.map((message, index) => (
+          <div key={index} className={`message-container 
+          ${message.type === "USER" ? "user" : "bot"}`}>
+            {/* 메시지 버블 */}
+            <div className={`feedback-bubble ${message.type === "USER" ? "user" : "bot"}`}>
+              <div className="bubble-text">{message.content}</div>
+            </div>
 
-  {/* 대화 내용 */}
-  <div className="feedback-chat">
-    {messages.map((message, index) => (
-      <div key={index}>
-        {/* 메시지와 피드백을 감싸는 컨테이너 */}
-        <div className={`message-container ${message.sender === 'user' ? 'user' : 'assistant'}`}>
-          {/* 메시지 버블 */}
-          <div
-            className={`feedback-bubble ${
-              message.sender === 'user' ? 'user' : 'assistant'
-            }`}
-          >
-            {message.sender === 'assistant' && (
-              <>
-                <img
-                  src={characterImage}
-                  alt="Assistant"
-                  className="feedback-image"
-                />
-                <div className="bubble-text">{message.text}</div>
-              </>
-            )}
-            {message.sender === 'user' && (
-              <div className="bubble-text">{message.text}</div>
+            {/* 피드백 (USER 타입 메시지에만 표시) */}
+            {message.type === "USER" && message.feedback && (
+              <div className={"chatBubble feedbackBubbleRight"}>
+                <p className='userChatText'>{message.feedback.content}</p>
+              </div>
             )}
           </div>
-
-          {/* 피드백 코멘트 (사용자 메시지에만 표시) */}
-          {message.sender === 'user' && message.feedback && (
-            <div className={`feedback-comment ${message.feedback.type}`}>
-              <p>{message.feedback.text}</p>
-            </div>
-          )}
-        </div>
+        ))}
       </div>
-    ))}
-  </div>
-</div>
-);
+    </div>
+  );
 }

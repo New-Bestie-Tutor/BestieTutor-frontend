@@ -7,7 +7,6 @@
     margin: 0;
     padding: 0; 
     box-sizing: border-box;
-    /* box-sizing: content-box; 전역설정 제외할 때 적용*/
   }
   
   body {
@@ -15,7 +14,6 @@
     background-color: white;
     color: #333;
     /* line-height: 1.6; */
-    /* line-height: normal; 전역설정 제외할 때 적용*/
   }
 
   .container{
@@ -32,8 +30,7 @@
   }
 
   /* Start.css */
-  .start{
-    margin: 0 auto;
+  .startPage{
     text-align: center;
   }
   
@@ -746,6 +743,24 @@
   min-height: 78vh !important;
 }
 
+  /* review.css */
+  .review-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  .review-icon {
+    margin-right: 10px;
+  }
+  .review-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
   /* 반응형 레이아웃 */
   /* Mobile */
   @media (max-width: 360px) {
@@ -828,48 +843,48 @@
 /* Login */
 /* 기본적인 로그인 화면 스타일 */
 .goBack{
-    margin-top: 40px;
+  margin-top: 40px;
 }
 
 .login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    position: relative;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  position: relative;
 }
 
 .align-left {
-    margin-left: 20px; /* 왼쪽에 정렬 위치를 통일 */
-    text-align: left;
+  margin-left: 20px; /* 왼쪽에 정렬 위치를 통일 */
+  text-align: left;
 }
 
 /* 뒤로가기 버튼을 왼쪽에 정렬 */
 .back-button {
-    font-size: 24px;
-    background: none;
-    border: none;
-    position: absolute;
-    left: 20px; /* align-left와 일치시키기 */
-    top: 20px;
-    cursor: pointer;
+  font-size: 24px;
+  background: none;
+  border: none;
+  position: absolute;
+  left: 20px; /* align-left와 일치시키기 */
+  top: 20px;
+  cursor: pointer;
 }
 
 /* 제목과 부제목에 align-left 클래스를 적용하여 왼쪽 정렬 */
 .login-container{
-  margin-top: 3rem;
+margin-top: 3rem;
 }
 .login-title {
-    margin-top: 1rem;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: left;
+  margin-top: 1rem;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left;
 }
 
 .login-subtitle {
-    color: #888;
-    font-size: 14px;
-    margin-bottom: 60px;
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 60px;
 }
 
 /* input label에 align-left를 적용 */
@@ -1416,28 +1431,7 @@ h2 {
   cursor: pointer;
 }
 
-/*********home*********/
-.welcome-container{
-  background-color: #EBFFEE;
-  display: flex;
-  justify-content: center;
-  padding-top: 60px;
-}
-
-.welcome-image{
-  width: 120px;
-  margin-left: 20px;
-}
-
-.welcome-txt{
-  display: flex;
-  font-size: 30px;
-  font-weight: 900;
-  color:#4ED8B7;
-  align-items: center;
-  margin-right: 50px;
-}
-
+  
 /*** feedback ***/
 /* 전체 컨테이너 스타일 */
 .feedback-container {
