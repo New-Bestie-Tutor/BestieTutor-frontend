@@ -94,12 +94,15 @@ export default function Home() {
     setScrollIndex((prev) => Math.min(prev + 1, Math.ceil(records.length / visibleCount) - 1));
   };
 
+  useEffect(() => {
+    fetchUser();
+    fetchRecords();
+  }, []);
 
   // Calculate total study time, inactivity, and determine current step
   useEffect(() => {
-    fetchUser();
-
-    fetchRecords();
+    // fetchUser();
+    // fetchRecords();
 
     const total = records.reduce((sum, record) => sum + record.time, 0);
     setTotalTime(total);
@@ -200,7 +203,7 @@ export default function Home() {
         <section className="records-section">
           <div className="records-top">
           <h3>기록</h3>
-          <Link to="/findpw" className="view-all-records">더보기</Link>
+          <Link to="/review" className="view-all-records">더보기</Link>
           </div>
           <div className="records-container">
             <button className="arrow left" onClick={handleScrollLeft}>

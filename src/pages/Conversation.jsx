@@ -120,7 +120,6 @@ export default function Conversation() {
 
       const addUserMessageRequest = axios.post('/conversation/addUserMessage', data);
 
-      const request = axios.post('/conversation/getResponse', data);
       const addUserMessageResponse = await addUserMessageRequest;
       if (addUserMessageResponse.status === 200) {
         const { messageId, conversationId } = addUserMessageResponse.data;
@@ -129,7 +128,8 @@ export default function Conversation() {
           fetchFeedback(messageId); // 피드백 메시지 추가
         }
       }
-
+      
+      const request = axios.post('/conversation/getResponse', data);
       const response = await request;
       if (response.status === 200) {
         const { gptResponse, audio } = response.data;

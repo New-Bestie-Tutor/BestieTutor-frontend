@@ -1428,30 +1428,6 @@ h2 {
   cursor: pointer;
   }
   
-  /*********home 어디서 쓰이는거야*********/
-  /*
-.welcome-container{
-  background-color: #EBFFEE;
-  display: flex;
-  justify-content: center;
-  padding-top: 60px;
-}
-
-.welcome-image{
-  width: 120px;
-  margin-left: 20px;
-}
-
-.welcome-txt{
-  display: flex;
-  font-size: 30px;
-  font-weight: 900;
-  color:#4ED8B7;
-  align-items: center;
-  margin-right: 50px;
-}
-  */
-
 /*** feedback ***/
 /* 전체 컨테이너 스타일 */
 .feedback-container {
