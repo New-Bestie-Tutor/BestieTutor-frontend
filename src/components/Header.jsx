@@ -33,19 +33,8 @@ export default function Header() {
     }
   };
 
-  // Function to fetch profile info
-  const fetchProfile = async () => {
-    try {
-      const response = await axios.get('/user/profile', { withCredentials: true });
-      setUserInfo(response.data);
-    } catch (error) {
-      console.error("Failed to fetch profile:", error);
-    }
-  };
-
   useEffect(() => {
     fetchTopics();
-    // fetchProfile();
   }, []);
 
   useEffect(() => {
