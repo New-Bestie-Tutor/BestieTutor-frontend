@@ -61,6 +61,8 @@ export default function Header() {
     navigate('/subtopic', { state: { selectedTopic: mainTopic, subTopic: subTopicName } });
   };
 
+  const selectedLanguage = userLanguage === "ko" ? '한국어' : 'English';
+
   return (
     <div className="header">
       <div className="header-top">
