@@ -1,8 +1,11 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 /* 기본 Reset */
+
+
 * {
     margin: 0;
-    padding: 0;
+    padding: 0; 
     box-sizing: border-box;
     /* box-sizing: content-box; 전역설정 제외할 때 적용*/
   }
@@ -27,6 +30,7 @@
     flex-direction: column;
     padding: 0px 20px;
   }
+
   /* Start.css */
   .start{
     text-align: center;
@@ -1104,12 +1108,12 @@
   text-align: center;
   padding: 20px;
 }
-
+/*
 h2 {
   font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 20px;
-}
+}*/
 .next-button {
   margin-top: 20px;
   padding: 10px 20px;
@@ -1125,11 +1129,7 @@ h2 {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-.topic-goBack{
-  margin-top: 20px;
-  cursor: pointer;
-  text-align: left; 
-}
+ 
 /***********SubTopic.jsx***********/
 .SubTopic {
   text-align: center;
@@ -1221,14 +1221,27 @@ h2 {
 
 .header-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+  padding: 0.5rem 1rem;;
+  margin-left: 10px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.header-language, .header-mypage {
+  display: flex;
+  align-items: center; /* 세로 정렬 */
+  /* 내부 요소 간격 */
 }
 
 .header-title{
@@ -1237,6 +1250,55 @@ h2 {
   text-decoration: none;
   font-size: 25px;
 }
+
+.header-language {
+  position: relative;
+  margin-right: 1rem;
+}
+
+.lang-dropdown {
+  display: inline-block;
+}
+
+.globalimg{
+  width: 16px;
+}
+
+.lang-dropdown-button {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  justify-self: end;
+}
+
+
+.lang-dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 100;
+}
+
+.lang-dropdown:hover .lang-dropdown-menu {
+  display: block;
+}
+
+.lang-dropdown-menu p {
+  margin: 0;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.lang-dropdown-menu p:hover {
+  background-color: #f0f0f0;
+}
+
 .header-links a,
 .header-mypage a,
 .header-mypage button {
@@ -1267,51 +1329,69 @@ h2 {
 .logout-button{
   background-color: white;
   border: none;
+  cursor: pointer;
 }
 
 .header-content {
   display: flex;
+  gap: 1rem;
+  position: relative;
   align-items: center;
   justify-content: space-around;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-
+  text-align: center;
+  font-size: 15px;
+  padding: 0.2rem;
+  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
 }
 
 .header-item {
   margin: 0 20px;
   text-align: center;
   cursor: pointer;
-  padding: 10px;
-  font-size: 18px;
-  position: relative;
+  padding:0.5rem 1rem;
+  font-size: 15px;
   justify-content: center;
+  opacity: 1;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  
+}
+
+.header-item.inactive {
+  opacity: 0.5; /* 비활성화 상태에서 흐리게 */
+}
+
+.header-item.active {
+  opacity: 1;
+  font-weight: 600;
 }
 
 .dropdown-container {
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  display: block;
-  justify-content: space-around;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1;
+  top: 100%; /* 헤더 아래에 표시 */
+  left: 0;
+  
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  width: 100%; /* 헤더 폭과 동일 */
+  padding: 0.5rem;
+  z-index: 20;
 }
+
 
 /* Dropdown content */
 .dropdown-content {
   display: flex;
-  justify-content: space-around;
-  background-color: white;
+  justify-content: space-evenly;
+
   text-align: center;
+  cursor: pointer;
 }
 
 
 .dropdown-content p {
-  margin: 5px 0;
+  margin: 0.3rem 0;
 }
 .dropdown-content h4 {
   font-size: 16px;

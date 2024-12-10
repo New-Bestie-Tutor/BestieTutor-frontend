@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useContext, useState } from "react";
 import { UserContext } from "../UserContext";
 import IMAGES from "../images/images";
-import axios from 'axios';
+import axios from '../axiosConfig'; 
 import '../App.css';
 
 export default function Header() {
@@ -11,6 +11,7 @@ export default function Header() {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const username = userInfo?.email;
+  const [isFetched, setIsFetched] = useState(false);
   const navigate = useNavigate();
 
   // Fetch topics from the backend
@@ -37,7 +38,7 @@ export default function Header() {
 
   useEffect(() => {
     fetchTopics();
-    fetchProfile();
+    // fetchProfile();
   }, []);
 
   useEffect(() => {
