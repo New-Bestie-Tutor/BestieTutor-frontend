@@ -15,3 +15,4 @@ export { default as CurrentLevel } from "./CurrentLevel.jsx";
 export { default as PreferredTopic } from "./PreferredTopic.jsx";
 export { default as MyPage } from "./MyPage.jsx";
 export { default as Profile } from "./Profile.jsx";
+export { default as Review } from "./Review.jsx";
