@@ -3,15 +3,11 @@ import IMAGES from '../images/images';
 import { IoMdMic } from "react-icons/io";
 import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
-import { LuSendHorizonal } from "react-icons/lu";
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import React, { useContext } from 'react';
-import { UserContext } from '../UserContext';
 
 export default function Conversation() {
-  const { userInfo } = useContext(UserContext);
   const navigate = useNavigate(); // useNavigate 훅 사용
   const location = useLocation();
   const {
@@ -68,7 +64,7 @@ export default function Conversation() {
       console.log("Request Data:", data); // 디버깅용
   
       const response = await axios.post(
-        'http://localhost:3000/conversation/initialize',
+        '/conversation/initialize',
         data,
         {
           headers: {
@@ -148,8 +144,9 @@ export default function Conversation() {
 
       const response = await request;
       if (response.status === 200) {
-        const { gptResponse } = response.data;
+        const { gptResponse, audio } = response.data;
         addMessage('bettu', gptResponse); // 베튜 메시지 추가
+        playAudio(audio);
       }
     } catch (error) {
       console.error('응답 처리 중 오류:', error);
@@ -177,9 +174,9 @@ export default function Conversation() {
   // 음성 인식 설정 및 이벤트 핸들러
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
-  // recognition.lang = 'en-US';
-  recognition.lang = 'ko-KR';
-  // recognition.lang = 'ja-JP';
+    // recognition.lang = 'en-US';
+    recognition.lang = 'ko-KR';
+    // recognition.lang = 'ja-JP';
 
   // 음성 인식 시작
   const speakToMic = () => {
@@ -197,7 +194,7 @@ export default function Conversation() {
   // 인식된 음성 텍스트로 변환 & 서버로 텍스트를 전송하는 함수 호출
   recognition.onresult = (event) => {
     const transcript = event.results[0][0].transcript;
-    console.log('인식된 음성: ',transcript);
+    console.log(transcript);
     getResponse(transcript);
   };
 
@@ -214,10 +211,12 @@ export default function Conversation() {
     setTypingVisible(true);
   };
 
+  const submitTyping = () => {
+    typingInputHandler();
+  };
+
   // 타이핑된 텍스트 메시지 추가 및 서버로 전송
   const typingInputHandler = (e) => {
-    // 입력한 텍스트를 사용자 메시지로 추가
-    console.log(typingInput);
     getResponse(typingInput.trim());
     setTypingInput(''); // 입력창 초기화
     setTypingVisible(false); // 입력창 숨기기
@@ -280,7 +279,6 @@ export default function Conversation() {
       </div>
 
       <div className="chat-container">
-        {/* 메시지 출력 */}
         {messages
           .map((message, index) => renderMessage(message, index))}
 
@@ -291,14 +289,18 @@ export default function Conversation() {
         <p className="userInput-status">{status}</p>
         {typingVisible && (
           <form onSubmit={typingInputHandler} className="typingFrom">
-            <input
-              type="text"
+            <textarea
+              // type="text"
               value={typingInput}
-              onChange={(e) => setTypingInput(e.target.value)}
+              onChange={(e) => {
+                setTypingInput(e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
               placeholder="메시지를 입력해주세요."
               className="typingInput"
             />
-            <LuSendHorizonal onClick={typingInputHandler} className="typingSendButton" />
+            <img src={IMAGES.sendMessage} onClick={submitTyping} className='typingSendButton' />
           </form>
         )}
         <div className="icon-container">

@@ -45,7 +45,7 @@ const Topic = () => {
 
     return (
         <div className="topic">
-            <GoBack /> 
+            <GoBack className='conversation-goBack'/> 
             <h2>주제를 선택해 주세요</h2>
             <div className="topic-list">
                 {topics.map((topic) => (

@@ -1,16 +1,21 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 /* 기본 Reset */
+
+
 * {
     margin: 0;
-    padding: 0;
+    padding: 0; 
     box-sizing: border-box;
+    /* box-sizing: content-box; 전역설정 제외할 때 적용*/
   }
   
   body {
     font-family: 'Pretendard';
     background-color: white;
     color: #333;
-    line-height: 1.6;
+    /* line-height: 1.6; */
+    /* line-height: normal; 전역설정 제외할 때 적용*/
   }
 
   .container{
@@ -25,6 +30,7 @@
     flex-direction: column;
     padding: 0px 20px;
   }
+
   /* Start.css */
   .start{
     text-align: center;
@@ -356,7 +362,7 @@
   flex-direction: column; /* 채팅 버블을 세로로 쌓기 */
   padding: 10px 5px;
   overflow: auto;
-  height: 520px;
+  height: 500px;
 }
 .chatBubble{
   display: inline-block;
@@ -419,7 +425,7 @@
   color: #4ED8B7;
   cursor: pointer;
   position: fixed;
-  top: 89%;
+  top: 90%;
   left: 50%;
   width: 20%;
   min-width: 200px;
@@ -440,18 +446,38 @@
 .typingFrom{
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 3px;
   margin-bottom: 5px;
+  width: 670px; 
+  position: relative;
 }
 .typingInput{
   flex: 1;
-  height: 100%;
+  width: 600px; 
+  min-height: 40px; /* 기본 높이 */
+  max-height: 100px; /* 최대 높이 */
+  resize: none; /* 사용자가 크기를 변경하지 못하도록 설정 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
   font-size: 15px;
-  text-align: left; 
-  border-color: #4ED8B7;
+  line-height: 1.6;
+  border: 2px solid #4ED8B7;
+  border-radius: 5px;
+  outline: none;
+
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  left: 10;
 }
 .typingSendButton{
-  font-size: 25px;
+  height: 30px;
+  width: 30px;
+
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  right: 0;
 }
 
 /* ChooseCharacter.css */
@@ -488,6 +514,9 @@
 .character-item.selected {
   display: flex;
   transform: scale(1.2); /* 10% 확대 */
+}
+.character-item.selected .character-text {
+  color: #4ED8B7;
 }
 
 .character-text {
@@ -627,6 +656,95 @@
   object-fit: contain;
 }
 
+/*myPage.css*/
+.mypage-container{
+  width: 100%;
+  min-width: 360px;
+  overflow: hidden;
+  text-align: center;
+  background-color: #eaf9f3;
+}
+.profile-header {
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mypage-profile {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+}
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  width: 50%;
+  min-width: 360px;
+}
+
+.stat {
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column; 
+  padding-right: 20px;
+}
+
+.stat span {
+  font-size: 11px;
+  color: #b0b0b0;
+}
+
+.mypage-menu {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #ffffff;
+}
+
+.mypage-menu li {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 18px;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
+.mypage-menu a{
+  text-decoration: none;
+  color: #000;
+}
+
+.mypage-menu li span {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.mypage-menu li:hover {
+  background-color: #f0f0f0;
+}
+.mypage-service{
+  width: 18px;
+}
+
+/* Profile.css */
+.profile-container{
+  min-height: 78vh !important;
+}
+
   /* 반응형 레이아웃 */
   /* Mobile */
   @media (max-width: 360px) {
@@ -674,11 +792,29 @@
     .goal-text{
       font-size: 1em;
     }
+    .typingInput{
+      width: 280px;
+    }
+    .typingFrom{
+      width: 350px; 
+    }
+    .profile-stats {
+      min-width: 280px;
+    }
+    .profile-container{
+      min-height: 93vh !important;
+    }
   }
   /* Tablet */
   @media (min-width: 768px){
     .container{
       width: 100%;
+    }
+    .typingInput{
+      width: 450px;
+    }
+    .typingFrom{
+      width: 520px; 
     }
   }
   /* Desktop */
@@ -972,12 +1108,12 @@
   text-align: center;
   padding: 20px;
 }
-
+/*
 h2 {
   font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 20px;
-}
+}*/
 .next-button {
   margin-top: 20px;
   padding: 10px 20px;
@@ -993,11 +1129,7 @@ h2 {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-.topic-goBack{
-  margin-top: 20px;
-  cursor: pointer;
-  text-align: left; 
-}
+ 
 /***********SubTopic.jsx***********/
 .SubTopic {
   text-align: center;
@@ -1089,14 +1221,27 @@ h2 {
 
 .header-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+  padding: 0.5rem 1rem;;
+  margin-left: 10px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.header-language, .header-mypage {
+  display: flex;
+  align-items: center; /* 세로 정렬 */
+  /* 내부 요소 간격 */
 }
 
 .header-title{
@@ -1105,6 +1250,55 @@ h2 {
   text-decoration: none;
   font-size: 25px;
 }
+
+.header-language {
+  position: relative;
+  margin-right: 1rem;
+}
+
+.lang-dropdown {
+  display: inline-block;
+}
+
+.globalimg{
+  width: 16px;
+}
+
+.lang-dropdown-button {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  justify-self: end;
+}
+
+
+.lang-dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 100;
+}
+
+.lang-dropdown:hover .lang-dropdown-menu {
+  display: block;
+}
+
+.lang-dropdown-menu p {
+  margin: 0;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.lang-dropdown-menu p:hover {
+  background-color: #f0f0f0;
+}
+
 .header-links a,
 .header-mypage a,
 .header-mypage button {
@@ -1135,51 +1329,69 @@ h2 {
 .logout-button{
   background-color: white;
   border: none;
+  cursor: pointer;
 }
 
 .header-content {
   display: flex;
+  gap: 1rem;
+  position: relative;
   align-items: center;
   justify-content: space-around;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-
+  text-align: center;
+  font-size: 15px;
+  padding: 0.2rem;
+  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
 }
 
 .header-item {
   margin: 0 20px;
   text-align: center;
   cursor: pointer;
-  padding: 10px;
-  font-size: 18px;
-  position: relative;
+  padding:0.5rem 1rem;
+  font-size: 15px;
   justify-content: center;
+  opacity: 1;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  
+}
+
+.header-item.inactive {
+  opacity: 0.5; /* 비활성화 상태에서 흐리게 */
+}
+
+.header-item.active {
+  opacity: 1;
+  font-weight: 600;
 }
 
 .dropdown-container {
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  display: block;
-  justify-content: space-around;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1;
+  top: 100%; /* 헤더 아래에 표시 */
+  left: 0;
+  
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  width: 100%; /* 헤더 폭과 동일 */
+  padding: 0.5rem;
+  z-index: 20;
 }
+
 
 /* Dropdown content */
 .dropdown-content {
   display: flex;
-  justify-content: space-around;
-  background-color: white;
+  justify-content: space-evenly;
+
   text-align: center;
+  cursor: pointer;
 }
 
 
 .dropdown-content p {
-  margin: 5px 0;
+  margin: 0.3rem 0;
 }
 .dropdown-content h4 {
   font-size: 16px;
