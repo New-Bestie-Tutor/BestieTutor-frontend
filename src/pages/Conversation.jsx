@@ -129,12 +129,6 @@ export default function Conversation() {
         },
       });
 
-      const request = axios.post('/conversation/getResponse', data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
       const addUserMessageResponse = await addUserMessageRequest;
       if (addUserMessageResponse.status === 200) {
         const { messageId, conversationId } = addUserMessageResponse.data;
@@ -143,6 +137,12 @@ export default function Conversation() {
           fetchFeedback(messageId); // 피드백 메시지 추가
         }
       }
+
+      const request = axios.post('/conversation/getResponse', data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
       const response = await request;
       if (response.status === 200) {
@@ -226,7 +226,6 @@ export default function Conversation() {
 
   // 대화 종료
   const stopConversation = () => {
-    setConverseId('6753f2e06dedc4c3bcc1f901');
     console.log('converseId', converseId);
     updateEndTime(converseId);
   }
