@@ -30,7 +30,6 @@ export default function Header() {
   const fetchProfile = async () => {
     try {
       const response = await axios.get('/user/profile', { withCredentials: true });
-
       setUserInfo(response.data);
     } catch (error) {
       console.error("Failed to fetch profile:", error);
@@ -38,20 +37,16 @@ export default function Header() {
   };
 
   useEffect(() => {
-    const temp = async () => {
-      await fetchProfile();
-      await fetchTopics();
-      setIsFetched(true);
-    };
-    temp();
+    fetchTopics();
+    // fetchProfile();
   }, []);
 
   useEffect(() => {
-    if (isFetched && !userInfo) {
+    if (!userInfo) {
       alert("로그아웃 상태이므로 초기화면으로 이동합니다.");
       navigate('/');
     }
-  }, [isFetched, userInfo, navigate]); 
+  }, [userInfo, navigate]);
 
   const logout = async () => {
     await axios.post("/user/logout");

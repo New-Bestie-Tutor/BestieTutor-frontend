@@ -5,7 +5,7 @@ import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axiosConfig'; 
 
 export default function Conversation() {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -66,11 +66,6 @@ export default function Conversation() {
       const response = await axios.post(
         '/conversation/initialize',
         data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }
       );
   
       if (response.status === 200) {
@@ -122,17 +117,9 @@ export default function Conversation() {
         characterName: selectedCharacter,
       };
 
-      const addUserMessageRequest = axios.post('/conversation/addUserMessage', data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const addUserMessageRequest = axios.post('/conversation/addUserMessage', data);
 
-      const request = axios.post('/conversation/getResponse', data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const request = axios.post('/conversation/getResponse', data);
 
       const addUserMessageResponse = await addUserMessageRequest;
       if (addUserMessageResponse.status === 200) {
@@ -156,11 +143,7 @@ export default function Conversation() {
   // 피드백 메시지 로드
   async function fetchFeedback(messageId) {
     try {
-      const response = await axios.get(`/feedback/${messageId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const response = await axios.get(`/feedback/${messageId}`);
 
       if (response.status === 200) {
         const feedbackText = response.data.feedback || '피드백을 가져올 수 없습니다.';
