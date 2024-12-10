@@ -79,8 +79,8 @@ export default function Review() {
                     const seconds = Math.floor((durationInMilliseconds % (1000 * 60)) / 1000); // 초
 
                     return (
-                        <div key={conversation.conversationId} style={styles.card}>
-                            <div style={styles.icon}>
+                        <div className='review-card' key={conversation.conversationId}>
+                            <div className='review-icon'>
                                 <img src={IMAGES[topic]} alt="icon" width="30" />
                             </div>
                             <div>
@@ -99,7 +99,7 @@ export default function Review() {
                     );
                 })}
             </div>
-            <div style={styles.pagination}>
+            <div className='review-pagination'>
                 {Array.from({ length: Math.ceil(conversations.length / itemsPerPage) }, (_, index) => (
                     <button
                         key={index}
