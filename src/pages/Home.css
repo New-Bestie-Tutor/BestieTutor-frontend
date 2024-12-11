@@ -53,7 +53,7 @@
   /*************friendliness-section************/
 
     .friendliness-section {
-        background: linear-gradient(to bottom, #ff8019,#ff5e00); /* Gradient direction and colors */
+        background: linear-gradient(to bottom, #ff8019,#ff5e00); 
         display: grid; 
         grid-template-rows: repeat(4, 1fr);
         grid-template-columns: repeat(4, 1fr);
@@ -70,25 +70,25 @@
     .intimacy_image {
         grid-area: intimacy_image;
         align-self: end;
-        width: 100%; /* 부모 크기에 따라 조정 */
+        width: 100%; 
         max-width:38rem;
         min-width: 486px;
         position: relative;
-        left: 15%; /* 상대 위치 */
+        left: 15%; 
     }
     
     .speechbubble_box {
         grid-area: speechbubble_box;
-        width: 19rem; /* 화면 크기에 따라 동적 조정 */
-        max-width: 19rem; /* 최대 크기 제한 */
+        width: 19rem;
+        max-width: 19rem;
         position: relative;
-        right: 5%; /* 상대 위치 */
+        right: 5%; 
         bottom: 1.5rem;
     }
     
       
       .intimacy_speechbubble {
-        width: 100%; /* 부모 크기 기준으로 맞춤 */
+        width: 100%; 
       }
       
       .intimacy_text {
@@ -101,7 +101,7 @@
         bottom: 37%;
         left: 50%;
         transform: translate(-50%, -50%);
-        white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+        white-space: nowrap; 
         z-index:100;
       }
       
@@ -206,11 +206,11 @@
         font-size: 1.3rem;
     }
     .intimacy_box p {
-        white-space: normal; /* 텍스트 줄바꿈 */
+        white-space: normal; 
       }
       .next-goal {
-        display: block; /* 다음 목표 부분만 줄바꿈 */
-        margin-top: 0.5rem; /* 간격 조정 */
+        display: block;
+        margin-top: 0.5rem; 
       }
   }
   @media (max-width: 666px){
@@ -295,7 +295,7 @@
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: calc(100% / 3); /* Adjust visibleCount here */
+    min-width: calc(100% / 3); 
     margin: 0 0.625rem;
     flex-shrink: 0;
   }

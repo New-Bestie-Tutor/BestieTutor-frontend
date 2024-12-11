@@ -61,15 +61,14 @@ useEffect(() => {
   if (userId) {
     fetchUser();
   }
-}, [userId]); // userId가 변경될 때만 호출
+}, [userId]); 
 
 useEffect(() => {
   if (userInfo?.email) {
     fetchConversations();
   }
-}, [userInfo?.email]); // 이메일 값이 있을 때만 fetchConversations 호출
+}, [userInfo?.email]); 
 
-  // Calculate total study time, inactivity, and determine current step
   useEffect(() => {
     const total = conversations.reduce(
       (sum, conversation) => sum + conversation.time,
@@ -83,7 +82,6 @@ useEffect(() => {
     const goal = steps[step] || 0;
     setNextGoal(goal - total);
 
-    // Calculate inactivity days
     const today = new Date();
     const lastActivity = conversations.reduce((latest, conversation) => {
       const recordDate = new Date(conversation.startTime);
@@ -97,7 +95,6 @@ useEffect(() => {
   }, [conversations]);
 
 
-  // Get current image based on the step and inactivity
   const getImageAndText = (step, daysInactive) => {
     if (daysInactive >= 30) {
       return { image: IMAGES.after30days, text: "흥" };

@@ -841,7 +841,6 @@
   }
 
 /* Login */
-/* 기본적인 로그인 화면 스타일 */
 .goBack{
   margin-top: 40px;
 }
@@ -855,22 +854,20 @@
 }
 
 .align-left {
-  margin-left: 20px; /* 왼쪽에 정렬 위치를 통일 */
+  margin-left: 20px; 
   text-align: left;
 }
 
-/* 뒤로가기 버튼을 왼쪽에 정렬 */
 .back-button {
   font-size: 24px;
   background: none;
   border: none;
   position: absolute;
-  left: 20px; /* align-left와 일치시키기 */
+  left: 20px; 
   top: 20px;
   cursor: pointer;
 }
-
-/* 제목과 부제목에 align-left 클래스를 적용하여 왼쪽 정렬 */
+ 
 .login-container{
 margin-top: 3rem;
 }
@@ -887,7 +884,6 @@ margin-top: 3rem;
   margin-bottom: 60px;
 }
 
-/* input label에 align-left를 적용 */
 .input-label {
     display: block;
     font-size: 14px;
@@ -895,7 +891,6 @@ margin-top: 3rem;
     font-weight: 700;
 }
 
-/* 입력 필드 스타일 */
 .input-field {
     width: 100%;
     padding: 10px;
@@ -1085,8 +1080,8 @@ margin-top: 3rem;
   display: flex;
   background-color: #e0f7e9;
   border: 2px solid #b2e6c9;
-  width: 100px;  /* 원하는 원형 크기에 맞게 조절 */
-  height: 100px; /* 원하는 원형 크기에 맞게 조절 */
+  width: 100px;  
+  height: 100px; 
   justify-content: center;
   align-items: center;
   border-radius: 50%;
@@ -1095,23 +1090,23 @@ margin-top: 3rem;
 .topic-list {
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(4, 1fr); /* 기본적으로 4열 */
+  grid-template-columns: repeat(4, 1fr); 
   justify-items: center;
   align-items: center;
   justify-content: center;
-  min-height: 60vh; /* 화면의 중앙에 배치하기 위해 전체 높이를 사용 */
+  min-height: 60vh; 
   text-align: center;
 }
 
 @media (max-width: 1024px) {
   .topic-list {
-      grid-template-columns: repeat(2, 1fr); /* 중간 화면에서는 2열 */
+      grid-template-columns: repeat(2, 1fr); 
   }
 }
 
 @media (max-width: 600px) {
   .topic-list {
-      grid-template-columns: 1fr; /* 작은 화면에서는 1열 */
+      grid-template-columns: 1fr; 
   }
 }
 .topic-icon {
@@ -1128,12 +1123,7 @@ margin-top: 3rem;
   text-align: center;
   padding: 20px;
 }
-/*
-h2 {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 20px;
-}*/
+
 .next-button {
   margin-top: 20px;
   padding: 10px 20px;
@@ -1143,8 +1133,8 @@ h2 {
   background-color: #4ED8B7;
   color: white;
   border: none;
-  border-radius: 0.375rem; /* 모서리 둥글게 */
-  font-size: 18px; /* 글자 크기 */
+  border-radius: 0.375rem; 
+  font-size: 18px; 
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -1180,7 +1170,7 @@ h2 {
   display: flex;
   justify-content: center;
   margin-top: 30px;
-  gap: 2px; /* Space between buttons */
+  gap: 2px; 
 }
 
 .level-button {
@@ -1260,8 +1250,7 @@ h2 {
 
 .header-language, .header-mypage {
   display: flex;
-  align-items: center; /* 세로 정렬 */
-  /* 내부 요소 간격 */
+  align-items: center; 
 }
 
 .header-title{
@@ -1379,7 +1368,7 @@ h2 {
 }
 
 .header-item.inactive {
-  opacity: 0.5; /* 비활성화 상태에서 흐리게 */
+  opacity: 0.5; 
 }
 
 .header-item.active {
@@ -1389,12 +1378,18 @@ h2 {
 
 .dropdown-container {
   position: absolute;
-  top: 100%; /* 헤더 아래에 표시 */
+  top: 100%; 
   left: 0;
-  
+  background: white; 
+  box-shadow: 0px 0px 0px 1px rgba(14, 63, 126, 0.04), 
+              0px 1px 1px -0.5px rgba(42, 51, 69, 0.04), 
+              0px 3px 3px -1.5px rgba(42, 51, 70, 0.04), 
+              0px 6px 6px -3px rgba(42, 51, 70, 0.04), 
+              0px 12px 12px -6px rgba(14, 63, 126, 0.04), 
+              0px 24px 24px -12px rgba(14, 63, 126, 0.04);
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-  width: 100%; /* 헤더 폭과 동일 */
+  width: 100%; 
   padding: 0.5rem;
   z-index: 20;
 }
