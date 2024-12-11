@@ -1,16 +1,18 @@
 import GoBack from '../components/GoBack';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { UserContext } from "../UserContext";
 import '../App.css';
 import axios from 'axios';
 import IMAGES from "../images/images";
 
 export default function PreferredTopic() {
     const navigate = useNavigate();
+    const { userInfo, setUserInfo } = useContext(UserContext);
+    const userId = userInfo?.userId;
     const location = useLocation();
     const { language, goals, level } = location.state;
     
-    const [user, setUser] = useState(null);
     const [topics, setTopics] = useState([]); // 백엔드에서 받아올 주제 목록
     const [selectedTopics, setSelectedTopics] = useState([]);
     
@@ -25,24 +27,8 @@ export default function PreferredTopic() {
         }
     };
 
-    const fetchUser = async () => {
-        try {
-            const response = await axios.get('/user/getUserInfo', {
-                withCredentials: true, // 쿠키 자동 포함
-            });
-        if (response.status === 201) {
-            setUser(response.data.userInfo);
-        } else {
-            console.error("userId 불러오는데 실패했습니다.", response.status);
-        }
-        } catch (error) {
-        console.error("API 호출 오류:", error);
-        }
-    };
-    
     useEffect(() => {
         fetchTopics(); // 컴포넌트가 마운트될 때 주제 목록을 불러옴
-        fetchUser(); 
     }, []);
     
     const handleNextSurvey = async () => {
@@ -60,7 +46,7 @@ export default function PreferredTopic() {
 
     async function preference() {
         const userData = {
-            userId: user.userId, 
+            userId: userId, 
             language: language,
             learningGoals: goals,
             preferredTopics: selectedTopics,

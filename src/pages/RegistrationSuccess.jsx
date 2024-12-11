@@ -6,7 +6,7 @@ import GoBack from '../components/GoBack';
 export default function RegistrationSuccess() {
   const navigate = useNavigate();
     return (
-      <div className="container start">
+      <div className="container startPage">
         <GoBack className="goBack"/>
         <div className="image-wrapper">
           <img src={IMAGES.bettu} alt="bettu" className="image" />
