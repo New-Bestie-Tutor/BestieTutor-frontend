@@ -7,18 +7,20 @@ export default function RecordCard({ record }) {
 const category = record.topicDescription.split(" - ")[0];
 const topic = record.topicDescription.split(" - ")[1];
 const level = record.topicDescription.split(" - ")[2];
-const time = record.endTime - record.startTime;
+const startTime = new Date(record.startTime);
+const endTime = new Date(record.endTime);
+const time = endTime && startTime ? (endTime - startTime) / (1000 * 60) : 0; 
 
   return (
     <div className="record-card">
       <div className="record-header">
         <div className="record-header-top">
           <p className="record-category">{category}</p>
-          <p className="record-date">{new Date(record.startTime).toLocaleDateString()}</p>
+          <p className="record-date">{startTime.toLocaleDateString()}</p>
         </div>
         <div className="record-header-second">
           <p className="record-topic">{topic}</p>
-          <p className="record-time">{time}분</p>
+          <p className="record-time">{time.toFixed(1)}분</p>
         </div>
       </div>
       <div className="record-content">

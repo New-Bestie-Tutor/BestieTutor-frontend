@@ -31,7 +31,6 @@ export default function Home() {
 
     if (response.status === 200) {
       setUser(response.data);
-      console.log(response.data);
     } else {
       console.error("userId 불러오는데 실패했습니다.", response.status);
     }
@@ -39,6 +38,7 @@ export default function Home() {
     console.error("API 호출 오류:", error);
   }
 };
+
 const fetchConversations = async () => {
   try {
       if (!userEmail) {
@@ -57,6 +57,7 @@ const fetchConversations = async () => {
       console.error('Error fetching conversations:', error);
   }
 };
+
 useEffect(() => {
   if (userId) {
     fetchUser();
@@ -70,10 +71,13 @@ useEffect(() => {
 }, [userInfo?.email]); 
 
   useEffect(() => {
-    const total = conversations.reduce(
-      (sum, conversation) => sum + conversation.time,
-      0
-    );
+    const total = conversations.reduce((sum, conversation) => {
+      const startTime = new Date(conversation.startTime);
+      const endTime = new Date(conversation.endTime);
+      const duration = endTime - startTime;
+      return sum + duration / (1000 * 60); 
+    }, 0);
+
     setTotalTime(total);
 
     const step = steps.findIndex((s) => total < s);
@@ -151,14 +155,14 @@ useEffect(() => {
             </div>
           
             <div className="intimacy_box">
-              <p className="time">♥ 친밀도: {totalTime}</p>
+            <p className="time">♥ 친밀도: {totalTime.toFixed(1)}분</p>
               <p>
                 다음 목표까지:{" "}
                 <span className="next-goal">
                   {isNaN(nextGoal)
-                    ? "NaN"
+                    ? "0"
                     : nextGoal > 0
-                    ? `${nextGoal}분 남음`
+                    ? `${nextGoal.toFixed(1)}분 남음`
                     : "친밀도 100 달성!"}
                 </span>
               </p>

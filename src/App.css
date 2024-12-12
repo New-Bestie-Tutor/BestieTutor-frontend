@@ -744,22 +744,39 @@
 }
 
   /* review.css */
+  .review-title{
+    margin-top: 30px;
+  }
+  .sortOrderBox{
+    margin-top: 30px;
+  }
   .review-card {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    margin-top: 50px;
+    margin-bottom: 20px;
   }
-  .review-icon {
-    margin-right: 10px;
-  }
+
   .review-pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
   }
+
+  .review-pagination-button {
+    margin-bottom: 30px;
+    border: 1px solid transparent;
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+  .review-pagination-button.active {
+      border: 1px solid black; 
+  }
+
 
   /* 반응형 레이아웃 */
   /* Mobile */
