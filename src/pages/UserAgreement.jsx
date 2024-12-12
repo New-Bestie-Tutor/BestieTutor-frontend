@@ -20,17 +20,15 @@ export default function UserAgreement() {
         setSingleChecked([newCheckedState, newCheckedState]);
     };
 
-    // 개별 이용약관 체크박스 상태 업데이트..뭐야 왜 돼?
+    // 개별 이용약관 체크박스 상태 관리
     const handleSingleCheck = (index) => {
         const updatedSingleChecked = [...isSingleChecked];
         updatedSingleChecked[index] = !updatedSingleChecked[index];
         setSingleChecked(updatedSingleChecked);
-
-        // 전체동의가 개별 체크박스 모두가 체크되었을 때만 활성화되도록 설정
         setIsChecked(updatedSingleChecked.every(Boolean));
     };
 
-    // 내역 보기 클릭
+    // 내역 보기
     const openAgreementModal = (index) => {
         setAgreementModal(index);
     };
@@ -79,12 +77,10 @@ export default function UserAgreement() {
         <div className="container">
             <GoBack className="goBack"/>
             <h3 className="title agreeTitle">서비스 가입을 위해<br />약관에 동의해주세요</h3>
-            
             <p className={`checkbox ${isChecked ? 'checked' : ''}`} onClick={handleAllCheck}>
                 <CiCircleCheck className='CiCircleCheck'/>
                 <span className='allAgree'>전체동의</span>
             </p>
-
             <div className='agreement-container'>
                 <p className="sub-checkbox">
                     <FaCheck className={`FaCheck ${isSingleChecked[0] ? 'checked' : ''}`} onClick={() => handleSingleCheck(0)}/>
@@ -97,7 +93,6 @@ export default function UserAgreement() {
                     <span className='agreementDetail' onClick={() => openAgreementModal(1)}>내역보기</span>
                 </p>
             </div>
-
             <Modal isOpen={isAgreementModal === 0} onRequestClose={closeAgreementModal} style={window.innerWidth <= 768 ? mobileModalStyle : ModalStyle}>
                 <IoIosCloseCircleOutline className='closeModal' onClick={closeAgreementModal}/>
                 <div className="modalTitle">

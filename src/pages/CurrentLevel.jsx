@@ -10,7 +10,7 @@ export default function CurrentLevel() {
     const displayLanguage = 
             language === 'English' ? '영어' :
             language === 'Japanese' ? '일본어' : '한국어';
-
+            
     const levels = [`${displayLanguage}를 처음 배워요`, '기본적인 대화를 할 수 있어요', '다양한 주제에 대해 이야기할 수 있어요'];
     const [selectedLevel, setSelectedLevel] = useState(null);
 
@@ -22,10 +22,8 @@ export default function CurrentLevel() {
 
     return (
         <div className="topic">
-
             <GoBack className='topic-goBack'/> 
             <p className="conversation-title">당신의 실력을 선택해주세요</p>
-
             <div className='character-wrapper'>
                 <div className="level-list">
                     {levels.map((level, index) => (
@@ -40,7 +38,6 @@ export default function CurrentLevel() {
                     ))}
                 </div>
             </div>
-            {/* Start Learning Button*/}
             <button 
                 className="next-button" 
                 onClick={handleNextSurvey}

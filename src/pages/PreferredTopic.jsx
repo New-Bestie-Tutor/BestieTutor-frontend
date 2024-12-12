@@ -8,38 +8,36 @@ import IMAGES from "../images/images";
 
 export default function PreferredTopic() {
     const navigate = useNavigate();
-    const { userInfo, setUserInfo } = useContext(UserContext);
+    const { userInfo } = useContext(UserContext);
     const userId = userInfo?.userId;
     const location = useLocation();
     const { language, goals, level } = location.state;
     
-    const [topics, setTopics] = useState([]); // 백엔드에서 받아올 주제 목록
+    const [topics, setTopics] = useState([]); 
     const [selectedTopics, setSelectedTopics] = useState([]);
     
-    // 주제를 백엔드에서 가져오는 함수
+    // Topics 조회 api 호출
     const fetchTopics = async () => {
-        const response = await axios.get('/topic/'); // API 호출
+        const response = await axios.get('/topic/'); 
         if (response.status === 200) {
-            setTopics(response.data); // 주제 목록 상태에 저장
+            setTopics(response.data); 
         }
         else {
-            console.error("주제 목록을 불러오는데 실패했습니다.", response.status);
+            // console.error("주제 목록을 불러오는데 실패했습니다.", response.status);
         }
     };
 
     useEffect(() => {
-        fetchTopics(); // 컴포넌트가 마운트될 때 주제 목록을 불러옴
+        fetchTopics();
     }, []);
     
     const handleNextSurvey = async () => {
-        // 목표 중복 선택 가능
-        if (selectedTopics.length >= 1 && selectedTopics.length <= 3) {
+        if (selectedTopics.length >= 1 && selectedTopics.length <= 3) {// 목표 3개까지 선택 가능
             const result = await preference();
-            // 성공적으로 설문이 완료되었는지 확인
             if (result && result.message === '선호도 조사 완료') {
                 navigate('/home'); 
             } else {
-                console.error("선호도 조사에 문제가 발생했습니다.");
+                // console.error("선호도 조사에 문제가 발생했습니다.");
             }
         }
     };
@@ -71,14 +69,12 @@ export default function PreferredTopic() {
 
     return (
         <div className="topic">
-
             <GoBack className='topic-goBack'/> 
             <p className="conversation-title">선호하는 주제를 선택해주세요
             <span style={{ fontSize: '15px', color: 'rgba(0, 0, 0, 0.36)' }}>
                 (최대 3개)
             </span>
             </p>
-
             <div className='character-wrapper'>
                 <div className="goal-list">
                     {topics.map((topic) => (
@@ -94,7 +90,6 @@ export default function PreferredTopic() {
                     ))}
                 </div>
             </div>
-            {/* Start Learning Button*/}
             <button 
                 className="next-button" 
                 onClick={handleNextSurvey}

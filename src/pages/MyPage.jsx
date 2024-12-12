@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Footer from "../components/Footer"
 import Header from "../components/Header"
 import IMAGES from "../images/images";
@@ -8,7 +8,6 @@ import axios from 'axios';
 import '../App.css'
 
 export default function MyPage() {
-  const navigate = useNavigate();
   const { userInfo } = useContext(UserContext);
   const [user, setUser] = useState({});
 
@@ -21,10 +20,10 @@ const fetchUser = async () => {
     if (response.status === 200) {
         setUser(response.data);
     } else {
-        console.error("userId 불러오는데 실패했습니다.", response.status);
+        // console.error("userId 불러오는데 실패했습니다.", response.status);
     }
     } catch (error) {
-    console.error("API 호출 오류:", error);
+    // console.error("API 호출 오류:", error);
     }
 };
   
