@@ -72,7 +72,7 @@ export default function PreferredTopic() {
     return (
         <div className="topic">
 
-            <GoBack className='topic-goBack'/> 
+            <GoBack className='goBack'/> 
             <p className="conversation-title">선호하는 주제를 선택해주세요
             <span style={{ fontSize: '15px', color: 'rgba(0, 0, 0, 0.36)' }}>
                 (최대 3개)

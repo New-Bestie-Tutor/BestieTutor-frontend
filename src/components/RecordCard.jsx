@@ -4,28 +4,30 @@ import '../App.css';
 
 export default function RecordCard({ record }) {
 
-const category = record.topic_description.split(" - ")[0];
-const topic = record.topic_description.split(" - ")[1];
-const level = record.topic_description.split(" - ")[2];
-const time = record.end_time - record.start_time;
+const category = record.topicDescription.split(" - ")[0];
+const topic = record.topicDescription.split(" - ")[1];
+const level = record.topicDescription.split(" - ")[2];
+const startTime = new Date(record.startTime);
+const endTime = new Date(record.endTime);
+const time = endTime && startTime ? (endTime - startTime) / (1000 * 60) : 0; 
 
   return (
     <div className="record-card">
       <div className="record-header">
         <div className="record-header-top">
           <p className="record-category">{category}</p>
-          <p className="record-date">{new Date(record.start_time).toLocaleDateString()}</p>
+          <p className="record-date">{startTime.toLocaleDateString()}</p>
         </div>
         <div className="record-header-second">
           <p className="record-topic">{topic}</p>
-          <p className="record-time">{time}분</p>
+          <p className="record-time">{time.toFixed(1)}분</p>
         </div>
       </div>
       <div className="record-content">
         <span className={`level-badge ${level}`}>
-          {record.level === "easy" ? "초급" : record.level === "normal" ? "중급" : "고급"}
+        {level === "easy" ? "초급" : level === "normal" ? "중급" : "고급"}
         </span>
-        <p className="record-title">{record.title}</p>
+        <p className="record-title">{record.description}</p>
       </div>
     </div>
   );
