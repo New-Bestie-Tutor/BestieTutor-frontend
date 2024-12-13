@@ -20,10 +20,10 @@ export default function Login() {
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const handleFocus = (field) => {
-      if (field === 'email' && email === 'test1@test1.com') {
+      if (field === 'email') {
           setEmail('');
       }
-      if (field === 'password' && password === 'test1test1!') {
+      if (field === 'password') {
           setPassword('');
       }
     };
@@ -50,7 +50,7 @@ export default function Login() {
         } else {
           setErrorMessage('로그인에 실패했습니다. 다시 시도해주세요.');
         }
-        console.error("Login error:", error);
+        // console.error("Login error:", error);
       }
     }
 
@@ -88,7 +88,7 @@ export default function Login() {
                 navigate(redirectUrl);            
               }
         } catch (error) {
-            console.error('카카오 로그인 실패:', error);
+            // console.error('카카오 로그인 실패:', error);
             alert('로그인에 실패했습니다. 다시 시도해주세요.');
             navigate('/login'); // 실패 시 로그인 페이지로 이동
         }
@@ -99,7 +99,6 @@ export default function Login() {
             <GoBack /> 
             <h1 className="login-title">로그인</h1>
             <p className="login-subtitle">이메일로 로그인해 주세요</p>
-
             <form className="login-form" onSubmit={login}>
                 <label htmlFor="email" className="input-label">이메일</label>
                 <input
@@ -111,7 +110,6 @@ export default function Login() {
                     onFocus={() => handleFocus('email')}
                     onChange={handleEmailChange}
                 />
-
                 <label htmlFor="password" className="input-label">비밀번호</label>
                 <div className="password-container">
                     <input
@@ -131,18 +129,13 @@ export default function Login() {
                         {showPassword ? '🙈' : '🙉'}
                     </button>
                 </div>
-
                 {errorMessage && <p className="login-error-message">{errorMessage}</p>}
-
                 <Link to="/findpw" className="forgot-password">비밀번호를 잊으셨나요?</Link>
                 <button type="submit" className="login-button">로그인</button>
-
                 <p className="signup-text">
                     계정이 없으신가요? <Link to="/register" className="signup-link">계정만들기</Link>
                 </p>
-
                 <div className="divider">Or with</div>
-
                 <button type="button" className="kakao-login" onClick={handleKakaoLogin}>
                   <img src={IMAGES.kakao_login} alt="kakao_login" className="kakao-login_image" />
                 </button>

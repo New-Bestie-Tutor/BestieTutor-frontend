@@ -1,5 +1,6 @@
 // components/RecordCard.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import '../App.css';
 
 export default function RecordCard({ record }) {
@@ -11,8 +12,13 @@ const startTime = new Date(record.startTime);
 const endTime = new Date(record.endTime);
 const time = endTime && startTime ? (endTime - startTime) / (1000 * 60) : 0; 
 
+const navigate = useNavigate();
+const reviewHandler = (conversationId, description) => {
+  navigate('/feedback', { state: { conversationId, description } }); 
+};
+
   return (
-    <div className="record-card">
+    <div className="record-card" onClick={() => reviewHandler(record.conversationId, record.description)}>
       <div className="record-header">
         <div className="record-header-top">
           <p className="record-category">{category}</p>

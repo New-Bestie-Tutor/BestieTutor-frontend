@@ -22,10 +22,10 @@ const fetchUser = async () => {
     if (response.status === 200) {
         setUser(response.data);
     } else {
-        console.error("userId 불러오는데 실패했습니다.", response.status);
+        // console.error("userId 불러오는데 실패했습니다.", response.status);
     }
     } catch (error) {
-    console.error("API 호출 오류:", error);
+    // console.error("API 호출 오류:", error);
     }
 };
   
@@ -70,10 +70,12 @@ const fetchUser = async () => {
   const [isPhone, setIsPhone] = useState(false);
   const isEmail = true;
 
+  // 유효성 검사에 따라 안내 메시지 Class 변경
   const getMessageClass = (isValid) => {
     return isValid ? 'message valid' : 'message invalid';
   };
   
+  // 닉네임 유효성검사
   const onChangeNickname = (e) => {
     const currentNickname = e.target.value;
     setNickname(currentNickname);
@@ -87,6 +89,7 @@ const fetchUser = async () => {
     }
   };
 
+  // 비밀번호 유효성검사
   const onChangePassword = (e) => {
     const currentPassword = e.target.value;
     setPassword(currentPassword);
@@ -103,6 +106,7 @@ const fetchUser = async () => {
     }
   };
 
+  // 전화번호 포맷팅
   const addHyphen = (e) => {
     const currentNumber = e.target.value;
     setPhone(currentNumber);
@@ -114,6 +118,7 @@ const fetchUser = async () => {
     }
   };
 
+  // 전화번호 유효성검사
   const onChangePhone = (getNumber) => {
     const currentPhone = getNumber;
     setPhone(currentPhone);
@@ -128,6 +133,7 @@ const fetchUser = async () => {
     }
   };
 
+  // 성별 선택 상태 변경
   const handleGender = (gender) => {
     setSelectedGender(gender);
     if(gender === 'male'){
@@ -180,17 +186,16 @@ const fetchUser = async () => {
         }
     } 
     try{
-    // 회원가입 함수 호출
+    // 변경된 정보 Update
     const result = await updateUser();
 
-    // 성공적으로 회원가입이 완료되었는지 확인
     if (result && result.message === '회원정보 수정 성공') {
         navigate('/myPage');
     } else {
-        console.error("회원정보 수정에 문제가 발생했습니다.");
+        // console.error("회원정보 수정에 문제가 발생했습니다.");
     }
     }catch(error){
-    console.error("UpdateUser failed:", error);
+    // console.error("UpdateUser failed:", error);
     }
   };
 

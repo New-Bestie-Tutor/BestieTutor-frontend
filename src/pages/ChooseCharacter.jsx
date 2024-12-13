@@ -17,24 +17,23 @@ export default function ChooseCharacter() {
         description: location.state?.description
     }), [location.state]);
 
-    const [characters, setCharacters] = useState([]); // 백엔드에서 받아올 캐릭터 목록
+    const [characters, setCharacters] = useState([]); 
     const [selectedCharacter, setSelectedCharacter] = useState(null);
 
     // 캐릭터를 백엔드에서 가져오는 함수
     const fetchCharacters = async () => {
-        const response = await axios.get('/character/'); // API 호출
+        const response = await axios.get('/character/');
         if (response.status === 200) {
-            // console.log(response.data);
-            setCharacters(response.data); // 캐릭터 목록 상태에 저장
+            setCharacters(response.data); 
         }
         else {
-            console.error("캐릭터 목록을 불러오는데 실패했습니다.", response.status);
+            // console.error("캐릭터 목록을 불러오는데 실패했습니다.", response.status);
         }
     };
 
     
     useEffect(() => {
-        fetchCharacters(); // 컴포넌트가 마운트될 때 캐릭터 목록을 불러옴
+        fetchCharacters();
     }, []);
 
     const handleCharacterClick = (name) => {
@@ -45,13 +44,11 @@ export default function ChooseCharacter() {
     const handleStartLearning = () => {
         let valid = true;
         
-        // 캐릭터 선택 여부 확인
         if (!selectedCharacter) {
             valid = false;
         }
         
         if (valid) {
-            // 'conversation' 페이지로 데이터 전달
             navigate('/conversation', {
                 state: {
                     mainTopic,
@@ -85,7 +82,6 @@ export default function ChooseCharacter() {
                     
                 </div>
             </div>
-            {/* Start Learning Button*/}
             <button
                 className="next-button"
                 onClick={handleStartLearning}

@@ -19,7 +19,6 @@ export default function Home() {
   const [inactiveDays, setInactiveDays] = useState(0);
   const [conversations, setConversations] = useState([]);
   const userEmail = userInfo?.email;
-  console.log(userEmail);
   const steps = [10, 30, 60, 120];
   const navigate = useNavigate();
  // Fetch user data
@@ -49,7 +48,6 @@ const fetchConversations = async () => {
       if (response.status === 200) {
           const data = response.data;
           setConversations(data.conversations);
-          console.log(data.conversations);
         } else {
           console.error('대화 기록을 가져오는데 실패했습니다.', response.status);
         }
@@ -183,7 +181,6 @@ useEffect(() => {
                   record={{...conversation}}
                 />
               ))}
-
             </div>
           </div>
         </section>
