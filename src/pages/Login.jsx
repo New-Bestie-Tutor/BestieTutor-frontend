@@ -12,7 +12,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(''); // State for error message
+    const [errorMessage, setErrorMessage] = useState(''); 
     const { setUserInfo } = useContext(UserContext);
 
     const handleEmailChange = (e) => setEmail(e.target.value);
@@ -132,7 +132,6 @@ export default function Login() {
                     </button>
                 </div>
 
-                {/* Error message display */}
                 {errorMessage && <p className="login-error-message">{errorMessage}</p>}
 
                 <Link to="/findpw" className="forgot-password">비밀번호를 잊으셨나요?</Link>
