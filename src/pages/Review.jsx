@@ -52,8 +52,8 @@ export default function Review() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedConversations = sortedConversations.slice(startIndex, startIndex + itemsPerPage);
 
-  const reviewHandler = (conversationId) => {
-    navigate('/feedback', { state: { conversationId } }); 
+  const reviewHandler = (conversationId, description) => {
+    navigate('/feedback', { state: { conversationId, description } }); 
   };
 
   return (
@@ -83,7 +83,7 @@ export default function Review() {
                     const seconds = Math.floor((durationInMilliseconds % (1000 * 60)) / 1000); // 초
 
                     return (
-                        <div className='review-card' key={conversation.conversationId} onClick={() => reviewHandler(conversation.conversationId)}>
+                        <div className='review-card' key={conversation.conversationId} onClick={() => reviewHandler(conversation.conversationId, description)}>
                             <div className='review-icon'>
                                 <img src={IMAGES[topic]} alt="icon" width="30" />
                             </div>
