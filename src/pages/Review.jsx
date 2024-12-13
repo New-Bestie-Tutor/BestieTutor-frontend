@@ -53,8 +53,8 @@ export default function Review() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedConversations = sortedConversations.slice(startIndex, startIndex + itemsPerPage);
 
-  const reviewHandler = (conversationId) => {
-    navigate('/feedback', { state: { conversationId } }); 
+  const reviewHandler = (conversationId, description) => {
+    navigate('/feedback', { state: { conversationId, description } }); 
   };
 
   return (
