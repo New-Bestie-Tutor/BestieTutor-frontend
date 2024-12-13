@@ -65,7 +65,7 @@ export default function ChooseCharacter() {
     return (
         <div className="topic">
 
-            <GoBack className='topic-goBack'/> 
+            <GoBack className='goBack'/> 
             <p className="conversation-title">함께 대화할 친구를 선택해주세요</p>
 
             <div className='character-wrapper'>

@@ -32,7 +32,7 @@ export default function LearningGoal() {
     
     return (
         <div className="topic">
-            <GoBack className='topic-goBack'/> 
+            <GoBack className='goBack'/> 
             <p className="conversation-title">학습 목표를 선택해주세요
             <span style={{ fontSize: '15px', color: 'rgba(0, 0, 0, 0.36)' }}>
                 (최대 3개)

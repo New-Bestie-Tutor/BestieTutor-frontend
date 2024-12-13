@@ -22,7 +22,7 @@ export default function CurrentLevel() {
 
     return (
         <div className="topic">
-            <GoBack className='topic-goBack'/> 
+            <GoBack className='goBack'/> 
             <p className="conversation-title">당신의 실력을 선택해주세요</p>
             <div className='character-wrapper'>
                 <div className="level-list">

@@ -5,6 +5,7 @@ import IMAGES from "../images/images";
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserContext';
 import axios from 'axios'; 
+import RecordCard from "../components/RecordCard";
 import '../App.css'
 
 export default function Review() {
@@ -51,17 +52,17 @@ export default function Review() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedConversations = sortedConversations.slice(startIndex, startIndex + itemsPerPage);
 
-  const reviewHandler = (conversationId) => {
-    navigate('/feedback', { state: { conversationId } }); 
-  };
+//   const reviewHandler = (conversationId, description) => {
+//     navigate('/feedback', { state: { conversationId, description } }); 
+//   };
 
   return (
     <div className="Home">
         <Header />
         <div className="container profile-container">
-            <h2 className="title">지난 대화 복습하기</h2>
+            <h2 className="review-title">지난 대화 복습하기</h2>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+                <select className='sortOrderBox' value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
                     <option value="latest">최신순</option>
                     <option value="oldest">오래된 순</option>
                 </select>
@@ -79,40 +80,28 @@ export default function Review() {
                     const seconds = Math.floor((durationInMilliseconds % (1000 * 60)) / 1000); // 초
 
                     return (
-                        <div className='review-card' key={conversation.conversationId} onClick={() => reviewHandler(conversation.conversationId)}>
-                            <div className='review-icon'>
-                                <img src={IMAGES[topic]} alt="icon" width="30" />
-                            </div>
-                            <div>
-                                <h3>{topic}</h3>
-                                <p>
-                                    {subTopic} | {difficulty} | {description}
-                                </p>
-                                <p>
-                                    {`${minutes}분 ${seconds}초`}
-                                </p>
-                                <p>
-                                    {new Date(conversation.startTime).toLocaleString()}
-                                </p>
-                            </div>
+                        <div className='review-card'>
+                            <RecordCard
+                        key={conversation.conversationId}
+                        record={{...conversation}}
+                        />
                         </div>
                     );
                 })}
             </div>
             <div className='review-pagination'>
-                {Array.from({ length: Math.ceil(conversations.length / itemsPerPage) }, (_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => setCurrentPage(index + 1)}
-                        style={{
-                            margin: '5px',
-                            backgroundColor: currentPage === index + 1 ? '#4caf50' : '#fff',
-                            border: '1px solid #ccc',
-                        }}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
+                {Array.from({ length: Math.ceil(conversations.length / itemsPerPage) }, (_, index) => {
+                    const pageIndex = index + 1;
+                    return (
+                        <button
+                            className={`review-pagination-button ${currentPage === pageIndex ? 'active' : ''}`}
+                            key={index}
+                            onClick={() => setCurrentPage(pageIndex)}
+                        >
+                            {pageIndex}
+                        </button>
+                    );
+                })}
             </div>
         </div>
         <Footer />

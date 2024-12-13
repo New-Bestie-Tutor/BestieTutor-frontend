@@ -18,7 +18,7 @@ export default function ChooseLanguage() {
     
     return (
         <div className="topic">
-            <GoBack className='topic-goBack'/> 
+            <GoBack className='goBack'/> 
             <p className="conversation-title">배울 언어를 선택해주세요</p>
 
             <div className='character-wrapper'>

@@ -34,8 +34,8 @@ function SubTopic() {
 
     const handleSubTopicSelect = (subTopic) => {
         setSelectedSubTopic(subTopic);
-        setSelectedLevel(null); // 레벨 초기화
-        setDescription(''); // 설명 초기화
+        setSelectedLevel(null); 
+        setDescription(''); 
         setIsSubTopicSelected(true);
     };
 
@@ -51,25 +51,24 @@ function SubTopic() {
     };
 
     const handleStartLearning = () => {
-        setIsClicked(true); // 버튼 클릭 시 경고 메시지 표시
+        setIsClicked(true); 
         let valid = true;
 
         if (!selectedSubTopic) {
-            setIsSubTopicSelected(false); // 소주제가 선택되지 않음
+            setIsSubTopicSelected(false); 
             valid = false;
         } else {
             setIsSubTopicSelected(true);
         }
 
         if (!selectedLevel) {
-            setIsLevelSelected(false); // 레벨이 선택되지 않음
+            setIsLevelSelected(false); 
             valid = false;
         } else {
             setIsLevelSelected(true);
         }
 
         if (valid) {
-            // 'chooseCharacter' 페이지로 데이터 전달
             navigate('/chooseCharacter', {
                 state: {
                     mainTopic,
@@ -101,7 +100,6 @@ function SubTopic() {
                 ))}
             </div>
 
-            {/* 학습 시작하기 버튼 클릭 후 경고 메시지 표시 */}
             {isClicked && !isSubTopicSelected && (
                 <p className="warning-text">소주제를 선택해주세요.</p>
             )}
@@ -109,7 +107,6 @@ function SubTopic() {
                 <p className="warning-text">난이도를 선택해주세요.</p>
             )}
 
-            {/* Start Learning Button */}
             <button
                 className="next-button"
                 onClick={handleStartLearning}
