@@ -61,14 +61,12 @@ export default function Conversation() {
         subTopic: selectedSubTopic,
         difficulty: selectedLevel,
         characterName: selectedCharacter,
+        language: userLanguage,
       };
   
       console.log("Request Data:", data); // 디버깅용
   
-      const response = await axios.post(
-        '/conversation/initialize',
-        data,
-      );
+      const response = await axios.post('/conversation/initialize', data);
   
       if (response.status === 200) {
         const { gptResponse, audio } = response.data;
@@ -118,6 +116,7 @@ export default function Conversation() {
         subTopic: selectedSubTopic,
         difficulty: selectedLevel,
         characterName: selectedCharacter,
+        language: userLanguage,
       };
 
       const addUserMessageRequest = axios.post('/conversation/addUserMessage', data);
