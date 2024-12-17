@@ -6,11 +6,10 @@ import Header from "../components/Header";
 import IMAGES from "../images/images";
 import axios from "axios";
 import RecordCard from "../components/RecordCard";
-import "./Home.css";
+import '../App.css';
 
 export default function Home() {
   const { userInfo } = useContext(UserContext);
-  const [records, setRecords] = useState([]);
   const userId = userInfo?.userId;
   const [user, setUser] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
@@ -20,7 +19,7 @@ export default function Home() {
   const [conversations, setConversations] = useState([]);
   const userEmail = userInfo?.email;
   const steps = [10, 30, 60, 120];
-  const navigate = useNavigate();
+
  // Fetch user data
  const fetchUser = async () => {
   try {
