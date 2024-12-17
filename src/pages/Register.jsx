@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import Postcode from '../components/Postcode';
 import GoBack from '../components/GoBack';
@@ -32,10 +32,12 @@ export default function Register() {
   const [isPhone, setIsPhone] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
 
+  // 유효성 검사에 따라 안내 메시지 Class 변경
   const getMessageClass = (isValid) => {
     return isValid ? 'message valid' : 'message invalid';
   };
   
+  // 닉네임 유효성검사
   const onChangeNickname = (e) => {
     const currentNickname = e.target.value;
     setNickname(currentNickname);
@@ -49,6 +51,7 @@ export default function Register() {
     }
   };
 
+  // 비밀번호 유효성검사
   const onChangePassword = (e) => {
     const currentPassword = e.target.value;
     setPassword(currentPassword);
@@ -65,6 +68,7 @@ export default function Register() {
     }
   };
 
+  // 전화번호 포맷팅
   const addHyphen = (e) => {
     const currentNumber = e.target.value;
     setPhone(currentNumber);
@@ -76,6 +80,7 @@ export default function Register() {
     }
   };
 
+  // 전화번호 유효성검사
   const onChangePhone = (getNumber) => {
     const currentPhone = getNumber;
     setPhone(currentPhone);
@@ -94,20 +99,20 @@ export default function Register() {
     setEmail(e.target.value);
   };
 
+  //이메일 유효성 검사
   const onBlurEmail = async () => {
     const emailRegExp =
     /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
 
-    //이메일 형식 유효성 검사 진행
     if (!emailRegExp.test(email)) {
       setEmailMessage("이메일의 형식이 올바르지 않습니다.");
       setIsEmail(false);
       setEmailValid(false);
     } else {
-      //이메일 형식이 올바르면 중복 검사 진행
+      //이메일 중복 검사
       try{
         const response = await axios.post('/user/checkEmailDuplicate', { email });
-        setEmailValid(!response.data.isDuplicate);//서버에서 이메일 사용 가능 여부 반환
+        setEmailValid(!response.data.isDuplicate);
         
         if(response.data.isDuplicate){
           setEmailMessage('이미 존재하는 이메일입니다.');
@@ -118,11 +123,12 @@ export default function Register() {
         }
         
       } catch(error){
-        console.log("Error checking email: ", error);
+        // console.log("Error checking email: ", error);
       }
     }
   }
 
+  // 성별 선택 상태 변경
   const handleGender = (gender) => {
     setSelectedGender(gender);
     if(gender === 'male'){
@@ -167,20 +173,18 @@ export default function Register() {
         // 회원가입 함수 호출
         const result = await register();
 
-        // 성공적으로 회원가입이 완료되었는지 확인
         if (result && result.message === '회원가입 성공') {
             navigate('/registrationSuccess');
         } else {
-            console.error("회원가입에 문제가 발생했습니다.");
+            // console.error("회원가입에 문제가 발생했습니다.");
         }
       }catch(error){
-        console.error("Registration failed:", error);
+        // console.error("Registration failed:", error);
       }
     }
   };
 
   async function register() {
-    console.log('Register function is called');
     const fullAddress = address+" "+addressDetail;
 
     const userData = {
@@ -193,7 +197,6 @@ export default function Register() {
     };
 
     const response = await axios.post('/user', userData); 
-    console.log("Registration response:", response.data);
     return response.data;
   }
 

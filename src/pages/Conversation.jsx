@@ -3,8 +3,9 @@ import IMAGES from '../images/images';
 import { IoMdMic } from "react-icons/io";
 import { MdKeyboard } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { LanguageContext } from "../LanguageContext";
 import axios from '../axiosConfig'; 
 
 export default function Conversation() {
@@ -32,6 +33,7 @@ export default function Conversation() {
   const [typingVisible, setTypingVisible] = useState(false); // 타이핑 모드에서 input창 표시
   const [typingInput, setTypingInput] = useState(''); // 사용자 입력 텍스트를 저장
   const chatEndRef = useRef(null);
+  const { userLanguage } = useContext(LanguageContext);
 
   // 메시지가 추가될 때 자동 스크롤
   useEffect(() => {
@@ -59,14 +61,12 @@ export default function Conversation() {
         subTopic: selectedSubTopic,
         difficulty: selectedLevel,
         characterName: selectedCharacter,
+        language: userLanguage,
       };
   
       console.log("Request Data:", data); // 디버깅용
   
-      const response = await axios.post(
-        '/conversation/initialize',
-        data,
-      );
+      const response = await axios.post('/conversation/initialize', data);
   
       if (response.status === 200) {
         const { gptResponse, audio } = response.data;
@@ -116,6 +116,7 @@ export default function Conversation() {
         subTopic: selectedSubTopic,
         difficulty: selectedLevel,
         characterName: selectedCharacter,
+        language: userLanguage,
       };
 
       const addUserMessageRequest = axios.post('/conversation/addUserMessage', data);
@@ -158,8 +159,19 @@ export default function Conversation() {
   // 음성 인식 설정 및 이벤트 핸들러
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
+    switch (userLanguage) {
+      case 'en':
+        recognition.lang = 'en-US';
+        break;
+      case 'ko':
+        recognition.lang = 'ko-KR';
+        break;
+      default:
+        recognition.lang = 'ko-KR';
+        break;
+    }
     // recognition.lang = 'en-US';
-    recognition.lang = 'ko-KR';
+    // recognition.lang = 'ko-KR';
     // recognition.lang = 'ja-JP';
 
   // 음성 인식 시작
@@ -208,7 +220,12 @@ export default function Conversation() {
 
   // 대화 종료
   const stopConversation = () => {
-    console.log('converseId', converseId);
+    if (!converseId) {
+      alert('대화가 시작되지 않았습니다. 홈으로 이동합니다.');
+      navigate('/home');
+      return;
+    }
+
     updateEndTime(converseId);
   }
 

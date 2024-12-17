@@ -18,7 +18,6 @@ export default function ChooseLanguage() {
     
     return (
         <div className="topic">
-
             <GoBack className='goBack'/> 
             <p className="conversation-title">배울 언어를 선택해주세요</p>
 
@@ -37,7 +36,6 @@ export default function ChooseLanguage() {
                     ))}
                 </div>
             </div>
-            {/* Start Learning Button*/}
             <button 
                 className="next-button" 
                 onClick={handleNextSurvey}

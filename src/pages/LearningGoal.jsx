@@ -13,8 +13,7 @@ export default function LearningGoal() {
     const [selectedGoals, setSelectedGoals] = useState([]);
 
     const handleNextSurvey = () => {
-        // 목표 중복 선택 가능
-        if (selectedGoals.length >= 1 && selectedGoals.length <= 3) {
+        if (selectedGoals.length >= 1 && selectedGoals.length <= 3) {// 목표 3개까지 선택 가능
             navigate('/currentLevel', { state: { language: language, goals: selectedGoals} }); 
         }
     };
@@ -33,14 +32,12 @@ export default function LearningGoal() {
     
     return (
         <div className="topic">
-
             <GoBack className='goBack'/> 
             <p className="conversation-title">학습 목표를 선택해주세요
             <span style={{ fontSize: '15px', color: 'rgba(0, 0, 0, 0.36)' }}>
                 (최대 3개)
             </span>
             </p>
-
             <div className='character-wrapper'>
                 <div className="goal-list">
                     {goals.map((goal, index) => (
@@ -56,7 +53,6 @@ export default function LearningGoal() {
                     ))}
                 </div>
             </div>
-            {/* Start Learning Button*/}
             <button 
                 className="next-button" 
                 onClick={handleNextSurvey}

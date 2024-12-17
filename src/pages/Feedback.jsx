@@ -1,9 +1,5 @@
 import GoBack from '../components/GoBack';
 import IMAGES from '../images/images';
-import { IoMdMic } from "react-icons/io";
-import { MdKeyboard } from "react-icons/md";
-import { FaXmark } from "react-icons/fa6";
-import { LuSendHorizonal } from "react-icons/lu";
 import '../App.css';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -15,7 +11,6 @@ export default function Feedback() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [conversation, setConversation] = useState(null);
   const location = useLocation();
-
   const { 
     mainTopic, 
     selectedSubTopic, 
@@ -31,7 +26,7 @@ export default function Feedback() {
       selectedCharacter: location.state?.selectedCharacter,
       converseId: location.state?.conversationId
   }), [location.state]);
-  
+
   // 기본 이미지 설정
   const characterImage = selectedCharacter 
     ? IMAGES[selectedCharacter] 
@@ -68,7 +63,7 @@ export default function Feedback() {
   return (
     <div className="container conversation-container">
       {/* 헤더 */}
-      <div className="feedback-header">
+      <div className="conversation-header">
         <GoBack className="conversation-goBack" />
         <p className="conversation-title">{description}</p>
       </div>
@@ -76,12 +71,27 @@ export default function Feedback() {
       {/* 대화 내용 */}
       <div className="chat-container">
         {messagesWithFeedback.map((message, index) => (
-          <div key={index} className={`message-container 
-          ${message.type === "USER" ? "user" : "bot"}`}>
-            {/* 메시지 버블 */}
-            <div className={`feedback-bubble ${message.type === "USER" ? "user" : "bot"}`}>
-              <div className="bubble-text">{message.content}</div>
-            </div>
+          <div key={index} className={`message-container ${message.type === "USER" ? "user" : "bot"}`}>
+            {/* bot 메시지일 때 이미지 추가 */}
+            {message.type === 'BOT' && (
+              <div className="chatMessage">
+                <img
+                  src={characterImage}
+                  alt={selectedCharacter}
+                  className="image chatImage"
+                />
+                <div className="chatBubble">
+                  <div className="bettuChatText">{message.content}</div>
+                </div>
+              </div>
+            )}
+
+            {/* USER 메시지 버블 */}
+            {message.type === 'USER' && (
+              <div className="chatBubble chatBubbleRight">
+                <div className="userChatText">{message.content}</div>
+              </div>
+            )}
 
             {/* 피드백 (USER 타입 메시지에만 표시) */}
             {message.type === "USER" && message.feedback && (

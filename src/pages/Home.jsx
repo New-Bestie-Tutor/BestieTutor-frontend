@@ -47,7 +47,6 @@ const fetchConversations = async () => {
       if (response.status === 200) {
           const data = response.data;
           setConversations(data.conversations);
-          console.log(data.conversations);
         } else {
           console.error('대화 기록을 가져오는데 실패했습니다.', response.status);
         }
@@ -181,7 +180,6 @@ useEffect(() => {
                   record={{...conversation}}
                 />
               ))}
-
             </div>
           </div>
         </section>
