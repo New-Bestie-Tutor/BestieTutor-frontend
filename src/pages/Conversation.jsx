@@ -220,6 +220,12 @@ export default function Conversation() {
 
   // 대화 종료
   const stopConversation = () => {
+    if (!converseId) {
+      alert('대화가 시작되지 않았습니다. 홈으로 이동합니다.');
+      navigate('/home');
+      return;
+    }
+
     updateEndTime(converseId);
   }
 
