@@ -10,7 +10,6 @@ import "./Home.css";
 
 export default function Home() {
   const { userInfo } = useContext(UserContext);
-  const [records, setRecords] = useState([]);
   const userId = userInfo?.userId;
   const [user, setUser] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
@@ -19,9 +18,8 @@ export default function Home() {
   const [inactiveDays, setInactiveDays] = useState(0);
   const [conversations, setConversations] = useState([]);
   const userEmail = userInfo?.email;
-  console.log(userEmail);
   const steps = [10, 30, 60, 120];
-  const navigate = useNavigate();
+
  // Fetch user data
  const fetchUser = async () => {
   try {

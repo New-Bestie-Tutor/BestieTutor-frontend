@@ -14,14 +14,12 @@ export default function Header() {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [currentTopic, setCurrentTopic] = useState(null);
   const username = userInfo?.email;
-  // const [isFetched, setIsFetched] = useState(false);
   const navigate = useNavigate();
 
   const handleLanguageChange = (language) => {
-    setUserLanguage(language); // Update language context
+    setUserLanguage(language); 
   };
 
-  // Fetch topics from the backend
   const fetchTopics = async () => {
     try {
       const response = await axios.get('/topic/');
@@ -50,18 +48,14 @@ export default function Header() {
   };
 
   const handleMouseEnter = (topic) => {
-    setCurrentTopic(topic); // 현재 topic 저장
-    setShowDropdown(true); // 드롭다운 표시
+    setCurrentTopic(topic); 
+    setShowDropdown(true); 
   };
 
   const handleMouseLeave = () => {
-    setCurrentTopic(null); // 선택 초기화
+    setCurrentTopic(null); 
     setShowDropdown(false);
   }
-
-  const handleTopicClick = (id) => {
-    setSelectedTopic(id);
-  };
 
   const handleSubtopicClick = (mainTopic, subTopicName) => {
     navigate('/subtopic', { state: { selectedTopic: mainTopic, subTopic: subTopicName } });
