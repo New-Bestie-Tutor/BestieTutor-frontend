@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import IMAGES from "../images/images";
 import axios from "axios";
 import RecordCard from "../components/RecordCard";
-import "./Home.css";
+import '../App.css';
 
 export default function Home() {
   const { userInfo } = useContext(UserContext);
