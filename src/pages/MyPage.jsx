@@ -4,16 +4,14 @@ import Header from "../components/Header"
 import IMAGES from "../images/images";
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserContext';
-import { LanguageContext } from "../LanguageContext";
 import axios from 'axios'; 
 import '../App.css'
 
 export default function MyPage() {
   const { userInfo } = useContext(UserContext);
-  const { userLanguage } = useContext(LanguageContext);
   const [user, setUser] = useState({});
-  const [conversations, setConversations] = useState([]);
   const [totalTime, setTotalTime] = useState(0);
+  const [recentLanguage, setRecentLanguage] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const steps = [10, 30, 60, 120];
 
@@ -25,6 +23,7 @@ const fetchUser = async () => {
         });
     if (response.status === 200) {
         setUser(response.data);
+        setTotalTime(response.data.total_time);
     } else {
         // console.error("userId 불러오는데 실패했습니다.", response.status);
     }
@@ -33,18 +32,33 @@ const fetchUser = async () => {
     }
 };
 
-const fetchConversations = async () => {
+const getRecentLanguage = async () => {
     try {
         const userEmail = userInfo?.email;
-        const response = await axios.get(`/conversation/getConversationHistory/${userEmail}`);
+        const response = await axios.get(`/conversation/getRecentLanguage/${userEmail}`);
         if (response.status === 200) {
-            const data = response.data;
-            setConversations(data.conversations);
+            const conversation = response.data.conversation;
+
+            if (conversation) {
+              switch (conversation.selected_language) {
+                case 'English':
+                  setRecentLanguage("English"); 
+                  break;
+                case 'Korean':
+                  setRecentLanguage("한국어"); 
+                  break;
+                default:
+                  setRecentLanguage("대화하자!");
+                  break;
+              }
+            } else {
+                setRecentLanguage(null);
+            }
           } else {
-            console.error('대화 기록을 가져오는데 실패했습니다.', response.status);
+            // console.error('언어 기록을 가져오는데 실패했습니다.', response.status);
           }
     } catch (error) {
-        console.error('Error fetching conversations:', error);
+        // console.error('Error fetching RecentLanguage:', error);
     }
   };
   
@@ -53,25 +67,11 @@ const fetchConversations = async () => {
         fetchUser();  
       }
     if (userInfo?.email) {
-        fetchConversations();
+      getRecentLanguage();
     }
   }, [userInfo]);
 
-  useEffect(() => {
-    const total = conversations.reduce((sum, conversation) => {
-      const startTime = new Date(conversation.startTime);
-      const endTime = new Date(conversation.endTime);
-      const duration = endTime - startTime;
-      return sum + duration / (1000 * 60); 
-    }, 0);
-
-    setTotalTime(total);
-
-    const step = steps.findIndex((s) => total < s);
-    setCurrentStep(step === -1 ? steps.length - 1 : step);
-
-    
-  }, [conversations]);
+  
 
   return (
     <div className="Home">
@@ -81,7 +81,7 @@ const fetchConversations = async () => {
                 <img src={IMAGES.bettu} alt="mypage Profile" className="mypage-profile" />
                 <h2 className="user-name">{user ? user.nickname : "Guest"}</h2>
                 <div className="profile-stats">
-                <div className="stat">{userLanguage === 'en' ? 'English' : "한국어"}<br /><span>최근 언어</span></div>
+                <div className="stat">{recentLanguage}<br /><span>최근 언어</span></div>
                 <div className="stat">{totalTime.toFixed(1)}<br /><span>누적 대화시간</span></div>
                 <div className="stat">LV.{currentStep+1}<br /><span>친밀도</span></div>
                 </div>

@@ -2,8 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
     FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, 
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
-    MyPage, Profile, Review, Feedback } from "./pages";
-// import Feedback from "./pages/Feedback";
+    MyPage, Profile, Review, Feedback, FreeSubject } from "./pages";
 
 export default function AppRoutes() {
     return(

@@ -170,8 +170,6 @@ export default function Conversation() {
         recognition.lang = 'ko-KR';
         break;
     }
-    // recognition.lang = 'en-US';
-    // recognition.lang = 'ko-KR';
     // recognition.lang = 'ja-JP';
 
   // 음성 인식 시작
