@@ -4,11 +4,13 @@ import Header from "../components/Header"
 import IMAGES from "../images/images";
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserContext';
+import { LanguageContext } from "../LanguageContext";
 import axios from 'axios'; 
 import '../App.css'
 
 export default function MyPage() {
   const { userInfo } = useContext(UserContext);
+  const { userLanguage } = useContext(LanguageContext);
   const [user, setUser] = useState({});
   const [totalTime, setTotalTime] = useState(0);
   const [recentLanguage, setRecentLanguage] = useState([]);
@@ -32,42 +34,21 @@ const fetchUser = async () => {
     }
 };
 
-const getRecentLanguage = async () => {
-    try {
-        const userEmail = userInfo?.email;
-        const response = await axios.get(`/conversation/getRecentLanguage/${userEmail}`);
-        if (response.status === 200) {
-            const conversation = response.data.conversation;
-
-            if (conversation) {
-              switch (conversation.selected_language) {
-                case 'English':
-                  setRecentLanguage("English"); 
-                  break;
-                case 'Korean':
-                  setRecentLanguage("한국어"); 
-                  break;
-                default:
-                  setRecentLanguage("대화하자!");
-                  break;
-              }
-            } else {
-                setRecentLanguage(null);
-            }
-          } else {
-            // console.error('언어 기록을 가져오는데 실패했습니다.', response.status);
-          }
-    } catch (error) {
-        // console.error('Error fetching RecentLanguage:', error);
-    }
-  };
-  
   useEffect(() => {
     if (userInfo?.userId) { 
         fetchUser();  
       }
-    if (userInfo?.email) {
-      getRecentLanguage();
+
+    switch (userLanguage) {
+      case 'en':
+        setRecentLanguage("English");
+        break;
+      case 'ko':
+        setRecentLanguage("한국어");
+        break;
+      default:
+        setRecentLanguage("English");
+        break;
     }
   }, [userInfo]);
 
