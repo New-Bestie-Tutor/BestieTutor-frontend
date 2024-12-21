@@ -28,7 +28,7 @@ export default function AppRoutes() {
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/review" element={<Review />} />
-            <Route path="/freesubject" element={<FreeSubject />} />
+            <Route path="/freeSubject" element={<FreeSubject />} />
         </Routes>
     );
 }
