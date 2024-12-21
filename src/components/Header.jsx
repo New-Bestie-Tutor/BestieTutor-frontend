@@ -39,38 +39,37 @@ export default function Header() {
     }
   };
 
+  // 언어 설정 및 변환 함수
+  const handleRecentLanguage = (language) => {
+    switch (language) {
+      case 'English':
+        setUserLanguage("en");
+      case 'Korean':
+      case '한국어':
+        setUserLanguage("ko");
+      case 'Japanese':
+      case '日本語':
+        setUserLanguage("ja");
+      default:
+        setUserLanguage("en");
+    }
+  };
+
   // LanguageContext를 최근 대화 언어로 설정
   const getRecentLanguage = async () => {
     try {
         const userEmail = userInfo?.email;
         const response = await axios.get(`/conversation/getRecentLanguage/${userEmail}`);
         if (response.status === 200) {
-          switch (response.data.conversation.selected_language) {
-            case 'English':
-              setUserLanguage("en");
-              break;
-            case 'Korean':
-              setUserLanguage("ko");
-              break;
-            default:
-              setUserLanguage("en");
-              break;
-          }
+          const recentLanguage = response.data.conversation.selected_language;
+          handleRecentLanguage(recentLanguage);
+          english > en
         } else {
           // 최근 대화가 없으면 선호도 조사 언어로 설정
             const userId = userInfo?.userId;
             const response = await axios.get(`/preference/${userId}`);
-            switch (response.data.preferences.language) {
-              case 'English':
-                setUserLanguage("en");
-                break;
-              case '한국어':
-                setUserLanguage("ko");
-                break;
-              default:
-                setUserLanguage("en");
-                break;
-            }
+            const preferenceLanguage = response.data.preferences.language;
+            handleRecentLanguage(preferenceLanguage);
         }
     } catch (error) {
         // console.error('Error fetching RecentLanguage:', error);
@@ -113,7 +112,20 @@ export default function Header() {
     setUserLanguage(language); 
   };
 
-  const selectedLanguage = userLanguage === "ko" ? '한국어' : 'English';
+  function getDisplayName(language) {
+    switch (language) {
+      case 'ko':
+        return "한국어";
+      case 'en':
+        return "English";
+      case 'ja':
+        return "日本語";
+      default:
+        return "English";
+    }
+  };
+
+  const selectedLanguage = getDisplayName(userLanguage);
 
   return (
     <div className="header">
@@ -139,7 +151,7 @@ export default function Header() {
                 key={index}
                 onClick={() => handleLanguageChange(language.code)}
               >
-                {language.name === "English" ? language.name : "한국어"}
+                {getDisplayName(language.code)}
               </p>
             ))}
             </div>
