@@ -1991,3 +1991,97 @@ margin-top: 3rem;
   font-weight: 700;
   font-size: 1.25rem;
 }
+
+/*********FreeSubject*********/
+.FreeSubject{
+  padding: 2%;
+  height: 100vh;
+  width: 100vw;
+  min-width: 340px;
+}
+
+.free-subject-container{
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+  ". title title ."
+  ". freetalkbetu free_speechbubble_box ."
+  ". freeSubjectInputBox freeSubjectInputBox ."
+  ". fs-next-button fs-next-button .";
+  height: 100%;
+}
+
+.FreeSubject h2{
+  grid-area:title;
+  justify-self: center;
+  text-align: center;
+}
+
+.freetalkbetu{
+  grid-area:freetalkbetu;
+  width: 300px;
+  justify-self:end;
+  position: relative;
+  left: 15%; 
+}
+
+.free_speechbubble_box {
+  grid-area: free_speechbubble_box;
+  width: 19rem;
+  max-width: 19rem;
+  position: relative;
+  right: 5%; 
+  bottom: 1.5rem;
+}
+
+.free_talk_text{
+  font-family: 'EF_jejudoldam';
+  align-self: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #4ED8B7;
+  position: absolute;
+  bottom: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap; 
+  z-index:100;
+}
+
+.freeSubjectInputBox{
+  grid-area:freeSubjectInputBox;
+  border: 1px solid #dfe1e5;
+  border-radius: calc(0.5*48px);
+  width: 80%;
+  height: 48px;
+  text-indent: 20px;
+  transition: all 0.3s ease;
+  justify-self: center;
+  align-self: start;
+}
+.freeSubjectInputBox:focus {
+    outline: none;
+    border: none;
+    box-shadow: #3c40434c 0 1px 2px 0, #3c404326 0 2px 6px 2px;;
+}
+
+.fs-next-button{
+  grid-area:fs-next-button;
+  margin-top: 20px;
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 300px;
+  min-width: 340px;
+  height: 35%;
+  background-color: #4ED8B7;
+  color: white;
+  border: none;
+  border-radius: 0.375rem; 
+  font-size: 18px; 
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  justify-self: center;
+}
+
