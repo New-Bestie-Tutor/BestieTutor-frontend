@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
     FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, 
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
-    MyPage, Profile, Review, Feedback } from "./pages";
+    MyPage, Profile, Review, Feedback, FreeSubject, Payment } from "./pages";
 // import Feedback from "./pages/Feedback";
 
 export default function AppRoutes() {
@@ -26,6 +26,7 @@ export default function AppRoutes() {
             <Route path="/preferredTopic" element={<PreferredTopic />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/myPage" element={<MyPage />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/review" element={<Review />} />
             <Route path="/freesubject" element={<FreeSubject />} />
