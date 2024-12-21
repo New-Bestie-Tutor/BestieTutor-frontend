@@ -13,6 +13,7 @@ export default function Conversation() {
   const location = useLocation();
   const {
     mainTopic,
+    freeTopic,
     selectedSubTopic,
     selectedLevel,
     description,
@@ -20,6 +21,7 @@ export default function Conversation() {
   } = useMemo(
     () => ({
       mainTopic: location.state?.mainTopic,
+      freeTopic: location.state?.freeSubject,
       selectedSubTopic: location.state?.selectedSubTopic,
       selectedLevel: location.state?.selectedLevel,
       description: location.state?.description,
@@ -47,6 +49,9 @@ export default function Conversation() {
     if (mainTopic && selectedSubTopic && selectedLevel && selectedCharacter) {
       InitialMessage(); // 첫 발화 요청
     }
+    else if(freeTopic){
+      InitialMessage();
+    }
   }, []);
 
   let isFetching = false;
@@ -58,6 +63,7 @@ export default function Conversation() {
     try {
       const data = {
         mainTopic,
+        freeTopic,
         subTopic: selectedSubTopic,
         difficulty: selectedLevel,
         characterName: selectedCharacter,
@@ -113,6 +119,7 @@ export default function Conversation() {
           content: message.text,
         })),
         mainTopic,
+        freeTopic,
         subTopic: selectedSubTopic,
         difficulty: selectedLevel,
         characterName: selectedCharacter,
@@ -170,8 +177,6 @@ export default function Conversation() {
         recognition.lang = 'ko-KR';
         break;
     }
-    // recognition.lang = 'en-US';
-    // recognition.lang = 'ko-KR';
     // recognition.lang = 'ja-JP';
 
   // 음성 인식 시작

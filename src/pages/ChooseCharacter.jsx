@@ -10,8 +10,9 @@ import '../App.css';
 export default function ChooseCharacter() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { mainTopic, selectedSubTopic, selectedLevel, description } = useMemo(() => ({
+    const { mainTopic,freeSubject, selectedSubTopic, selectedLevel, description } = useMemo(() => ({
         mainTopic: location.state?.mainTopic,
+        freeSubject: location.state?.freeSubject,
         selectedSubTopic: location.state?.selectedSubTopic,
         selectedLevel: location.state?.selectedLevel,
         description: location.state?.description
@@ -52,6 +53,7 @@ export default function ChooseCharacter() {
             navigate('/conversation', {
                 state: {
                     mainTopic,
+                    freeSubject,
                     selectedSubTopic,
                     selectedLevel,
                     description,

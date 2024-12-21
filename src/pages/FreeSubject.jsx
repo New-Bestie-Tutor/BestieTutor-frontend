@@ -5,12 +5,14 @@ import GoBack from '../components/GoBack';
 import IMAGES from "../images/images";
 
 export default function FreeSubject() {
-    const [inputValue, setInputValue] = useState("");
+    const [inputFreeSubject, setInputFreeSubject] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = () => {
-        if (inputValue) {
-            console.log(inputValue);
-            navigate("/chooseCharacter", { state: { value: inputValue } }); 
+        if (inputFreeSubject.trim()) {
+            navigate("/chooseCharacter", { state: { freeSubject: inputFreeSubject } }); 
+        } else {
+            alert("주제를 입력해주세요!");
         }
     };
 
@@ -27,8 +29,8 @@ export default function FreeSubject() {
                 <input
                     className="freeSubjectInputBox"
                     type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    value={inputFreeSubject}
+                    onChange={(e) => setInputFreeSubject(e.target.value)}
                     placeholder="원하는 주제를 입력하세요"
                 />
 

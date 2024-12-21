@@ -13,12 +13,20 @@ export default function Header() {
   const { userLanguage, setUserLanguage } = useContext(LanguageContext);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [currentTopic, setCurrentTopic] = useState(null);
+  const [allLanguages, setAllLanguages] = useState([]);
   const username = userInfo?.email;
   const navigate = useNavigate();
 
-  const handleLanguageChange = (language) => {
-    setUserLanguage(language); 
-  };
+  const getAllLanguages = async () => {
+    try{
+      const response = await axios.get('/conversation/getAllLanguages');
+      if (response.status === 200) {
+        setAllLanguages(response.data.languages);
+      }
+    } catch (error) {
+      // console.error("Failed to fetch Languages:", error);
+    }
+  }
 
   const fetchTopics = async () => {
     try {
@@ -27,12 +35,51 @@ export default function Header() {
         setTopics(response.data);
       }
     } catch (error) {
-      console.error("Failed to fetch topics:", error);
+      // console.error("Failed to fetch topics:", error);
+    }
+  };
+
+  // 언어 설정 및 변환 함수
+  const handleRecentLanguage = (language) => {
+    switch (language) {
+      case 'English':
+        setUserLanguage("en");
+      case 'Korean':
+      case '한국어':
+        setUserLanguage("ko");
+      case 'Japanese':
+      case '日本語':
+        setUserLanguage("ja");
+      default:
+        setUserLanguage("en");
+    }
+  };
+
+  // LanguageContext를 최근 대화 언어로 설정
+  const getRecentLanguage = async () => {
+    try {
+        const userEmail = userInfo?.email;
+        const response = await axios.get(`/conversation/getRecentLanguage/${userEmail}`);
+        if (response.status === 200) {
+          const recentLanguage = response.data.conversation.selected_language;
+          handleRecentLanguage(recentLanguage);
+          english > en
+        } else {
+          // 최근 대화가 없으면 선호도 조사 언어로 설정
+            const userId = userInfo?.userId;
+            const response = await axios.get(`/preference/${userId}`);
+            const preferenceLanguage = response.data.preferences.language;
+            handleRecentLanguage(preferenceLanguage);
+        }
+    } catch (error) {
+        // console.error('Error fetching RecentLanguage:', error);
     }
   };
 
   useEffect(() => {
     fetchTopics();
+    getAllLanguages();
+    getRecentLanguage();
   }, []);
 
   useEffect(() => {
@@ -61,7 +108,24 @@ export default function Header() {
     navigate('/subtopic', { state: { selectedTopic: mainTopic, subTopic: subTopicName } });
   };
 
-  const selectedLanguage = userLanguage === "ko" ? '한국어' : 'English';
+  const handleLanguageChange = (language) => {
+    setUserLanguage(language); 
+  };
+
+  function getDisplayName(language) {
+    switch (language) {
+      case 'ko':
+        return "한국어";
+      case 'en':
+        return "English";
+      case 'ja':
+        return "日本語";
+      default:
+        return "English";
+    }
+  };
+
+  const selectedLanguage = getDisplayName(userLanguage);
 
   return (
     <div className="header">
@@ -71,7 +135,7 @@ export default function Header() {
           <div className="header-links">
             <Link to="/about">소개</Link>
             <Link to="/notice">공지</Link>
-            <Link to="/events">이벤트</Link>
+            <Link to="/event">이벤트</Link>
           </div>
         </div>
         <div className="header-right">
@@ -82,8 +146,14 @@ export default function Header() {
               <p>{selectedLanguage}</p>
             </button>
             <div className="lang-dropdown-menu">
-              <p onClick={() => handleLanguageChange("ko")}>한국어</p>
-              <p onClick={() => handleLanguageChange("en")}>English</p>
+            {allLanguages.map((language, index) => (
+              <p 
+                key={index}
+                onClick={() => handleLanguageChange(language.code)}
+              >
+                {getDisplayName(language.code)}
+              </p>
+            ))}
             </div>
           </div>
         </div>
