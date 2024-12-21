@@ -135,7 +135,7 @@ export default function Header() {
           <div className="header-links">
             <Link to="/about">소개</Link>
             <Link to="/notice">공지</Link>
-            <Link to="/events">이벤트</Link>
+            <Link to="/event">이벤트</Link>
           </div>
         </div>
         <div className="header-right">

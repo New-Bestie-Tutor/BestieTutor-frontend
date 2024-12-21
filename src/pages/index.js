@@ -18,3 +18,7 @@ export { default as Profile } from "./Profile.jsx";
 export { default as Review } from "./Review.jsx";
 export { default as Feedback } from "./Feedback.jsx";
 export { default as FreeSubject } from "./FreeSubject.jsx";
+export { default as Event } from "./Event.jsx";
+export { default as Notice } from "./Notice.jsx";
+export { default as About } from "./About.jsx";
+export { default as Inquiry } from "./Inquiry.jsx";

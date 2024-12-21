@@ -2,7 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
     FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, 
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
-    MyPage, Profile, Review, Feedback, FreeSubject } from "./pages";
+    MyPage, Profile, Review, Feedback, FreeSubject,
+    About, Event, Inquiry, Notice } from "./pages";
 
 export default function AppRoutes() {
     return(
@@ -28,6 +29,10 @@ export default function AppRoutes() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/review" element={<Review />} />
             <Route path="/freesubject" element={<FreeSubject />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/notice" element={<Notice />} />
+            <Route path="/inquiry" element={<Inquiry />} />
+            <Route path="/event" element={<Event />} />
         </Routes>
     );
 }
