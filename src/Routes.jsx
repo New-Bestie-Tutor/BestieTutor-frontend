@@ -3,7 +3,7 @@ import { Start, UserAgreement, Register, Login, Home,
     FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, 
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
     MyPage, Profile, Review, Feedback, FreeSubject,
-    About, Event, Inquiry, Notice } from "./pages";
+    About, Event, Inquiry, Notice, FreeSubject, Payment } from "./pages";
 
 export default function AppRoutes() {
     return(
@@ -26,6 +26,7 @@ export default function AppRoutes() {
             <Route path="/preferredTopic" element={<PreferredTopic />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/myPage" element={<MyPage />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/review" element={<Review />} />
             <Route path="/FreeSubject" element={<FreeSubject />} />
