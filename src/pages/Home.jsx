@@ -164,7 +164,7 @@ export default function Home() {
         <section className="friendliness-section">
           <p className="logo">Bestie Tutor</p>
           <p className="gotoTopicTxt">베튜랑 더 <br />친해지러가기</p>
-          <Link to="/topic" className="gotoTopic">
+          <Link to="/freeSubject" className="gotoTopic">
             <img src={IMAGES.start} alt="start" className="start" />
           </Link>
 
