@@ -34,12 +34,6 @@ export default function Payment() {
     }
   }, [userInfo]);
 
-  useEffect(() => {
-    if (user) {
-      console.log("가져온 사용자 정보:", user);
-    }
-  }, [user]);
-
   // 포트원 스크립트 동적 로드
   useEffect(() => {
     const script = document.createElement("script");
@@ -86,7 +80,6 @@ export default function Payment() {
         amount,
         paymentMethod: "card", // 결제 방식 (카드 결제)
       };
-      console.log("API 요청 데이터:", requestData);
 
       // 백엔드에서 결제 요청 생성
       const { data } = await axios.post("/payment/request", requestData);
@@ -118,14 +111,12 @@ export default function Payment() {
             setLoading(false);
             return;
           }
-          console.log("결제 응답 데이터:", response);
           if (response.success) {
             try {
               const verifyResponse = await axios.post("/payment/verify", {
                 imp_uid: response.imp_uid,
                 merchant_uid: response.merchant_uid,
               });
-              console.log("검증 응답 데이터:", verifyResponse.data);
               if (verifyResponse.data.success) {
                 alert("결제가 성공적으로 완료되었습니다!");
                 navigate("/mypage");
