@@ -32,7 +32,6 @@ export default function Payment() {
     if (userInfo?.userId) {
       fetchUser();
     }
-    console.log("UserInfo:", userInfo);
   }, [userInfo]);
 
   useEffect(() => {
@@ -62,13 +61,6 @@ export default function Payment() {
   }, []);
 
   const handlePayment = async () => {
-    console.log("Processing payment:", {
-      userId: userInfo?.userId || user?.userId,
-      email: userInfo?.email,
-      amount,
-      paymentMethod: "card",
-    });
-
     if (!window.IMP) {
       alert("결제 모듈이 로드되지 않았습니다. 잠시 후 다시 시도해주세요.");
       return;
@@ -76,14 +68,13 @@ export default function Payment() {
 
     const userId = userInfo?.userId || user?.userId;
 
-
     if (!userId || !userInfo.email) {
       alert("사용자 정보가 없습니다. 로그인 후 다시 시도해주세요.");
       return;
     }
 
     const IMP = window.IMP; // 포트원 전역 객체
-    IMP.init("imp00000000"); // 포트원 테스트 모드 가맹점 식별 코드 (테스트 전용)
+    IMP.init("imp04448206"); // 포트원 테스트 모드 가맹점 식별 코드
 
     setLoading(true);
 
@@ -111,8 +102,8 @@ export default function Payment() {
       // 포트원 결제 요청
       IMP.request_pay(
         {
-          pg: "kakaopay.TC0ONETIME", // 테스트용 카카오페이 PG 설정
-          pay_method: "card",
+          pg: "html5_inicis", // PG사 설정 (이니시스)
+          pay_method: "card", // 결제 방식
           merchant_uid: merchantUid, // 백엔드에서 생성한 주문 ID 사용
           name: "프리미엄 업그레이드",
           amount: amount,
@@ -121,14 +112,20 @@ export default function Payment() {
           buyer_addr: userInfo.address,
         },
         async (response) => {
+          if (!response.imp_uid || !response.merchant_uid) {
+            console.error("결제 응답 데이터가 누락되었습니다:", response);
+            alert("결제 데이터가 올바르지 않습니다.");
+            setLoading(false);
+            return;
+          }
+          console.log("결제 응답 데이터:", response);
           if (response.success) {
-            // 결제 성공 시 서버에 검증 요청
             try {
               const verifyResponse = await axios.post("/payment/verify", {
                 imp_uid: response.imp_uid,
                 merchant_uid: response.merchant_uid,
               });
-
+              console.log("검증 응답 데이터:", verifyResponse.data);
               if (verifyResponse.data.success) {
                 alert("결제가 성공적으로 완료되었습니다!");
                 navigate("/mypage");
@@ -140,7 +137,6 @@ export default function Payment() {
               alert("결제 검증 중 오류가 발생했습니다.");
             }
           } else {
-            // 결제 실패 처리
             alert(`결제에 실패했습니다: ${response.error_msg}`);
           }
           setLoading(false);
@@ -163,7 +159,7 @@ export default function Payment() {
           <p>결제 금액: {amount.toLocaleString()}원</p>
         </div>
         <button onClick={handlePayment} disabled={loading}>
-          {loading ? "결제 진행 중..." : "카카오페이로 결제하기"}
+          {loading ? "결제 진행 중..." : "이니시스로 결제하기"}
         </button>
       </div>
       <Footer />
