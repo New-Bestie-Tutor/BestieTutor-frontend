@@ -55,7 +55,7 @@ export default function Login() {
     }
 
     // 카카오 로그인 요청
-    const kakaoLoginUrl = 'http://localhost:3000/user/login/kakao';
+    const kakaoLoginUrl = `${import.meta.env.VITE_HOST_URL}/user/login/kakao`;
     const handleKakaoLogin = () => {
       window.location.href = kakaoLoginUrl;
     }; 

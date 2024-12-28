@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
     FindPw, Conversation, RegistrationSuccess, Topic, SubTopic, 
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
-    MyPage, Profile, Review, Feedback, FreeSubject,
+    MyPage, Profile, Review, Feedback,
     About, Event, Inquiry, Notice, FreeSubject, Payment } from "./pages";
 
 export default function AppRoutes() {
