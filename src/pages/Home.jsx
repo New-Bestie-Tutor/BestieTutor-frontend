@@ -11,6 +11,7 @@ import '../App.css';
 export default function Home() {
   const { userInfo } = useContext(UserContext);
   const userId = userInfo?.userId;
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
   const [nextGoal, setNextGoal] = useState(0);
@@ -144,7 +145,7 @@ export default function Home() {
 
   return (
     <div className="Home">
-      <Header />
+      <Header totalTime={totalTime}/>
       <div className="main-container">
         <div className="greeting-section">
           <h2>
@@ -162,11 +163,18 @@ export default function Home() {
         </div>
 
         <section className="friendliness-section">
-          <p className="logo">Bestie Tutor</p>
+          <p className="logo">Free Talk</p>
           <p className="gotoTopicTxt">베튜랑 더 <br />친해지러가기</p>
-          <Link to="/freeSubject" className="gotoTopic">
-            <img src={IMAGES.start} alt="start" className="start" />
-          </Link>
+          <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`} 
+                onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
+              <img src={IMAGES.start} alt="start" className="start" />
+            </div>
+
+            {totalTime < 10 && (
+              <p className="lock-message">
+                2단계 잠금 해제 시 자유대화가 가능합니다.
+              </p>
+            )}
 
           <img src={image} alt="친밀도 단계 이미지" className="intimacy_image" />
           <div className="speechbubble_box">
