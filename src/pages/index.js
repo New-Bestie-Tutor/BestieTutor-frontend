@@ -6,7 +6,6 @@ export { default as Home } from "./Home.jsx";
 export { default as FindPw } from "./FindPw.jsx";
 export { default as Conversation } from "./Conversation.jsx";
 export { default as RegistrationSuccess } from "./RegistrationSuccess.jsx";
-export { default as SubTopic } from "./SubTopic.jsx";
 export { default as ChooseCharacter } from "./ChooseCharacter.jsx";
 export { default as ChooseLanguage } from "./ChooseLanguage.jsx";
 export { default as LearningGoal } from "./LearningGoal.jsx";

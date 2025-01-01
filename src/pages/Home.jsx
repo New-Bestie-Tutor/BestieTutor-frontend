@@ -11,6 +11,7 @@ import '../App.css';
 export default function Home() {
   const { userInfo } = useContext(UserContext);
   const userId = userInfo?.userId;
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
   const [nextGoal, setNextGoal] = useState(0);

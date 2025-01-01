@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
-    FindPw, Conversation, RegistrationSuccess, SubTopic, 
+    FindPw, Conversation, RegistrationSuccess,
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
     MyPage, Profile, Review, Feedback, FreeSubject,
     About, Event, Inquiry, Notice, Payment } from "./pages";
@@ -17,7 +17,6 @@ export default function AppRoutes() {
             <Route path="/findpw" element={<FindPw />} />
             <Route path="/conversation" element={<Conversation />} />
             <Route path="/registrationSuccess" element={<RegistrationSuccess />} />
-            <Route path="/subtopic" element={<SubTopic />} />
             <Route path="/chooseCharacter" element={<ChooseCharacter />} />
             <Route path="/chooseLanguage" element={<ChooseLanguage />} />
             <Route path="/learningGoal" element={<LearningGoal />} />
