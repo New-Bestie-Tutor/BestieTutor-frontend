@@ -1,16 +1,11 @@
-import { Link } from 'react-router-dom';
 import Footer from "../components/Footer"
 import Header from "../components/Header"
-import IMAGES from "../images/images";
-import { FaArrowLeft } from "react-icons/fa";
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserContext';
 import axios from 'axios'; 
 import '../App.css'
 
 export default function Notice() {
-  const { userInfo } = useContext(UserContext);
-  const [user, setUser] = useState({});
   
   const [notices, setNotices] = useState([]);
   const [noticeDetail, setNoticeDetail] = useState(null);
