@@ -33,9 +33,6 @@ export default function FreeSubject() {
                     onChange={(e) => setInputFreeSubject(e.target.value)}
                     placeholder="원하는 주제를 입력하세요"
                 />
-                <img src={IMAGES.next} alt="next" className="nextButton" />
-
-                
 
                 <button className="fs-next-button" onClick={handleSubmit}>대화시작하기</button>        
             </div>

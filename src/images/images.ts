@@ -29,7 +29,8 @@ const IMAGES = {
     sendMessage: new URL('./sendMessage.png', import.meta.url).href,
     scrollButtonLeft: new URL('./scrollButtonLeft.png', import.meta.url).href,
     scrollButtonRight: new URL('./scrollButtonRight.png', import.meta.url).href,
-    next: new URL('./next.png', import.meta.url).href
+    next: new URL('./next.png', import.meta.url).href,
+    lock: new URL('./lock.png', import.meta.url).href
 };
 
 export default IMAGES;
