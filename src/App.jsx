@@ -9,7 +9,7 @@ import axios from './axiosConfig';
 Modal.setAppElement('#root');
 
 function App() {
-  axios.defaults.baseURL = "http://localhost:3000";
+  axios.defaults.baseURL = window.API_BASE_URL;
   axios.defaults.withCredentials = true;
   return (
     <UserContextProvider>
