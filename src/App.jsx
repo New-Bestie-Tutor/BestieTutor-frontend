@@ -9,7 +9,7 @@ import axios from './axiosConfig';
 Modal.setAppElement('#root');
 
 function App() {
-  axios.defaults.baseURL = window.API_BASE_URL;
+  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
   axios.defaults.withCredentials = true;
   return (
     <UserContextProvider>

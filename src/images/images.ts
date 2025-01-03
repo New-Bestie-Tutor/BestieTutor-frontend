@@ -8,6 +8,7 @@ const IMAGES = {
     여행: new URL('./여행.png', import.meta.url).href,
     English: new URL('./americanFlag.png', import.meta.url).href,
     한국어: new URL('./koreaFlag.png', import.meta.url).href,
+    日本語: new URL('./japanFlag.png', import.meta.url).href,
     mypage: new URL('./mypage.png', import.meta.url).href,
     여행_준비: new URL('./여행준비.png', import.meta.url).href,
     학업: new URL('./학업.png', import.meta.url).href,

@@ -540,7 +540,7 @@
 .language-list {
   display: grid;
   gap: 5px;
-  grid-template-columns: repeat(2, 1fr); /* 기본적으로 4열 */
+  grid-template-columns: repeat(3, 1fr); /* 기본적으로 4열 */
   justify-items: center;/*grid*/
   text-align: center;
   min-width: 340px;
