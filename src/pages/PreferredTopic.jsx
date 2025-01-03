@@ -12,24 +12,8 @@ export default function PreferredTopic() {
     const userId = userInfo?.userId;
     const location = useLocation();
     const { language, goals, level } = location.state;
-    
-    const [topics, setTopics] = useState([]); 
     const [selectedTopics, setSelectedTopics] = useState([]);
-    
-    // Topics 조회 api 호출
-    const fetchTopics = async () => {
-        const response = await axios.get('/topic/'); 
-        if (response.status === 200) {
-            setTopics(response.data); 
-        }
-        else {
-            // console.error("주제 목록을 불러오는데 실패했습니다.", response.status);
-        }
-    };
-
-    useEffect(() => {
-        fetchTopics();
-    }, []);
+    const topics = ['일상','비즈니스','취미','여행'];
     
     const handleNextSurvey = async () => {
         if (selectedTopics.length >= 1 && selectedTopics.length <= 3) {// 목표 3개까지 선택 가능
@@ -70,22 +54,22 @@ export default function PreferredTopic() {
     return (
         <div className="topic">
             <GoBack className='goBack'/> 
-            <p className="conversation-title">선호하는 주제를 선택해주세요
+            <p className="conversation-title">관심있는 분야를 선택해주세요
             <span style={{ fontSize: '15px', color: 'rgba(0, 0, 0, 0.36)' }}>
                 (최대 3개)
             </span>
             </p>
             <div className='character-wrapper'>
                 <div className="goal-list">
-                    {topics.map((topic) => (
+                    {topics.map((topic, index) => (
                     <div 
-                        key={topic._id}
+                        key={index}
                         className='preferredTopic-item' 
-                        style={{ backgroundColor: selectedTopics.includes(topic.mainTopic) ? '#EBFFEE' : '#FAFAFC' }}
-                        onClick={() => handleTopicClick(topic.mainTopic)}
+                        style={{ backgroundColor: selectedTopics.includes(topic) ? '#EBFFEE' : '#FAFAFC' }}
+                        onClick={() => handleTopicClick(topic)}
                     >
-                        <img src={IMAGES[topic.mainTopic]} alt={topic.mainTopic} className="preferredTopic-icon" />
-                        <p className="goal-text">{topic.mainTopic}</p>
+                        <img src={IMAGES[topic]} alt={topic} className="preferredTopic-icon" />
+                        <p className="goal-text">{topic}</p>
                     </div>
                     ))}
                 </div>

@@ -7,7 +7,7 @@ import '../App.css';
 export default function ChooseLanguage() {
     const navigate = useNavigate();
 
-    const languages = ['English', '한국어'];
+    const languages = ['English', '한국어', '日本語'];
     const [selectedLanguage, setSelectedLanguage] = useState(null);
 
     const handleNextSurvey = () => {

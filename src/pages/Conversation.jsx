@@ -173,11 +173,13 @@ export default function Conversation() {
       case 'ko':
         recognition.lang = 'ko-KR';
         break;
+      case 'ja':
+        recognition.lang = 'ja-JP';
+        break;
       default:
         recognition.lang = 'ko-KR';
         break;
     }
-    // recognition.lang = 'ja-JP';
 
   // 음성 인식 시작
   const speakToMic = () => {
