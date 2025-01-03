@@ -45,14 +45,18 @@ export default function Header({ totalTime }) {
     switch (language) {
       case 'English':
         setUserLanguage("en");
+        break;
       case 'Korean':
       case '한국어':
         setUserLanguage("ko");
+        break;
       case 'Japanese':
       case '日本語':
         setUserLanguage("ja");
+        break;
       default:
         setUserLanguage("en");
+        break;
     }
   };
 
