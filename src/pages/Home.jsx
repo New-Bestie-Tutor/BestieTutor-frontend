@@ -19,7 +19,7 @@ export default function Home() {
   const [inactiveDays, setInactiveDays] = useState(0);
   const [conversations, setConversations] = useState([]);
   const userEmail = userInfo?.email;
-  const steps = [10, 30, 60, 120];
+  const steps = [0,10, 30, 60, 120];
 
  // Fetch user data
  const fetchUser = async () => {
@@ -101,7 +101,7 @@ export default function Home() {
       updateTotalTime();
     }
 
-    const step = steps.findIndex((s) => total < s);
+    const step = steps.findIndex((s) => total <= s);
     setCurrentStep(step === -1 ? steps.length - 1 : step);
 
     const goal = steps[step] || 0;
@@ -121,9 +121,9 @@ export default function Home() {
 
 
   const getImageAndText = (step, daysInactive) => {
-    if (step>0&&daysInactive >= 30) {
+    if (step>10&&daysInactive >= 30) {
       return { image: IMAGES.after30days, text: "흥" };
-    } else if (step>0&&daysInactive >= 10) {
+    } else if (step>10&&daysInactive >= 10) {
       return { image: IMAGES.after10days, text: "미워..." };
     } else {
       switch (step) {
