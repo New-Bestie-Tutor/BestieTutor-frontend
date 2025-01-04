@@ -2416,10 +2416,26 @@ margin-top: 3rem;
   }
   }
 
-  .ment{
-    font-size:110%;
-    font-weight: 500; 
+  .ment {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap; 
+    overflow: hidden;   
+    border-right: 2px solid #333; 
+    animation: blink 0.5s step-end infinite;
+    margin: 50px 0px;
   }
+  
+  @keyframes blink {
+    from, to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: #333;
+    }
+  }
+  
 
   .about-container4{
     display: flex;
@@ -2484,7 +2500,7 @@ margin-top: 3rem;
   }
   
 
-  .about-container5, .about-container6{
+  .about-container5{
     display: flex;
     align-items: center; 
   }
@@ -2493,11 +2509,28 @@ margin-top: 3rem;
     font-size:150%;
     font-weight: 600; 
   }
+  .about-container6 p{
+    justify-self: center;
+  }
 
-  .freetalkpage, .feedbackpage{
+  .freetalkpage{
     width: 60%;
     height: auto;
     object-fit: contain;
+  }
+
+  .about-container6{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .feedbackpage{
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    justify-self: end;
   }
 
   .about-container-end{

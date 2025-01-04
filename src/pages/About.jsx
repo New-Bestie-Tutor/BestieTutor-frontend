@@ -13,10 +13,44 @@ export default function About() {
   const { userInfo } = useContext(UserContext);
   const [user, setUser] = useState({});
   const [topics, setTopics] = useState([]);
+  const [text, setText] = useState(''); 
+  const message = ' 어떻게 배울까요?'; 
+  const typingSpeed = 100; 
+  const [isDeleting, setIsDeleting] = useState(false); 
+  const [index, setIndex] = useState(0); 
+
 
   const handleStartNow = () => {
     navigate("/"); 
   };
+
+
+  useEffect(() => {
+    const handleTyping = () => {
+      if (!isDeleting) {
+        if (index < message.length) {
+          setText((prev) => prev + message[index]); 
+          setIndex((prev) => prev + 1); 
+        } else {
+          setTimeout(() => setIsDeleting(true), 1000); 
+        }
+      } else {
+        if (index > 0) {
+          setText((prev) => prev.slice(0, -1)); 
+          setIndex((prev) => prev - 1); 
+        } else {
+
+          setIsDeleting(false);
+        }
+      }
+    };
+
+    const interval = setInterval(handleTyping, typingSpeed);
+
+    return () => clearInterval(interval); 
+  }, [index, isDeleting]);
+
+
 
   useEffect(() => {
     const fetchTopicsAndLockStatus = async () => {
@@ -63,7 +97,7 @@ export default function About() {
               </div>
             </div>
           </div>
-          <p className='ment'>어떻게 배울까요?</p>
+          <p className='ment'>{text}</p>
           <div className="about-container4">
             <p>단계별 대화 주제로 베튜와 친해지기</p>
             <div className='aboutTopic'>
@@ -81,11 +115,12 @@ export default function About() {
           </div>
           <div className="about-container5">
             <img src={IMAGES.자유대화} alt="자유대화" className="freetalkpage" />
-            <p>나를 기억해주는 베튜와 자유 대화하기</p>
+            <p>원하는 주제로 베튜와 자유 대화하기</p>
           </div>
           <div className="about-container6">
-            <img src={IMAGES.피드백} alt="피드백" className="feedbackpage" />
             <p>베튜의 친절한 피드백</p>
+            <img src={IMAGES.피드백} alt="피드백" className="feedbackpage" />
+            
           </div>
           <div className="about-container-end">
             <img src={IMAGES.time0} alt="freetalkbetu" className="aboutbettu" />

@@ -215,14 +215,14 @@ export default function Header({ totalTime }) {
               <p>{selectedLanguage}</p>
             </button>
             <div className="lang-dropdown-menu">
-            {allLanguages.map((language, index) => (
-              <p 
-                key={index}
-                onClick={() => handleLanguageChange(language.code)}
-              >
-                {getDisplayName(language.code)}
-              </p>
-            ))}
+              {allLanguages.map((language, index) => (
+                <p 
+                  key={index}
+                  onClick={() => handleLanguageChange(language.code)}
+                >
+                  {getDisplayName(language.code)}
+                </p>
+              ))}
             </div>
           </div>
         </div>
