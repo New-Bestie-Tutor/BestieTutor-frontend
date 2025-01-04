@@ -121,9 +121,9 @@ export default function Home() {
 
 
   const getImageAndText = (step, daysInactive) => {
-    if (daysInactive >= 30) {
+    if (step>0&&daysInactive >= 30) {
       return { image: IMAGES.after30days, text: "흥" };
-    } else if (daysInactive >= 10) {
+    } else if (step>0&&daysInactive >= 10) {
       return { image: IMAGES.after10days, text: "미워..." };
     } else {
       switch (step) {

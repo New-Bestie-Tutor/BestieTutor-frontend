@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import { LanguageContext } from "../LanguageContext";
 import { UserContext } from "../UserContext";
 import IMAGES from "../images/images";
@@ -22,6 +22,8 @@ export default function Header({ totalTime }) {
   const [selectedSubTopic, setSelectedSubTopic] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+  
   const stageRequirements = {
     '1단계': 0,    
     '2단계': 10,
@@ -138,14 +140,8 @@ export default function Header({ totalTime }) {
     setShowDropdown(true); 
   };
 
-  const handleMouseLeave = () => {
-    setCurrentTopic(null); 
-    setShowDropdown(false);
-    setSelectedSubTopic(null);
-  };
-
   useEffect(() => {
-      if (topics) {
+      if (topics.length>0) {
           const fetchSubTopics = async () => {
               try {
                   const response = await axios.get(`/topic/${topics}`);
@@ -186,7 +182,19 @@ export default function Header({ totalTime }) {
     return statuses;
   };
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown(false);
+      setCurrentTopic(null); 
+    }
+  };
 
+  useEffect(() => {
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="header">
@@ -207,14 +215,14 @@ export default function Header({ totalTime }) {
               <p>{selectedLanguage}</p>
             </button>
             <div className="lang-dropdown-menu">
-            {allLanguages.map((language, index) => (
-              <p 
-                key={index}
-                onClick={() => handleLanguageChange(language.code)}
-              >
-                {getDisplayName(language.code)}
-              </p>
-            ))}
+              {allLanguages.map((language, index) => (
+                <p 
+                  key={index}
+                  onClick={() => handleLanguageChange(language.code)}
+                >
+                  {getDisplayName(language.code)}
+                </p>
+              ))}
             </div>
           </div>
         </div>
@@ -244,7 +252,6 @@ export default function Header({ totalTime }) {
                 handleMouseEnter(topic);
               }
             }}
-            onMouseLeave={handleMouseLeave} 
             onClick={isLocked ? null : () => console.log('Topic clicked:', topic)}
             >
               {topic.mainTopic}{' '}
@@ -256,13 +263,14 @@ export default function Header({ totalTime }) {
 
             {/* 드롭다운 콘텐츠 */}
             {currentTopic && currentTopic._id === topic._id && showDropdown && (
-              <div className="dropdown-container">
+              <div className="dropdown-container" ref={dropdownRef}>
                 <div className="dropdown-content">
                   {currentTopic.subTopics.map((subTopic) => (
                     <div
                       className="dropdown-subtopic"
                       key={subTopic.name}
                       onMouseEnter={() => handleSubTopicHover(subTopic)}
+                      
                     >
                       {subTopic.name}{' '}
                       <FontAwesomeIcon icon={faAngleDown} rotation={270} style={{color: "#1c1c1c",} } size="xs"/>
