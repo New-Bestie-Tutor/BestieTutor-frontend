@@ -59,7 +59,7 @@ const fetchUser = async () => {
 
   const timeFomat = (time) => {
     const hour = Math.floor( time / 60 );
-    const min = time % 60;
+    const min = Math.floor( time % 60 );
     if(hour >= 1){
       return `${hour}시간 ${min}분`;
     }else{
