@@ -1769,9 +1769,8 @@ margin-top: 3rem;
 
   .lock-message {
     grid-area: start;
-    margin-top: 10px;
     text-align: center;
-    color: #c30d00;
+    color: #502320;
     font-weight: 700;
     font-size: 1rem;
     align-self: center;    
