@@ -19,14 +19,14 @@ export default function Home() {
   const [inactiveDays, setInactiveDays] = useState(0);
   const [conversations, setConversations] = useState([]);
   const userEmail = userInfo?.email;
-  const steps = [0,10, 30, 60, 120];
+  const steps = [0, 10, 30, 60, 120];
 
- // Fetch user data
- const fetchUser = async () => {
-  try {
-    const response = await axios.get("/user/getUser", {
-      params: { userId },
-    });
+  // Fetch user data
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get("/user/getUser", {
+        params: { userId },
+      });
 
       if (response.status === 200) {
         setUser(response.data);
@@ -121,9 +121,9 @@ export default function Home() {
 
 
   const getImageAndText = (step, daysInactive) => {
-    if (step>10&&daysInactive >= 30) {
+    if (step > 10 && daysInactive >= 30) {
       return { image: IMAGES.after30days, text: "흥" };
-    } else if (step>10&&daysInactive >= 10) {
+    } else if (step > 10 && daysInactive >= 10) {
       return { image: IMAGES.after10days, text: "미워..." };
     } else {
       switch (step) {
@@ -145,7 +145,7 @@ export default function Home() {
 
   return (
     <div className="Home">
-      <Header totalTime={totalTime}/>
+      <Header totalTime={totalTime} />
       <div className="main-container">
         <div className="greeting-section">
           <h2>
@@ -160,21 +160,24 @@ export default function Home() {
               목표 수정하기
             </Link>
           </p>
+          <div className="gotoMafiaGame" onClick={() => navigate('/mafiasetup')}>
+            Mafia Game Start
+          </div>
         </div>
 
         <section className="friendliness-section">
           <p className="logo">Free Talk</p>
           <p className="gotoTopicTxt">베튜랑 더 <br />친해지러가기</p>
-          <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`} 
-                onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
-              <img src={IMAGES.start} alt="start" className="start" />
-            </div>
+          <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`}
+            onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
+            <img src={IMAGES.start} alt="start" className="start" />
+          </div>
 
-            {totalTime < 10 && (
-              <p className="lock-message">
-                2단계 잠금 해제 시 자유대화가 가능합니다.
-              </p>
-            )}
+          {totalTime < 10 && (
+            <p className="lock-message">
+              2단계 잠금 해제 시 자유대화가 가능합니다.
+            </p>
+          )}
 
           <img src={image} alt="친밀도 단계 이미지" className="intimacy_image" />
           <div className="speechbubble_box">
