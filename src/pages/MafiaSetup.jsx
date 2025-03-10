@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const MafiaSetup = () => {
   const navigate = useNavigate();
@@ -22,36 +23,45 @@ const MafiaSetup = () => {
     }));
   };
 
-  const handleStartGame = () => {
+  // 게임 시작 시 백엔드로 설정 저장 후 이동
+  const handleStartGame = async () => {
     const playerNames = ["Player", "AI1", "AI2", "AI3", "AI4", "AI5", "AI6"];
     let rolesArray = Array(mafiaCount).fill("Mafia");
 
     if (roles.police) rolesArray.push("Police");
     if (roles.doctor) rolesArray.push("Doctor");
 
-    // 남은 자리를 시민으로 채우기
     while (rolesArray.length < playerNames.length) {
       rolesArray.push("Citizen");
     }
 
-    // 역할을 랜덤하게 섞기
     rolesArray = rolesArray.sort(() => Math.random() - 0.5);
 
-    // 플레이어 객체 생성
     const newPlayers = playerNames.map((name, index) => ({
       name,
       role: rolesArray[index],
       isAlive: true,
     }));
 
-    navigate("/mafiagame", { state: { players: newPlayers } });
+    try {
+      const response = await axios.post("/mafia/game/setup", {
+        mafiaCount,
+        roles,
+        players: newPlayers,
+      });
+
+      if (response.data.gameId) {
+        navigate("/mafiagame", { state: { gameId: response.data.gameId } });
+      }
+    } catch (error) {
+      console.error("게임 시작 중 오류 발생:", error);
+    }
   };
 
   return (
     <div>
       <h2>마피아 게임 설정</h2>
 
-      {/* 마피아 인원 선택 */}
       <label>
         마피아 수:
         <input 
@@ -63,7 +73,6 @@ const MafiaSetup = () => {
         />
       </label>
 
-      {/* 시민 직업 선택 */}
       <div>
         <label>
           <input 

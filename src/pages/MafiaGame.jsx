@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const MafiaGame = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [players, setPlayers] = useState(location.state?.players || []);
+  const [players, setPlayers] = useState([]);
+  const [gameId, setGameId] = useState(location.state?.gameId || null);
   const [log, setLog] = useState([]);
   const [discussionLog, setDiscussionLog] = useState([]);
   const [phase, setPhase] = useState("day");
@@ -22,10 +24,29 @@ const MafiaGame = () => {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    if (players.length === 0) {
-      navigate("/mafiagame-setup");
+    if (!gameId) {
+      navigate("/game/setup");
+      return;
     }
-  }, [players, navigate]);
+
+    const fetchGameState = async () => {
+      try {
+        const response = await axios.get(`/mafia/game/${gameId}`);
+        console.log("프론트엔드에서 받아온 players 데이터:", response.data.players);
+        if (response.data && response.data.players) {
+          setPlayers(response.data.players);
+          checkGameOver(response.data.players);
+        } else {
+          navigate("/game/setup");
+        }
+      } catch (error) {
+        console.error("게임 데이터를 불러오는 중 오류 발생:", error);
+        navigate("/game/setup");
+      }
+    };
+
+    fetchGameState();
+  }, [gameId, navigate]);
 
   useEffect(() => {
     const user = players.find((p) => p.name === "Player");
@@ -49,6 +70,7 @@ const MafiaGame = () => {
   }, [userRole, phase]);
 
   useEffect(() => {
+    if (players.length === 0) return;
     checkGameOver();
   }, [players]);
 
@@ -240,18 +262,20 @@ useEffect(() => {
   }
 }, [phase]);
 
-  const checkGameOver = () => {
-    const mafiaCount = players.filter((p) => p.role === "Mafia" && p.isAlive).length;
-    const citizenCount = players.filter((p) => p.role !== "Mafia" && p.isAlive).length;
+const checkGameOver = (playersData = players) => {
+  if (!playersData || playersData.length === 0) return;
 
-    if (mafiaCount === 0) {
-      setGameOver(true);
-      setWinner("시민 승리!");
-    } else if (mafiaCount >= citizenCount) {
-      setGameOver(true);
-      setWinner("마피아 승리!");
-    }
-  };
+  const mafiaCount = playersData.filter((p) => p.role === "Mafia" && p.isAlive).length;
+  const citizenCount = playersData.filter((p) => p.role !== "Mafia" && p.isAlive).length;
+
+  if (mafiaCount === 0) {
+    setGameOver(true);
+    setWinner("시민 승리!");
+  } else if (mafiaCount >= citizenCount) {
+    setGameOver(true);
+    setWinner("마피아 승리!");
+  }
+};
 
   return (
     <div className={`p-6 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
