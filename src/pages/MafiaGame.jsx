@@ -17,12 +17,8 @@ const MafiaGame = () => {
   const [executionPhase, setExecutionPhase] = useState(false);
   const [killedPlayer, setKilledPlayer] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  const [mafiaTarget, setMafiaTarget] = useState(null);
-  const [policeTarget, setPoliceTarget] = useState(null);
-  const [doctorTarget, setDoctorTarget] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [selectedTarget, setSelectedTarget] = useState(null);
-  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
     if (!gameId) {
@@ -76,7 +72,15 @@ const MafiaGame = () => {
   }, [players]);
 
   useEffect(() => {
-    setTheme(phase === "night" ? "dark" : "light");
+    const theme = phase === "night" ? "dark" : "light";
+    console.log("현재 theme 상태:", phase, "→", theme);
+
+    document.body.classList.toggle("bg-gray-900", theme === "dark");
+    document.body.classList.toggle("text-white", theme === "dark");
+    document.body.classList.toggle("bg-gray-100", theme === "light");
+    document.body.classList.toggle("text-black", theme === "light");
+
+    console.log("body 클래스 목록:", document.body.classList);
   }, [phase]);
 
   const addLog = (message) => {
@@ -88,12 +92,10 @@ const MafiaGame = () => {
   };
 
   const handleVote = async () => {
-    if (!selectedPlayer) return console.error("❌ Error: 선택된 플레이어가 없습니다.");
-    if (!gameId) return console.error("❌ Error: gameId가 없습니다.");
+    if (!selectedPlayer) return console.error("Error: 선택된 플레이어가 없습니다.");
+    if (!gameId) return console.error("Error: gameId가 없습니다.");
 
     try {
-      console.log("🗳️ Sending vote request:", { gameId, selectedPlayer });
-
       const response = await axios.post("/mafia/game/vote", {
         gameId,
         selectedPlayer
@@ -116,7 +118,6 @@ const MafiaGame = () => {
     try {
       // 투표 이후 바로 결정 요청하지 않고 1초 대기
       await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log(`🛠️ 최종 결정 요청: ${decision}, 게임 ID: ${gameId}`);
 
       const response = await axios.post("/mafia/game/decision", {
         gameId,
@@ -175,7 +176,6 @@ const MafiaGame = () => {
       if (userRole === "Doctor") {
         await axios.post("/mafia/game/doctor", { gameId, doctorTarget: target });
       }
-      console.log(`🔹 ${userRole}가 선택한 대상:`, target);
       addLog(`${userRole}가 ${target}을(를) 선택했습니다.`);
       checkNightProgress();
     } catch (error) {
@@ -220,7 +220,7 @@ const MafiaGame = () => {
   };
 
   return (
-    <div className={`p-6 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
+    <div className={`p-6 min-h-screen flex flex-col items-center transition-all duration-500 ${phase === "night" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
       <h2 className="text-2xl font-bold mb-4">마피아 게임 진행</h2>
       {gameOver ? (
         <div className="w-full max-w-lg bg-white p-4 rounded shadow text-center">
@@ -262,8 +262,7 @@ const MafiaGame = () => {
                   .map((player) => (
                     <li key={player.name}>
                       <button
-                        className={`px-4 py-2 rounded m-1 ${selectedTarget === player.name ? "bg-green-500" : "bg-blue-500"
-                          } text-white`}
+                        className={`px-4 py-2 rounded m-1 ${selectedTarget === player.name ? "bg-green-500" : "bg-blue-500"} text-white`}
                         onClick={() => selectTarget(player.name)}
                         disabled={!player.isAlive}
                       >
@@ -280,18 +279,10 @@ const MafiaGame = () => {
               <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleVote} disabled={!voteInProgress}>
                 투표 진행
               </button>
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={() => handleFinalDecision("execute")}
-                disabled={!executionPhase || !selectedPlayer}
-              >
+              <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleFinalDecision("execute")} disabled={!executionPhase || !selectedPlayer}>
                 처형
               </button>
-              <button
-                className="bg-gray-500 text-white px-4 py-2 rounded"
-                onClick={() => handleFinalDecision("spare")}
-                disabled={!executionPhase || !selectedPlayer}
-              >
+              <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => handleFinalDecision("spare")} disabled={!executionPhase || !selectedPlayer}>
                 살려주기
               </button>
             </>
