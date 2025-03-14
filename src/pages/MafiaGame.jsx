@@ -15,6 +15,7 @@ const MafiaGame = () => {
   const [winner, setWinner] = useState(null);
   const [voteInProgress, setVoteInProgress] = useState(true);
   const [executionPhase, setExecutionPhase] = useState(false);
+  const [killedPlayer, setKilledPlayer] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [mafiaTarget, setMafiaTarget] = useState(null);
   const [policeTarget, setPoliceTarget] = useState(null);
@@ -102,7 +103,7 @@ const MafiaGame = () => {
       setVoteInProgress(false);
       setExecutionPhase(true);
     } catch (error) {
-      console.error("❌ 투표 오류:", error.response?.data?.message || error.message);
+      console.error("투표 오류:", error.response?.data?.message || error.message);
     }
   };
 
@@ -113,7 +114,7 @@ const MafiaGame = () => {
     }
 
     try {
-      // ✅ 투표 이후 바로 결정 요청하지 않고 1초 대기
+      // 투표 이후 바로 결정 요청하지 않고 1초 대기
       await new Promise(resolve => setTimeout(resolve, 1000));
       console.log(`🛠️ 최종 결정 요청: ${decision}, 게임 ID: ${gameId}`);
 
@@ -124,7 +125,6 @@ const MafiaGame = () => {
 
       addLog(response.data.message);
 
-      // ✅ 플레이어 상태 업데이트
       if (decision === "execute" && selectedPlayer) {
         setPlayers((prevPlayers) =>
           prevPlayers.map((player) =>
@@ -140,158 +140,69 @@ const MafiaGame = () => {
     }
   };
 
-  // 밤이 되면 유저의 직업에 따라 선택 UI를 표시
-  const handleNightActions = () => {
+  const handleNightActions = async () => {
     addLog("밤이 되었습니다. 각 역할이 능력을 사용하세요.");
 
     if (userRole === "Mafia") {
       addLog("마피아는 공격할 대상을 선택하세요.");
-      return; // 유저가 선택할 때까지 대기
+      return;
     }
 
     if (userRole === "Police") {
       addLog("경찰은 조사할 대상을 선택하세요.");
-      return; // 유저가 선택할 때까지 대기
+      return;
     }
 
     if (userRole === "Doctor") {
       addLog("의사는 보호할 대상을 선택하세요.");
-      return; // 유저가 선택할 때까지 대기
+      return;
     }
 
     if (userRole === "Citizen") {
       addLog("시민은 밤에 특별한 행동을 할 수 없습니다.");
-      processAITurns();
+      await checkNightProgress();
     }
   };
 
-  // 유저가 선택한 후 밤을 진행하는 함수
-  const processNightActions = () => {
-    setTimeout(() => {
-      let newPlayers = [...players];
-
-      // 경찰 조사
-      if (policeTarget) {
-        const role = newPlayers.find(p => p.name === policeTarget)?.role;
-        addLog(`경찰이 ${policeTarget}의 직업을 확인했습니다: ${role}`);
+  const selectTarget = async (target) => {
+    try {
+      if (userRole === "Mafia") {
+        await axios.post("/mafia/game/mafia", { gameId, mafiaTarget: target });
       }
-
-      // 의사 보호
-      let protectedPlayer = doctorTarget;
-      if (protectedPlayer) {
-        addLog(`의사가 ${protectedPlayer}을(를) 보호했습니다.`);
+      if (userRole === "Police") {
+        await axios.post("/mafia/game/police", { gameId, policeTarget: target });
       }
-
-      // 마피아 공격
-      if (mafiaTarget && mafiaTarget !== protectedPlayer) {
-        newPlayers = newPlayers.map((player) =>
-          player.name === mafiaTarget ? { ...player, isAlive: false } : player
-        );
-        addLog(`마피아가 ${mafiaTarget}을(를) 공격했습니다.`);
-      } else if (mafiaTarget === protectedPlayer) {
-        addLog(`의사가 ${mafiaTarget}을(를) 보호하여 마피아의 공격을 막았습니다.`);
+      if (userRole === "Doctor") {
+        await axios.post("/mafia/game/doctor", { gameId, doctorTarget: target });
       }
-
-      // 상태 업데이트
-      setPlayers(newPlayers);
-      setMafiaTarget(null);
-      setPoliceTarget(null);
-      setDoctorTarget(null);
-
-      setTimeout(() => {
-        setPhase("day");
-        setVoteInProgress(true);
-      }, 1000);
-    }, 3000);
-  };
-
-  // 유저가 대상 선택 시 실행
-  const selectTarget = (target) => {
-    if (userRole === "Mafia") {
-      setMafiaTarget(target);
-    }
-    if (userRole === "Police") {
-      setPoliceTarget(target);
-    }
-    if (userRole === "Doctor") {
-      setDoctorTarget(target);
-    }
-
-    addLog(`${userRole}가 ${target}을(를) 선택했습니다.`);
-
-    // 모든 선택이 완료되었는지 확인 후 진행
-    if (mafiaTarget && policeTarget && doctorTarget) {
-      processNightActions();
+      console.log(`🔹 ${userRole}가 선택한 대상:`, target);
+      addLog(`${userRole}가 ${target}을(를) 선택했습니다.`);
+      checkNightProgress();
+    } catch (error) {
+      console.error("선택 오류:", error);
     }
   };
 
-  // AI 자동 선택 처리
-  const processAITurns = () => {
-    let updated = false;
-    const alivePlayers = players.filter((p) => p.isAlive);
+  const checkNightProgress = async () => {
+    try {
+      const response = await axios.post("/mafia/game/process", { gameId });
+      addLog(response.data.message);
 
-    // 마피아가 아직 공격 대상을 정하지 않았다면 랜덤 선택
-    if (!mafiaTarget) {
-      const target = alivePlayers.filter(p => p.role !== "Mafia");
-      if (target.length > 0) {
-        setMafiaTarget(target[Math.floor(Math.random() * target.length)].name);
-        updated = true;
+      if (response.data.policeResult) {
+        addLog(`경찰이 조사한 결과: ${response.data.policeResult}`);
       }
-    }
 
-    // 의사가 아직 보호 대상을 정하지 않았다면 랜덤 선택 (자기 자신도 가능)
-    if (!doctorTarget) {
-      if (alivePlayers.length > 0) {
-        setDoctorTarget(alivePlayers[Math.floor(Math.random() * alivePlayers.length)].name);
-        updated = true;
+      if (response.data.mafiaTarget) {
+        addLog(`마피아가 ${response.data.mafiaTarget}을(를) 공격했습니다.`);
+        setKilledPlayer(response.data.mafiaTarget); // 죽은 플레이어 저장
       }
-    }
 
-    // 경찰이 아직 조사 대상을 정하지 않았다면 랜덤 선택 (자기 자신 제외)
-    if (!policeTarget) {
-      const target = alivePlayers.filter(p => p.role !== "Police");
-      if (target.length > 0) {
-        setPoliceTarget(target[Math.floor(Math.random() * target.length)].name);
-        updated = true;
-      }
+      setPhase("day");
+      setVoteInProgress(true);
+    } catch (error) {
+      console.error("밤 처리 중 오류:", error);
     }
   };
-
-  useEffect(() => {
-    console.log("현재 선택 상태:", { mafiaTarget, policeTarget, doctorTarget });
-
-    // 유저가 마피아/경찰/의사라면, 유저가 선택을 완료할 때까지 AI는 대기
-    if (phase === "night" && userRole !== "Citizen") {
-      if (!mafiaTarget && userRole === "Mafia") return;
-      if (!policeTarget && userRole === "Police") return;
-      if (!doctorTarget && userRole === "Doctor") return;
-    }
-
-    // AI의 선택이 필요한 경우 AI 행동 수행
-    if (phase === "night") {
-      processAITurns();
-    }
-  }, [phase, mafiaTarget, policeTarget, doctorTarget]);
-
-  useEffect(() => {
-    console.log("유저 및 AI 선택 완료 여부:", { mafiaTarget, policeTarget, doctorTarget });
-
-    // 모든 역할의 선택이 완료된 경우에만 밤의 행동 진행
-    if (phase === "night" && mafiaTarget && policeTarget && doctorTarget) {
-      processNightActions();
-    }
-  }, [mafiaTarget, policeTarget, doctorTarget]);
-
-  const logAdded = useRef(false);
-
-  useEffect(() => {
-    console.log("useEffect 실행됨"); // 디버깅용
-
-    if (phase === "day" && !logAdded.current) {
-      addLog("아침이 밝았습니다! 투표를 진행하세요.");
-      logAdded.current = true; // 중복 실행 방지
-    }
-  }, [phase]);
 
   const checkGameOver = (playersData = players) => {
     if (!playersData || playersData.length === 0) return;
@@ -325,17 +236,21 @@ const MafiaGame = () => {
           <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
             <h3 className="text-lg font-bold">플레이어 목록</h3>
             <ul>
-              {players.map((player) => (
-                <li key={player.name} className={player.isAlive ? "text-black" : "text-gray-500 line-through"}>
-                  <input
-                    type="radio"
-                    name="playerSelect"
-                    onChange={() => setSelectedPlayer(player.name)}
-                    disabled={!player.isAlive || phase !== "day" || executionPhase}
-                  />
-                  {player.name} ({player.role})
-                </li>
-              ))}
+              {players.map((player) => {
+                const isDead = !player.isAlive || player.name === killedPlayer;
+
+                return (
+                  <li key={player.name} className={isDead ? "text-gray-500 line-through" : "text-black"}>
+                    <input
+                      type="radio"
+                      name="playerSelect"
+                      onChange={() => setSelectedPlayer(player.name)}
+                      disabled={isDead || phase !== "day" || executionPhase}
+                    />
+                    {player.name} ({player.role})
+                  </li>
+                );
+              })}
             </ul>
           </div>
           {phase === "night" && userRole !== "Citizen" && (
