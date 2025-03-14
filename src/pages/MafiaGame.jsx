@@ -19,6 +19,8 @@ const MafiaGame = () => {
   const [userRole, setUserRole] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [selectedTarget, setSelectedTarget] = useState(null);
+  const [aiMessage, setAiMessage] = useState(" ");
+  const [playerMessage, setPlayerMessage] = useState(" ");
 
   useEffect(() => {
     if (!gameId) {
@@ -81,6 +83,33 @@ const MafiaGame = () => {
     document.body.classList.toggle("text-black", theme === "light");
 
     console.log("body 클래스 목록:", document.body.classList);
+  }, [phase]);
+
+  // 🔹 AI가 게임을 진행하는 메시지 가져오기
+  const fetchAINarration = async () => {
+    console.log("Fetching AI narration for gameId:", gameId);
+    try {
+      const response = await axios.post("/mafia/game/aiNarration", { gameId });
+      console.log("AI Narration Response:", response.data);
+      setAiMessage(response.data.message);
+    } catch (error) {
+      console.error("AI 내러티브 오류:", error.response?.data || error.message);
+    }
+  };
+
+  // 🔹 플레이어가 입력한 메시지를 AI에게 전달
+  const sendPlayerMessage = async () => {
+    try {
+      const response = await axios.post("/mafia/game/playerResponse", { gameId, playerMessage });
+      setAiMessage(response.data.message);
+      setPlayerMessage(""); // 입력 필드 초기화
+    } catch (error) {
+      console.error("AI 반응 오류:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAINarration(); // AI 메세지 페이즈마다 업데이트
   }, [phase]);
 
   const addLog = (message) => {
@@ -253,6 +282,25 @@ const MafiaGame = () => {
               })}
             </ul>
           </div>
+
+          <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
+            <h3 className="text-lg font-bold">플레이어 메시지</h3>
+            <input
+              type="text"
+              value={playerMessage}
+              onChange={(e) => setPlayerMessage(e.target.value)}
+              placeholder="메시지를 입력하세요..."
+              className="w-full p-2 border rounded"
+            />
+            <button
+              className="bg-purple-500 text-white px-4 py-2 rounded mt-2"
+              onClick={sendPlayerMessage}
+              disabled={!playerMessage?.trim()} // Optional chaining으로 오류 방지
+            >
+              메시지 전송
+            </button>
+          </div>
+
           {phase === "night" && userRole !== "Citizen" && (
             <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
               <h3 className="text-lg font-bold">{userRole} 능력 사용</h3>
