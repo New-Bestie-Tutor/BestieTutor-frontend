@@ -8,7 +8,6 @@ const MafiaGame = () => {
   const [players, setPlayers] = useState([]);
   const [gameId, setGameId] = useState(location.state?.gameId || null);
   const [log, setLog] = useState([]);
-  const [discussionLog, setDiscussionLog] = useState([]);
   const [phase, setPhase] = useState("day");
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [gameOver, setGameOver] = useState(false);
@@ -24,7 +23,7 @@ const MafiaGame = () => {
 
   useEffect(() => {
     if (!gameId) {
-      navigate("/game/setup");
+      navigate("/mafia/game/setup");
       return;
     }
 
@@ -34,13 +33,12 @@ const MafiaGame = () => {
         console.log("프론트엔드에서 받아온 players 데이터:", response.data.players);
         if (response.data && response.data.players) {
           setPlayers(response.data.players);
-          checkGameOver(response.data.players);
         } else {
-          navigate("/game/setup");
+          navigate("/mafia/game/setup");
         }
       } catch (error) {
         console.error("게임 데이터를 불러오는 중 오류 발생:", error);
-        navigate("/game/setup");
+        navigate("/mafia/game/setup");
       }
     };
 
@@ -67,11 +65,6 @@ const MafiaGame = () => {
     console.log("현재 역할:", userRole);
     console.log("현재 게임 상태:", phase);
   }, [userRole, phase]);
-
-  useEffect(() => {
-    if (players.length === 0) return;
-    checkGameOver();
-  }, [players]);
 
   useEffect(() => {
     const theme = phase === "night" ? "dark" : "light";
@@ -112,12 +105,25 @@ const MafiaGame = () => {
     fetchAINarration(); // AI 메세지 페이즈마다 업데이트
   }, [phase]);
 
-  const addLog = (message) => {
-    setLog((prevLog) => [...prevLog, `사회자: ${message}`]);
+  const nextPhase = async () => {
+    try {
+      const response = await axios.post(`/mafia/game/nextPhase`);
+      if (response.data) {
+        setPhase(response.data.status);
+        setPlayers(response.data.players);
+  
+        if (response.data.gameOver) {
+          setGameOver(true);
+          setWinner(response.data.winner);
+        }
+      }
+    } catch (error) {
+      console.error("페이즈 전환 오류:", error.response?.data || error.message);
+    }
   };
 
-  const addDiscussionLog = (message) => {
-    setDiscussionLog((prevLog) => [...prevLog, message]);
+  const addLog = (message) => {
+    setLog((prevLog) => [...prevLog, `사회자: ${message}`]);
   };
 
   const handleVote = async () => {
@@ -230,21 +236,6 @@ const MafiaGame = () => {
       setVoteInProgress(true);
     } catch (error) {
       console.error("밤 처리 중 오류:", error);
-    }
-  };
-
-  const checkGameOver = (playersData = players) => {
-    if (!playersData || playersData.length === 0) return;
-
-    const mafiaCount = playersData.filter((p) => p.role === "Mafia" && p.isAlive).length;
-    const citizenCount = playersData.filter((p) => p.role !== "Mafia" && p.isAlive).length;
-
-    if (mafiaCount === 0) {
-      setGameOver(true);
-      setWinner("시민 승리!");
-    } else if (mafiaCount >= citizenCount) {
-      setGameOver(true);
-      setWinner("마피아 승리!");
     }
   };
 
