@@ -74,8 +74,6 @@ const MafiaGame = () => {
     document.body.classList.toggle("text-white", theme === "dark");
     document.body.classList.toggle("bg-gray-100", theme === "light");
     document.body.classList.toggle("text-black", theme === "light");
-
-    console.log("body 클래스 목록:", document.body.classList);
   }, [phase]);
 
   // 🔹 AI가 게임을 진행하는 메시지 가져오기
@@ -107,18 +105,27 @@ const MafiaGame = () => {
 
   const nextPhase = async () => {
     try {
-      const response = await axios.post(`/mafia/game/nextPhase`);
-      if (response.data) {
-        setPhase(response.data.status);
-        setPlayers(response.data.players);
+      const response = await axios.post(`/mafia/game/nextPhase`, { gameId });
+      console.log("📌 nextPhase 응답 데이터:", response.data);
+      if (!response.data) {
+        console.error("📌 오류: 서버에서 응답이 없음!");
+        return;
+      }
   
-        if (response.data.gameOver) {
-          setGameOver(true);
-          setWinner(response.data.winner);
-        }
+      if (!("gameOver" in response.data)) {
+        console.error("📌 오류: gameOver 키가 응답에 없음!", response.data);
+        return;
+      }
+
+      setPhase(response.data.status);
+  
+      if (response.data.gameOver === true) {
+        console.log("📌 gameOver 상태 업데이트 전:", response.data.gameOver);
+        setGameOver(true);
+        setWinner(response.data.winner);
       }
     } catch (error) {
-      console.error("페이즈 전환 오류:", error.response?.data || error.message);
+      console.error("📌 페이즈 전환 오류:", error.response?.data || error.message);
     }
   };
 
@@ -161,16 +168,12 @@ const MafiaGame = () => {
 
       addLog(response.data.message);
 
-      if (decision === "execute" && selectedPlayer) {
-        setPlayers((prevPlayers) =>
-          prevPlayers.map((player) =>
-            player.name === selectedPlayer ? { ...player, isAlive: false } : player
-          )
-        );
-      }
+      const updatedGame = await axios.get(`/mafia/game/${gameId}`);
+      setPlayers(updatedGame.data.players);
+
       setExecutionPhase(false);
       setSelectedPlayer(null);
-      setPhase("night");
+      nextPhase();
     } catch (error) {
       console.error("최종 결정 오류:", error.response?.data?.message || error.message);
     }
@@ -228,12 +231,19 @@ const MafiaGame = () => {
       }
 
       if (response.data.mafiaTarget) {
-        addLog(`마피아가 ${response.data.mafiaTarget}을(를) 공격했습니다.`);
-        setKilledPlayer(response.data.mafiaTarget); // 죽은 플레이어 저장
+        if (response.data.message.includes("의사의 보호로 살아남았습니다")) {
+          addLog(`마피아가 ${response.data.mafiaTarget}을(를) 공격했지만, 의사의 보호로 살아남았습니다.`);
+          setKilledPlayer(null);
+        } else {
+          addLog(`마피아가 ${response.data.mafiaTarget}을(를) 공격했습니다.`);
+          setKilledPlayer(response.data.mafiaTarget);
+        }
+      } else {
+        setKilledPlayer(null);
       }
 
-      setPhase("day");
       setVoteInProgress(true);
+      nextPhase();
     } catch (error) {
       console.error("밤 처리 중 오류:", error);
     }
@@ -302,7 +312,10 @@ const MafiaGame = () => {
                     <li key={player.name}>
                       <button
                         className={`px-4 py-2 rounded m-1 ${selectedTarget === player.name ? "bg-green-500" : "bg-blue-500"} text-white`}
-                        onClick={() => selectTarget(player.name)}
+                        onClick={() => {
+                          selectTarget(player.name);
+                          handleNightActions(player.name);
+                        }}
                         disabled={!player.isAlive}
                       >
                         {player.name} 선택
@@ -313,7 +326,8 @@ const MafiaGame = () => {
               {selectedTarget && <p className="mt-2">선택된 대상: {selectedTarget}</p>}
             </div>
           )}
-          {phase === "day" ? (
+
+          {phase === "day" && (
             <>
               <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleVote} disabled={!voteInProgress}>
                 투표 진행
@@ -325,10 +339,6 @@ const MafiaGame = () => {
                 살려주기
               </button>
             </>
-          ) : (
-            <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleNightActions}>
-              밤 진행
-            </button>
           )}
         </>
       )}
