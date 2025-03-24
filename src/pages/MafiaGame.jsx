@@ -19,6 +19,7 @@ const MafiaGame = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [selectedTarget, setSelectedTarget] = useState(null);
   const [aiMessage, setAiMessage] = useState(" ");
+  const [messages, setMessages] = useState([]);
   const [playerMessage, setPlayerMessage] = useState(" ");
 
   useEffect(() => {
@@ -90,9 +91,20 @@ const MafiaGame = () => {
 
   // 🔹 플레이어가 입력한 메시지를 AI에게 전달
   const sendPlayerMessage = async () => {
+    if (!playerMessage.trim()) return; // 빈 메시지 방지
     try {
       const response = await axios.post("/mafia/game/playerResponse", { gameId, playerMessage });
-      setAiMessage(response.data.message);
+      const aiResponses = response.data.message; // AI 응답
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "user", content: playerMessage }, // 플레이어 메시지 추가
+        ...aiResponses.map((ai) => ({
+          role: ai.role,
+          content: ai.message,
+        })), // AI 응답들 추가
+      ]);
+
       setPlayerMessage(""); // 입력 필드 초기화
     } catch (error) {
       console.error("AI 반응 오류:", error);
@@ -106,26 +118,25 @@ const MafiaGame = () => {
   const nextPhase = async () => {
     try {
       const response = await axios.post(`/mafia/game/nextPhase`, { gameId });
-      console.log("📌 nextPhase 응답 데이터:", response.data);
       if (!response.data) {
-        console.error("📌 오류: 서버에서 응답이 없음!");
+        console.error("Error: 서버에서 응답이 없음!");
         return;
       }
-  
+
       if (!("gameOver" in response.data)) {
-        console.error("📌 오류: gameOver 키가 응답에 없음!", response.data);
+        console.error("Error: gameOver 키가 응답에 없음!", response.data);
         return;
       }
 
       setPhase(response.data.status);
-  
+
       if (response.data.gameOver === true) {
-        console.log("📌 gameOver 상태 업데이트 전:", response.data.gameOver);
+        console.log("gameOver 상태 업데이트 전:", response.data.gameOver);
         setGameOver(true);
         setWinner(response.data.winner);
       }
     } catch (error) {
-      console.error("📌 페이즈 전환 오류:", error.response?.data || error.message);
+      console.error("페이즈 전환 오류:", error.response?.data || error.message);
     }
   };
 
@@ -255,13 +266,20 @@ const MafiaGame = () => {
       {gameOver ? (
         <div className="w-full max-w-lg bg-white p-4 rounded shadow text-center">
           <h3 className="text-xl font-bold mb-2">게임 종료</h3>
-          <p className="text-lg font-semibold">{winner}</p>
+          <p className="text-lg font-semibold">{winner} 승리</p>
         </div>
       ) : (
         <>
           <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
             <h3 className="text-lg font-bold">사회자 로그</h3>
             <ul>{log.map((entry, index) => <li key={index}>{entry}</li>)}</ul>
+          </div>
+          <div className="chat-log">
+            {messages.map((msg, index) => (
+              <div key={index} className={`message ${msg.role === "user" ? "player" : "ai"}`}>
+                <strong>{msg.role === "user" ? "플레이어" : msg.role}:</strong> {msg.content}
+              </div>
+            ))}
           </div>
           <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
             <h3 className="text-lg font-bold">플레이어 목록</h3>
