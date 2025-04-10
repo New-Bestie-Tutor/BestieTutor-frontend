@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import MafiaNight from "../images/MafiaNight.png";
+import MafiaDay from "../images/MafiaNight.png";
 import axios from "axios";
 
 const MafiaGame = () => {
@@ -45,6 +47,20 @@ const MafiaGame = () => {
 
     fetchGameState();
   }, [gameId, navigate]);
+
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${phase === "night" ? MafiaNight : MafiaDay})`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundRepeat = "no-repeat";
+
+    return () => {
+      document.body.style.backgroundImage = "";
+      document.body.style.backgroundSize = "";
+      document.body.style.backgroundPosition = "";
+      document.body.style.backgroundRepeat = "";
+    };
+  }, [phase]);
 
   useEffect(() => {
     const user = players.find((p) => p.name === "Player");
@@ -261,105 +277,115 @@ const MafiaGame = () => {
   };
 
   return (
-    <div className={`p-6 min-h-screen flex flex-col items-center transition-all duration-500 ${phase === "night" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
-      <h2 className="text-2xl font-bold mb-4">마피아 게임 진행</h2>
-      {gameOver ? (
-        <div className="w-full max-w-lg bg-white p-4 rounded shadow text-center">
-          <h3 className="text-xl font-bold mb-2">게임 종료</h3>
-          <p className="text-lg font-semibold">{winner} 승리</p>
-        </div>
-      ) : (
-        <>
-          <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-bold">사회자 로그</h3>
-            <ul>{log.map((entry, index) => <li key={index}>{entry}</li>)}</ul>
+    <div className="mafia-wrapper">
+      <div
+        className={`mafia-wrapper transition-all duration-500 ${phase === "night" ? "text-white" : "text-black"}`}
+        style={{
+          '--background-image': `url(${phase === "night" ? MafiaNight : MafiaDay})`,
+        }}
+      >
+        <h2 className="text-2xl font-bold mb-4">마피아 게임 진행</h2>
+        {gameOver ? (
+          <div className="w-full max-w-lg bg-white p-4 rounded shadow text-center">
+            <h3 className="text-xl font-bold mb-2">게임 종료</h3>
+            <p className="text-lg font-semibold">{winner} 승리</p>
           </div>
-          <div className="chat-log">
-            {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.role === "user" ? "player" : "ai"}`}>
-                <strong>{msg.role === "user" ? "플레이어" : msg.role}:</strong> {msg.content}
-              </div>
-            ))}
-          </div>
-          <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-bold">플레이어 목록</h3>
-            <ul>
-              {players.map((player) => {
-                const isDead = !player.isAlive || player.name === killedPlayer;
-
-                return (
-                  <li key={player.name} className={isDead ? "text-gray-500 line-through" : "text-black"}>
-                    <input
-                      type="radio"
-                      name="playerSelect"
-                      onChange={() => setSelectedPlayer(player.name)}
-                      disabled={isDead || phase !== "day" || executionPhase}
-                    />
-                    {player.name} ({player.role})
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-bold">플레이어 메시지</h3>
-            <input
-              type="text"
-              value={playerMessage}
-              onChange={(e) => setPlayerMessage(e.target.value)}
-              placeholder="메시지를 입력하세요..."
-              className="w-full p-2 border rounded"
-            />
-            <button
-              className="bg-purple-500 text-white px-4 py-2 rounded mt-2"
-              onClick={sendPlayerMessage}
-              disabled={!playerMessage?.trim()} // Optional chaining으로 오류 방지
-            >
-              메시지 전송
-            </button>
-          </div>
-
-          {phase === "night" && userRole !== "Citizen" && (
+        ) : (
+          <>
             <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
-              <h3 className="text-lg font-bold">{userRole} 능력 사용</h3>
-              <ul>
-                {players
-                  .filter((p) => p.isAlive && (userRole === "Doctor" || p.name !== currentUser.name))
-                  .map((player) => (
-                    <li key={player.name}>
-                      <button
-                        className={`px-4 py-2 rounded m-1 ${selectedTarget === player.name ? "bg-green-500" : "bg-blue-500"} text-white`}
-                        onClick={() => {
-                          selectTarget(player.name);
-                          handleNightActions(player.name);
-                        }}
-                        disabled={!player.isAlive}
-                      >
-                        {player.name} 선택
-                      </button>
-                    </li>
-                  ))}
-              </ul>
-              {selectedTarget && <p className="mt-2">선택된 대상: {selectedTarget}</p>}
+              <h3 className="text-lg font-bold">사회자 로그</h3>
+              <ul>{log.map((entry, index) => <li key={index}>{entry}</li>)}</ul>
             </div>
-          )}
+            <div className="chat-log">
+              <h3 className="text-lg font-bold">대화 로그</h3>
+              {messages.map((msg, index) => (
+                <div key={index} className={`message ${msg.role === "user" ? "player" : "ai"}`}>
+                  <strong>{msg.role === "user" ? "플레이어" : msg.role}:</strong> {msg.content}
+                </div>
+              ))}
+            </div>
+            <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
+              <h3 className="text-lg font-bold">플레이어 목록</h3>
+              <ul>
+                {players.map((player) => {
+                  const isDead = !player.isAlive || player.name === killedPlayer;
 
-          {phase === "day" && (
-            <>
-              <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleVote} disabled={!voteInProgress}>
-                투표 진행
+                  return (
+                    <li key={player.name} className={isDead ? "text-gray-500 line-through" : "text-black"}>
+                      <input
+                        type="radio"
+                        name="playerSelect"
+                        onChange={() => setSelectedPlayer(player.name)}
+                        disabled={isDead || phase !== "day" || executionPhase}
+                      />
+                      {player.name} ({player.role})
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
+              <h3 className="text-lg font-bold">플레이어 메시지</h3>
+              <input
+                type="text"
+                value={playerMessage}
+                onChange={(e) => setPlayerMessage(e.target.value)}
+                placeholder="메시지를 입력하세요..."
+                className="w-full p-2 border rounded"
+              />
+              <button
+                className="bg-purple-500 text-white px-4 py-2 rounded mt-2"
+                onClick={sendPlayerMessage}
+                disabled={!playerMessage?.trim()} // Optional chaining으로 오류 방지
+              >
+                메시지 전송
               </button>
-              <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleFinalDecision("execute")} disabled={!executionPhase || !selectedPlayer}>
-                처형
-              </button>
-              <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => handleFinalDecision("spare")} disabled={!executionPhase || !selectedPlayer}>
-                살려주기
-              </button>
-            </>
-          )}
-        </>
-      )}
+            </div>
+
+            {phase === "night" && userRole !== "Citizen" && (
+              <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
+                <h3 className="text-lg font-bold">{userRole} 능력 사용</h3>
+                <ul>
+                  {players
+                    .filter((p) => p.isAlive && (userRole === "Doctor" || p.name !== currentUser.name))
+                    .map((player) => (
+                      <li key={player.name}>
+                        <button
+                          className={`px-4 py-2 rounded m-1 ${selectedTarget === player.name ? "bg-green-500" : "bg-blue-500"} text-white`}
+                          onClick={() => {
+                            selectTarget(player.name);
+                            handleNightActions(player.name);
+                          }}
+                          disabled={!player.isAlive}
+                        >
+                          {player.name} 선택
+                        </button>
+                      </li>
+                    ))}
+                </ul>
+                {selectedTarget && <p className="mt-2">선택된 대상: {selectedTarget}</p>}
+              </div>
+            )}
+
+            {phase === "day" && (
+              <>
+                <div className="flex justify-center gap-4 mt-4">
+                  <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleVote} disabled={!voteInProgress}>
+                    투표 진행
+                  </button>
+                  <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleFinalDecision("execute")} disabled={!executionPhase || !selectedPlayer}>
+                    처형
+                  </button>
+                  <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => handleFinalDecision("spare")} disabled={!executionPhase || !selectedPlayer}>
+                    살려주기
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
