@@ -70,13 +70,10 @@ export default function Conversation() {
         language: userLanguage,
       };
   
-      console.log("Request Data:", data); // 디버깅용
-  
-      const response = await axios.post('/conversation/initialize', data);
+      const response = await axios.post('/conversation/start', data);
   
       if (response.status === 200) {
         const { gptResponse, audio } = response.data;
-        console.log('GPT Response:', gptResponse);
         addMessage('bettu', gptResponse);
         playAudio(audio);
       } else {
@@ -126,7 +123,7 @@ export default function Conversation() {
         language: userLanguage,
       };
 
-      const addUserMessageRequest = axios.post('/conversation/addUserMessage', data);
+      const addUserMessageRequest = axios.post(`/conversation/${converseId}/message`, data);
 
       const addUserMessageResponse = await addUserMessageRequest;
       if (addUserMessageResponse.status === 200) {
@@ -137,7 +134,7 @@ export default function Conversation() {
         }
       }
       
-      const request = axios.post('/conversation/getResponse', data);
+      const request = axios.post(`/conversation/${converseId}/reply`, data);
       const response = await request;
       if (response.status === 200) {
         const { gptResponse, audio } = response.data;
@@ -239,7 +236,7 @@ export default function Conversation() {
   // EndTime Update
   async function updateEndTime(converseId) {
     try {
-      const response = await axios.put('/conversation/updateEndTime', { converseId });
+      const response = await axios.put(`/conversation/${converseId}/end`);
 
       if (response.status === 200) {
         alert('대화를 종료합니다.');
