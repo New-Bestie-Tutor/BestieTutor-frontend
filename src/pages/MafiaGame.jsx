@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import MafiaNight from "../images/MafiaNight.png";
-import MafiaDay from "../images/MafiaNight.png";
+import MafiaDay from "../images/MafiaDay.png";
 import axios from "axios";
 
 const MafiaGame = () => {
