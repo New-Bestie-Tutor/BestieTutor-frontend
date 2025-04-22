@@ -33,7 +33,8 @@ const IMAGES = {
     next: new URL('./next.png', import.meta.url).href,
     lock: new URL('./lock.png', import.meta.url).href,
     자유대화: new URL('./자유대화.png', import.meta.url).href,
-    피드백: new URL('./피드백.png', import.meta.url).href
+    피드백: new URL('./피드백.png', import.meta.url).href,
+    LetsMafia: new URL('./LetsMafia.png', import.meta.url).href
 };
 
 export default IMAGES;

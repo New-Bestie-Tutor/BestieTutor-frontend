@@ -160,9 +160,6 @@ export default function Home() {
               목표 수정하기
             </Link>
           </p>
-          <div className="gotoMafiaGame" onClick={() => navigate('/mafiasetup')}>
-            Mafia Game Start
-          </div>
         </div>
 
         <section className="friendliness-section">
@@ -199,7 +196,9 @@ export default function Home() {
             </p>
           </div>
         </section>
-
+        <div className="lets-mafia-button" onClick={() => navigate('/mafiasetup')}>
+          <img src={IMAGES.LetsMafia} alt="Let's play Mafia" className="lets-mafia-img" />
+        </div>
         <section className="records-section">
           <div className="records-top">
             <h3>기록</h3>
