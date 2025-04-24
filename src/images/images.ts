@@ -1,6 +1,6 @@
 const IMAGES = {
-    bettu: new URL('./bettu.png', import.meta.url).href,
-    raebin: new URL('./raebin.png', import.meta.url).href,
+    Bettu: new URL('./Bettu.png', import.meta.url).href,
+    Rabin: new URL('./Rabin.png', import.meta.url).href,
     kakao_login: new URL('./kakao_login.png', import.meta.url).href,
     비즈니스: new URL('./비즈니스.png', import.meta.url).href,
     일상: new URL('./일상.png', import.meta.url).href,
@@ -22,6 +22,7 @@ const IMAGES = {
     time30: new URL('./time30.png', import.meta.url).href,
     time60: new URL('./time60.png', import.meta.url).href,
     time120: new URL('./time120.png', import.meta.url).href,
+    BettuHome: new URL('./BettuHome.png', import.meta.url).href,
     after10days: new URL('./after10days.png', import.meta.url).href,
     after30days: new URL('./after30days.png', import.meta.url).href,
     베튜말풍선: new URL('./베튜말풍선.png', import.meta.url).href,

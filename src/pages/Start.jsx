@@ -7,8 +7,8 @@ export default function Start() {
     return (
       <div className="container startPage">
         <div className="image-wrapper">
-          <img src={IMAGES.bettu} alt="bettu" className="image" />
-          <img src={IMAGES.raebin} alt="raebin" className="image" />
+          <img src={IMAGES.Bettu} alt="bettu" className="image" />
+          <img src={IMAGES.Rabin} alt="raebin" className="image" />
         </div>
         <h2 className="start-title">Bestie Tutor</h2>
         <p className="start-subTitle">베튜와 함께 언어공부해요</p>
