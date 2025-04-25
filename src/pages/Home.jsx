@@ -147,43 +147,44 @@ export default function Home() {
     <div className="Home">
       <Header totalTime={totalTime} />
       <div className="main-container">
-        <div className="greeting-section">
-          <h2>
-            {user?.nickname
-              ? `${user.nickname}! 또 만나서 반가워요`
-              : "사용자! 또 만나서 반가워요"}
-          </h2>
-
-          <p>
-            즐거운 여행을 위해 베튜와 함께 공부해요{" "}
-            <Link to="/edit-goals" className="edit-goal-link">
-              목표 수정하기
-            </Link>
-          </p>
-        </div>
-
-        <section className="friendliness-section">
-          <p className="logo">Free Talk</p>
-          <p className="gotoTopicTxt">베튜랑 더 <br />친해지러가기</p>
-          <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`}
-            onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
-            <img src={IMAGES.start} alt="start" className="start" />
+        <section className="friendliness-section" style={{ backgroundImage: `url(${IMAGES.homeBackground})` }}>
+          <div className="action-group">
+            <p className="logo">Free Talk ♥</p>
+            <p className="gotoTopicTxt">베튜랑 더 친해지러가기</p>
+            {totalTime < 10 && (
+              <p className="lock-message">
+                내가 하고 싶은 대화 주제를 선정하여 편하게 대화해요
+              </p>
+            )}
+            <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`}
+              onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
+              <img src={IMAGES.start} alt="start" className="start" />
+            </div>
           </div>
-
-          {totalTime < 10 && (
-            <p className="lock-message">
-              내가 하고 싶은 대화 주제를 선정하여 편하게 대화해요
-            </p>
-          )}
 
           <img src={image} alt="친밀도 단계 이미지" className="intimacy_image" />
           <div className="speechbubble_box">
             <img src={IMAGES.베튜말풍선} alt="intimacy_speechbubble" className="intimacy_speechbubble" />
             <p className="intimacy_text">{text}</p>
           </div>
+        </section>
+        <div className="greeting-section">
+          <div className="greeting-text">
+            <h2>
+              {user?.nickname
+                ? `${user.nickname}님!♥ 또 만나서 반가워요`
+                : "사용자님!♥ 또 만나서 반가워요"}
+            </h2>
 
+            <p>
+              즐거운 여행을 위해 베튜와 함께 공부해요{" "}<br></br>
+              <Link to="/edit-goals" className="edit-goal-link">
+                학습 목표 수정하기
+              </Link>
+            </p>
+          </div>
           <div className="intimacy_box">
-            <p className="time">♥ 친밀도: {totalTime.toFixed(1)}분</p>
+            <p className="time">♥ 친밀도 | {totalTime.toFixed(1)}분</p>
             <p>
               다음 목표까지:{" "}
               <span className="next-goal">
@@ -194,8 +195,16 @@ export default function Home() {
                     : "친밀도 100 달성!"}
               </span>
             </p>
+            <div className="progress-bar">
+              <div
+                className="filled"
+                style={{
+                  width: `${Math.min(100, totalTime).toFixed(1)}%`,
+                }}
+              />
+            </div>
           </div>
-        </section>
+        </div>
         <div className="mafia-top-text">
           <h2 className="mafia-title">마피아 게임하기</h2>
           <p className="mafia-subtitle">Bestie Tutor만의 특별한 언어 학습 게임!</p>
