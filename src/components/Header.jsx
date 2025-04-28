@@ -229,7 +229,7 @@ export default function Header({ totalTime }) {
           <div className="header-mypage">
             {username ? (
               <>
-                <button onClick={logout} className="logout-button">로그아웃</button>
+                <button onClick={logout} className="logout-button"><img src={IMAGES.out} className="mypageimg" />로그아웃</button>
                 <Link to="/mypage"><img src={IMAGES.mypage} alt="mypage" className="mypageimg" /></Link>
               </>
             ) : null}
