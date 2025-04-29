@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState, useRef } from "react";
 import { LanguageContext } from "../LanguageContext";
 import { UserContext } from "../UserContext";
 import IMAGES from "../images/images";
-import axios from '../axiosConfig'; 
+import axios from '../axiosConfig';
 import '../App.css';
 import { TbRuler2 } from "react-icons/tb";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,16 +23,16 @@ export default function Header({ totalTime }) {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
-  
+
   const stageRequirements = {
-    '1단계': 0,    
+    '1단계': 0,
     '2단계': 10,
-    '3단계': 30,  
-    '4단계': 60,  
+    '3단계': 30,
+    '4단계': 60,
   };
 
   const getAllLanguages = async () => {
-    try{
+    try {
       const response = await axios.get('/conversation/getAllLanguages');
       if (response.status === 200) {
         setAllLanguages(response.data.languages);
@@ -65,21 +65,21 @@ export default function Header({ totalTime }) {
   // LanguageContext를 최근 대화 언어로 설정
   const getRecentLanguage = async () => {
     try {
-        const userEmail = userInfo?.email;
-        const response = await axios.get(`/conversation/getRecentLanguage/${userEmail}`);
-        if (response.status === 200) {
-          const recentLanguage = response.data.conversation.selected_language;
-          handleRecentLanguage(recentLanguage);
-          english > en
-        } else {
-          // 최근 대화가 없으면 선호도 조사 언어로 설정
-            const userId = userInfo?.userId;
-            const response = await axios.get(`/preference/${userId}`);
-            const preferenceLanguage = response.data.preferences.language;
-            handleRecentLanguage(preferenceLanguage);
-        }
+      const userEmail = userInfo?.email;
+      const response = await axios.get(`/conversation/getRecentLanguage/${userEmail}`);
+      if (response.status === 200) {
+        const recentLanguage = response.data.conversation.selected_language;
+        handleRecentLanguage(recentLanguage);
+        english > en
+      } else {
+        // 최근 대화가 없으면 선호도 조사 언어로 설정
+        const userId = userInfo?.userId;
+        const response = await axios.get(`/preference/${userId}`);
+        const preferenceLanguage = response.data.preferences.language;
+        handleRecentLanguage(preferenceLanguage);
+      }
     } catch (error) {
-        // console.error('Error fetching RecentLanguage:', error);
+      // console.error('Error fetching RecentLanguage:', error);
     }
   };
 
@@ -97,12 +97,12 @@ export default function Header({ totalTime }) {
 
   const logout = async () => {
     await axios.post("/user/logout");
-    setUserInfo(null); 
+    setUserInfo(null);
   };
 
 
   const handleLanguageChange = (language) => {
-    setUserLanguage(language); 
+    setUserLanguage(language);
   };
 
   function getDisplayName(language) {
@@ -136,22 +136,22 @@ export default function Header({ totalTime }) {
   }, [userInfo?.total_time]);
 
   const handleMouseEnter = (topic) => {
-    setCurrentTopic(topic); 
-    setShowDropdown(true); 
+    setCurrentTopic(topic);
+    setShowDropdown(true);
   };
 
   useEffect(() => {
-      if (topics.length>0) {
-          const fetchSubTopics = async () => {
-              try {
-                  const response = await axios.get(`/topic/${topics}`);
-                  setSubTopics(response.data);
-              } catch (error) {
-                  console.error("소주제를 불러오는데 실패했습니다.", error);
-              }
-          };
-          fetchSubTopics();
-      }
+    if (topics.length > 0) {
+      const fetchSubTopics = async () => {
+        try {
+          const response = await axios.get(`/topic/${topics}`);
+          setSubTopics(response.data);
+        } catch (error) {
+          console.error("소주제를 불러오는데 실패했습니다.", error);
+        }
+      };
+      fetchSubTopics();
+    }
   }, [topics]);
 
   const handleSubTopicHover = (subTopic) => {
@@ -172,7 +172,7 @@ export default function Header({ totalTime }) {
         });
       }
     }
-  }; 
+  };
 
   const determineLockStatus = (totalTime, requirements) => {
     const statuses = Object.keys(requirements).map((stage) => ({
@@ -185,7 +185,7 @@ export default function Header({ totalTime }) {
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setShowDropdown(false);
-      setCurrentTopic(null); 
+      setCurrentTopic(null);
     }
   };
 
@@ -199,109 +199,107 @@ export default function Header({ totalTime }) {
   return (
     <div className="header">
       <div className="header-top">
-        <div className="header-left">
-          <Link to="/home" className="header-title">Bestie Tutor</Link>
+        <Link to="/home" className="header-title">Bestie Tutor</Link>
+        <div className="header-right">
           <div className="header-links">
             <Link to="/about">소개</Link>
             <Link to="/notice">공지</Link>
             <Link to="/event">이벤트</Link>
           </div>
-        </div>
-        <div className="header-right">
           <div className="header-language">
-          <div className="lang-dropdown">
-            <button className="lang-dropdown-button">
-              <img src={IMAGES.global} alt="global" className="globalimg" />
-              <p>{selectedLanguage}</p>
-            </button>
-            <div className="lang-dropdown-menu">
-              {allLanguages.map((language, index) => (
-                <p 
-                  key={index}
-                  onClick={() => handleLanguageChange(language.code)}
-                >
-                  {getDisplayName(language.code)}
-                </p>
-              ))}
+            <div className="lang-dropdown">
+              <button className="lang-dropdown-button">
+                <img src={IMAGES.global} alt="global" className="globalimg" />
+                <p>{selectedLanguage}</p>
+                <img src={IMAGES.vector}/>
+              </button>
+              <div className="lang-dropdown-menu">
+                {allLanguages.map((language, index) => (
+                  <p
+                    key={index}
+                    onClick={() => handleLanguageChange(language.code)}
+                  >
+                    {getDisplayName(language.code)}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
           <div className="header-mypage">
             {username ? (
               <>
                 <button onClick={logout} className="logout-button"><img src={IMAGES.out} className="mypageimg" />로그아웃</button>
-                <Link to="/mypage"><img src={IMAGES.mypage} alt="mypage" className="mypageimg" /></Link>
+                <Link to="/mypage"><img src={IMAGES.mypage} alt="mypage" className="mypageimg" />회원정보</Link>
               </>
             ) : null}
           </div>
         </div>
       </div>
 
-      
-      <div className="header-content">
-      {topics.map((topic) => {
-        const isLocked = lockedStages.find((stage) => stage.stage === topic.mainTopic)?.isLocked ?? true;
 
-        return (
-          <div
-            key={topic._id}
-            className={`header-item ${isLocked ? 'locked' : 'unlocked'}`}
-            
-            onMouseEnter={() => {
-              if (!isLocked) {
-                handleMouseEnter(topic);
-              }
-            }}
-            onClick={isLocked ? null : () => console.log('Topic clicked:', topic)}
+      <div className="header-content">
+        {topics.map((topic) => {
+          const isLocked = lockedStages.find((stage) => stage.stage === topic.mainTopic)?.isLocked ?? true;
+
+          return (
+            <div
+              key={topic._id}
+              className={`header-item ${isLocked ? 'locked' : 'unlocked'}`}
+
+              onMouseEnter={() => {
+                if (!isLocked) {
+                  handleMouseEnter(topic);
+                }
+              }}
+              onClick={isLocked ? null : () => console.log('Topic clicked:', topic)}
             >
               {topic.mainTopic}{' '}
               {isLocked ? (
-                  <img src={IMAGES.lock} alt="lock" className="lockimg" />
-                ) : (
-                  <FontAwesomeIcon icon={faAngleDown} style={{color: "#1c1c1c"}} size="xs" />
-                )}
+                <img src={IMAGES.lock} alt="lock" className="lockimg" />
+              ) : (
+                <FontAwesomeIcon icon={faAngleDown} style={{ color: "#1c1c1c" }} size="xs" />
+              )}
 
-            {/* 드롭다운 콘텐츠 */}
-            {currentTopic && currentTopic._id === topic._id && showDropdown && (
-              <div className="dropdown-container" ref={dropdownRef}>
-                <div className="dropdown-content">
-                  {currentTopic.subTopics.map((subTopic) => (
-                    <div
-                      className="dropdown-subtopic"
-                      key={subTopic.name}
-                      onMouseEnter={() => handleSubTopicHover(subTopic)}
-                      
-                    >
-                      {subTopic.name}{' '}
-                      <FontAwesomeIcon icon={faAngleDown} rotation={270} style={{color: "#1c1c1c",} } size="xs"/>
+              {/* 드롭다운 콘텐츠 */}
+              {currentTopic && currentTopic._id === topic._id && showDropdown && (
+                <div className="dropdown-container" ref={dropdownRef}>
+                  <div className="dropdown-content">
+                    {currentTopic.subTopics.map((subTopic) => (
+                      <div
+                        className="dropdown-subtopic"
+                        key={subTopic.name}
+                        onMouseEnter={() => handleSubTopicHover(subTopic)}
 
-                      {/* 소주제 세부 정보 */}
-                      {selectedSubTopic && selectedSubTopic.name === subTopic.name && (
-                <div className="subtopic-details">
-                  {selectedSubTopic.difficulties.map((difficulty) => (
-                    <div
-                      key={difficulty.difficulty}
-                      className={`difficulty-item ${
-                        selectedLevel === difficulty.difficulty ? 'selected' : ''
-                      }`}
-                      onClick={() => handleLevelSelect(difficulty.difficulty)}
-                    >
-                      <p className= "difficultyp">{difficulty.difficulty}</p>
-                      <p className= "descriptionp">{difficulty.description}</p>
+                      >
+                        {subTopic.name}{' '}
+                        <FontAwesomeIcon icon={faAngleDown} rotation={270} style={{ color: "#1c1c1c", }} size="xs" />
+
+                        {/* 소주제 세부 정보 */}
+                        {selectedSubTopic && selectedSubTopic.name === subTopic.name && (
+                          <div className="subtopic-details">
+                            {selectedSubTopic.difficulties.map((difficulty) => (
+                              <div
+                                key={difficulty.difficulty}
+                                className={`difficulty-item ${selectedLevel === difficulty.difficulty ? 'selected' : ''
+                                  }`}
+                                onClick={() => handleLevelSelect(difficulty.difficulty)}
+                              >
+                                <p className="difficultyp">{difficulty.difficulty}</p>
+                                <p className="descriptionp">{difficulty.description}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
-    )}
-  </div>
-);
-  })}
-</div>
-       
+
     </div>
   );
 }

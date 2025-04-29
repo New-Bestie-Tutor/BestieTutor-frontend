@@ -1464,7 +1464,7 @@ body {
 
 .header-language {
   position: relative;
-  margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 .lang-dropdown {
@@ -1513,13 +1513,17 @@ body {
 .header-links a,
 .header-mypage a,
 .header-mypage button {
+  display: flex;
   margin-left: 15px;
+  align-items: center;
   text-decoration: none;
   color: #000;
+  font-size: 14px;
+  gap: 3px;
 }
 
 .header-links {
-  margin-left: 15px;
+  margin-right: 30px;
   display: flex;
   gap: 20px;
   flex-direction: row;
@@ -1534,7 +1538,7 @@ body {
 }
 
 .mypageimg {
-  width: 35px;
+  width: 20px;
   margin-left: auto;
   justify-content: flex-end;
 }

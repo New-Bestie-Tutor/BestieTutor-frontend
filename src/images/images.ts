@@ -34,6 +34,7 @@ const IMAGES = {
     scrollButtonRight: new URL('./scrollButtonRight.png', import.meta.url).href,
     in: new URL('./in.png', import.meta.url).href,
     out: new URL('./out.png', import.meta.url).href,
+    vector: new URL('./vector.png', import.meta.url).href,
     next: new URL('./next.png', import.meta.url).href,
     remind: new URL('./remind.png', import.meta.url).href,
     introduce: new URL('./introduce.png', import.meta.url).href,
