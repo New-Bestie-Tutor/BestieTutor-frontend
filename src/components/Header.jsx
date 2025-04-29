@@ -21,6 +21,7 @@ export default function Header({ totalTime }) {
   const username = userInfo?.email;
   const [selectedSubTopic, setSelectedSubTopic] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(null);
+  const [subTopics, setSubTopics] = useState(null);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   
@@ -141,17 +142,20 @@ export default function Header({ totalTime }) {
   };
 
   useEffect(() => {
-      if (topics.length>0) {
-          const fetchSubTopics = async () => {
-              try {
-                  const response = await axios.get(`/topic/${topics}`);
-                  setSubTopics(response.data);
-              } catch (error) {
-                  console.error("소주제를 불러오는데 실패했습니다.", error);
-              }
-          };
-          fetchSubTopics();
-      }
+    if (topics.length > 0) {
+      const fetchAllSubTopics = async () => {
+        try {
+          const responses = await Promise.all(
+            topics.map(topic => axios.get(`/topic/${topic.mainTopic}`))
+          );
+          const allSubTopics = responses.map(res => res.data);
+          setSubTopics(allSubTopics);
+        } catch (error) {
+          console.error("소주제를 불러오는데 실패했습니다.", error);
+        }
+      };
+      fetchAllSubTopics();
+    }
   }, [topics]);
 
   const handleSubTopicHover = (subTopic) => {
