@@ -55,6 +55,8 @@ export default function Conversation() {
   }, []);
 
   let isFetching = false;
+  const [converseId, setConverseId] = useState('');
+  const [threadId, setThreadId] = useState('');
 
   // 서버로 첫 발화 요청을 보내고 응답을 받아오는 비동기 함수
   async function InitialMessage() {
@@ -73,9 +75,10 @@ export default function Conversation() {
       const response = await axios.post('/conversation/start', data);
   
       if (response.status === 200) {
-        const { gptResponse, audio } = response.data;
+        const { gptResponse, conversationId, threadId } = response.data;
         addMessage('bettu', gptResponse);
-        playAudio(audio);
+        setConverseId(conversationId);
+        setThreadId(threadId);
       } else {
         console.error('응답 오류:', response);
         alert('서버 요청이 실패했습니다.');
@@ -104,17 +107,13 @@ export default function Conversation() {
     ]);
   };
 
-  const [converseId, setConverseId] = useState('');
   // 서버로 사용자의 텍스트를 보내 응답을 받아오는 비동기 함수
   async function getResponse(text) {
     try {
       addMessage('user', text); // 사용자 메시지 추가
       const data = {
+        threadId,
         text,
-        conversationHistory: messages.map((message) => ({
-          role: message.type === 'user' ? 'user' : 'assistant',
-          content: message.text,
-        })),
         mainTopic,
         freeTopic,
         subTopic: selectedSubTopic,
@@ -128,18 +127,22 @@ export default function Conversation() {
       const addUserMessageResponse = await addUserMessageRequest;
       if (addUserMessageResponse.status === 200) {
         const { messageId, conversationId } = addUserMessageResponse.data;
-        setConverseId(conversationId);
+        
+        // 🔒 conversationId가 새로 생성된 경우에만 업데이트
+        if (conversationId) {
+          setConverseId(conversationId);
+        }
+
         if (messageId) {
-          fetchFeedback(messageId); // 피드백 메시지 추가
+          fetchFeedback(messageId);
         }
       }
       
       const request = axios.post(`/conversation/${converseId}/reply`, data);
       const response = await request;
       if (response.status === 200) {
-        const { gptResponse, audio } = response.data;
+        const { gptResponse } = response.data;
         addMessage('bettu', gptResponse); // 베튜 메시지 추가
-        playAudio(audio);
       }
     } catch (error) {
       console.error('응답 처리 중 오류:', error);

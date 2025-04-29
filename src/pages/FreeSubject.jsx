@@ -34,7 +34,7 @@ export default function FreeSubject() {
                     placeholder="원하는 주제를 입력하세요"
                 />
 
-                <button className="fs-next-button" onClick={handleSubmit}>대화시작하기</button>        
+                <button className="fs-next-button" onClick={handleSubmit}>대화 시작하기</button>        
             </div>
         </div>
       );

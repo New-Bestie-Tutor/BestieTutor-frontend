@@ -44,7 +44,7 @@ export default function Home() {
         console.error('이메일 값이 없습니다.');
         return;
       }
-      const response = await axios.get(`/conversation/getConversationHistory/${userEmail}`);
+      const response = await axios.get(`/conversation/${userEmail}/history`);
       if (response.status === 200) {
         const data = response.data;
         setConversations(data.conversations);
