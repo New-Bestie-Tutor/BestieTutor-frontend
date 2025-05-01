@@ -812,8 +812,9 @@ body {
 }
 
 .profile-header {
-  padding: 20px;
-  position: relative;
+  padding: 40px;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -835,42 +836,60 @@ body {
 
 .profile-stats {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  width: 50%;
-  min-width: 360px;
+  justify-content: center;
+  gap: 1.5rem;
+  width: auto;
+  margin-bottom: 20px;
 }
 
 .stat {
-  font-size: 16px;
+  background-color: #eaf9f3;
+  color: #00b894;
+  border: 1px solid #00b894;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 14px;
   font-weight: bold;
   display: flex;
   flex-direction: column;
-  padding-right: 20px;
+  align-items: center;
+  min-width: 80px;
 }
 
 .stat span {
   font-size: 11px;
   color: #b0b0b0;
+  margin-top: 4px;
 }
 
 .mypage-menu {
   list-style: none;
   margin: 0;
-  padding: 20px 0;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  background-color: #ffffff;
+  padding: 30px 0;
+  background-color: #fff;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  width: 100%;
+}
+
+.mypage-menu-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .mypage-menu li {
   display: flex;
   align-items: center;
-  padding: 10px 20px;
-  font-size: 18px;
-  text-decoration: none;
-  color: #000;
+  padding: 14px 16px;
+  font-size: 16px;
+  border: 1px solid #b8e9d9;
+  border-radius: 12px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .mypage-menu a {
@@ -888,7 +907,9 @@ body {
 }
 
 .mypage-service {
-  width: 18px;
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
 }
 
 /* Profile.css */
@@ -2005,6 +2026,11 @@ body {
   color: #8000ff;
 }
 
+.learning-step {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333;
+}
 
 @media (max-width: 1120px) {
   .logo {

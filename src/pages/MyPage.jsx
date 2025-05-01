@@ -5,7 +5,7 @@ import IMAGES from "../images/images";
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserContext';
 import { LanguageContext } from "../LanguageContext";
-import axios from 'axios'; 
+import axios from 'axios';
 import '../App.css'
 
 export default function MyPage() {
@@ -17,13 +17,13 @@ export default function MyPage() {
   const [currentStep, setCurrentStep] = useState('');
   const steps = [10, 30, 60, 120];
 
-const fetchUser = async () => {
+  const fetchUser = async () => {
     try {
-        const userId = userInfo?.userId;
-        const response = await axios.get('/user/getUser', {
-            params: { userId },
-        });
-    if (response.status === 200) {
+      const userId = userInfo?.userId;
+      const response = await axios.get('/user/getUser', {
+        params: { userId },
+      });
+      if (response.status === 200) {
         setUser(response.data);
         setTotalTime(response.data.total_time);
         const step = steps.findIndex((s) => totalTime < s);
@@ -34,13 +34,13 @@ const fetchUser = async () => {
     } catch (error) {
       // console.error("API 호출 오류:", error);
     }
-};
+  };
 
   useEffect(() => {
-    if (userInfo?.userId) { 
-      fetchUser();  
+    if (userInfo?.userId) {
+      fetchUser();
     }
-    
+
     switch (userLanguage) {
       case 'en':
         setRecentLanguage("English");
@@ -58,38 +58,40 @@ const fetchUser = async () => {
   }, [userInfo]);
 
   const timeFomat = (time) => {
-    const hour = Math.floor( time / 60 );
-    const min = Math.floor( time % 60 );
-    if(hour >= 1){
+    const hour = Math.floor(time / 60);
+    const min = Math.floor(time % 60);
+    if (hour >= 1) {
       return `${hour}시간 ${min}분`;
-    }else{
+    } else {
       return `${min}분`;
     }
   }
 
   return (
     <div className="Home">
-        <Header />
-        <div className="mypage-container">
-            <div className="profile-header">
-                <img src={IMAGES.bettu} alt="mypage Profile" className="mypage-profile" />
-                <h2 className="user-name">{user ? user.nickname : "Guest"}</h2>
-                <div className="profile-stats">
-                <div className="stat">{recentLanguage}<br /><span>최근 언어</span></div>
-                <div className="stat">{timeFomat(totalTime)}<br /><span>누적 대화시간</span></div>
-                <div className="stat">LV.{currentStep+1}<br /><span>친밀도</span></div>
-                </div>
-            </div>  
-            <ul className="mypage-menu">
-                <Link to="/profile"><li><span><img src={IMAGES.user} alt="Mascot" className="mypage-service" /></span>회원 정보 수정</li></Link>
-                <Link to="/review"><li><span><img src={IMAGES.remind} alt="Mascot" className="mypage-service" /></span>지난 대화 복습하기</li></Link>
-                <Link to="/payment"><li><span><img src={IMAGES.crown} alt="Mascot" className="mypage-service" /></span>프리미엄 업그레이드</li></Link>
-                <Link to="/settings"><li><span><img src={IMAGES.setting} alt="Mascot" className="mypage-service" /></span>설정</li></Link>
-                <Link to="/inquiry"><li><span><img src={IMAGES.question} alt="Mascot" className="mypage-service" /></span>문의하기</li></Link>
-                <Link to="/about"><li><span><img src={IMAGES.introduce} alt="Mascot" className="mypage-service" /></span>Bestie Tutor 서비스 소개</li></Link>
-            </ul>
+      <Header />
+      <div className="mypage-container">
+        <div className="profile-header">
+          <img src={IMAGES.Bettu} alt="mypage Profile" className="mypage-profile" />
+          <h2 className="user-name">{user ? user.nickname : "Guest"}</h2>
+          <div className="profile-stats">
+            <div className="stat">{recentLanguage}<br /><span>최근 언어</span></div>
+            <div className="stat">{timeFomat(totalTime)}<br /><span>누적 대화시간</span></div>
+            <div className="stat">LV.{currentStep + 1}<br /><span>친밀도</span></div>
+          </div>
         </div>
-        <Footer />
+        <div className="mypage-menu">
+          <div className="mypage-menu-inner">
+            <Link to="/profile"><li><span><img src={IMAGES.user} alt="icon" className="mypage-service" /></span>회원 정보 수정</li></Link>
+            <Link to="/review"><li><span><img src={IMAGES.remind} alt="icon" className="mypage-service" /></span>지난 대화 복습하기</li></Link>
+            <Link to="/payment"><li><span><img src={IMAGES.crown} alt="icon" className="mypage-service" /></span>프리미엄 업그레이드</li></Link>
+            <Link to="/settings"><li><span><img src={IMAGES.setting} alt="icon" className="mypage-service" /></span>설정</li></Link>
+            <Link to="/inquiry"><li><span><img src={IMAGES.question} alt="icon" className="mypage-service" /></span>문의하기</li></Link>
+            <Link to="/about"><li><span><img src={IMAGES.introduce} alt="icon" className="mypage-service" /></span>Bestie Tutor 서비스 소개</li></Link>
+          </div>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 }

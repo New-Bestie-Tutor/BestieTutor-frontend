@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import Footer from "../components/Footer";
@@ -6,10 +6,14 @@ import Header from "../components/Header";
 import IMAGES from "../images/images";
 import axios from "axios";
 import RecordCard from "../components/RecordCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import '../App.css';
 
 export default function Home() {
   const { userInfo } = useContext(UserContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
   const userId = userInfo?.userId;
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -18,8 +22,20 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState(0);
   const [inactiveDays, setInactiveDays] = useState(0);
   const [conversations, setConversations] = useState([]);
+  const [topics, setTopics] = useState([]);
+  const [lockedStages, setLockedStages] = useState([]);
+  const [currentTopic, setCurrentTopic] = useState(null);
+  const [selectedSubTopic, setSelectedSubTopic] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState(null);
   const userEmail = userInfo?.email;
   const steps = [0, 10, 30, 60, 120];
+
+  const stageRequirements = {
+    '1단계': 0,
+    '2단계': 10,
+    '3단계': 30,
+    '4단계': 60,
+  };
 
   // Fetch user data
   const fetchUser = async () => {
@@ -143,6 +159,82 @@ export default function Home() {
 
   const { image, text } = getImageAndText(currentStep, inactiveDays);
 
+  /***주제 선택 ***/
+  useEffect(() => {
+    const fetchTopicsAndLockStatus = async () => {
+      try {
+        const topicsResponse = await axios.get('/topic/');
+        const lockedStatuses = determineLockStatus(userInfo?.total_time || 0, stageRequirements);
+        setTopics(topicsResponse.data);
+        setLockedStages(lockedStatuses);
+      } catch (error) {
+        console.error("Failed to fetch topics or lock status:", error);
+      }
+    };
+    fetchTopicsAndLockStatus();
+  }, [userInfo?.total_time]);
+
+  const handleMouseEnter = (topic) => {
+    setCurrentTopic(topic);
+    setShowDropdown(true);
+  };
+
+  useEffect(() => {
+    if (topics.length > 0) {
+      const fetchSubTopics = async () => {
+        try {
+          const response = await axios.get(`/topic/${topics}`);
+          setSubTopics(response.data);
+        } catch (error) {
+          console.error("소주제를 불러오는데 실패했습니다.", error);
+        }
+      };
+      fetchSubTopics();
+    }
+  }, [topics]);
+
+  const handleSubTopicHover = (subTopic) => {
+    setSelectedSubTopic(subTopic);
+  };
+
+  const handleLevelSelect = (level) => {
+    if (selectedSubTopic) {
+      const difficulty = selectedSubTopic.difficulties.find((d) => d.difficulty === level);
+      if (difficulty) {
+        navigate('/chooseCharacter', {
+          state: {
+            mainTopic: currentTopic?.mainTopic,
+            selectedSubTopic: selectedSubTopic.name,
+            selectedLevel: level,
+            description: difficulty.description,
+          },
+        });
+      }
+    }
+  };
+
+  const determineLockStatus = (totalTime, requirements) => {
+    const statuses = Object.keys(requirements).map((stage) => ({
+      stage,
+      isLocked: totalTime < requirements[stage],
+    }));
+    return statuses;
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown(false);
+      setCurrentTopic(null);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="Home">
       <Header totalTime={totalTime} />
@@ -204,6 +296,68 @@ export default function Home() {
               />
             </div>
           </div>
+        </div>
+        <div className="header-content">
+          {topics.map((topic) => {
+            const isLocked = lockedStages.find((stage) => stage.stage === topic.mainTopic)?.isLocked ?? true;
+
+            return (
+              <div
+                key={topic._id}
+                className={`header-item ${isLocked ? 'locked' : 'unlocked'}`}
+
+                onMouseEnter={() => {
+                  if (!isLocked) {
+                    handleMouseEnter(topic);
+                  }
+                }}
+                onClick={isLocked ? null : () => console.log('Topic clicked:', topic)}
+              >
+                {topic.mainTopic}{' '}
+                {isLocked ? (
+                  <img src={IMAGES.lock} alt="lock" className="lockimg" />
+                ) : (
+                  <FontAwesomeIcon icon={faAngleDown} style={{ color: "#1c1c1c" }} size="xs" />
+                )}
+
+                {/* 드롭다운 콘텐츠 */}
+                {currentTopic && currentTopic._id === topic._id && showDropdown && (
+                  <div className="dropdown-container" ref={dropdownRef}>
+                    <div className="dropdown-content">
+                      {currentTopic.subTopics.map((subTopic) => (
+                        <div
+                          className="dropdown-subtopic"
+                          key={subTopic.name}
+                          onMouseEnter={() => handleSubTopicHover(subTopic)}
+
+                        >
+                          {subTopic.name}{' '}
+                          <FontAwesomeIcon icon={faAngleDown} rotation={270} style={{ color: "#1c1c1c", }} size="xs" />
+
+                          {/* 소주제 세부 정보 */}
+                          {selectedSubTopic && selectedSubTopic.name === subTopic.name && (
+                            <div className="subtopic-details">
+                              {selectedSubTopic.difficulties.map((difficulty) => (
+                                <div
+                                  key={difficulty.difficulty}
+                                  className={`difficulty-item ${selectedLevel === difficulty.difficulty ? 'selected' : ''
+                                    }`}
+                                  onClick={() => handleLevelSelect(difficulty.difficulty)}
+                                >
+                                  <p className="difficultyp">{difficulty.difficulty}</p>
+                                  <p className="descriptionp">{difficulty.description}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
         <div className="mafia-top-text">
           <h2 className="mafia-title">마피아 게임하기</h2>
