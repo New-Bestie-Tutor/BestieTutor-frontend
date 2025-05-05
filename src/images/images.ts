@@ -1,6 +1,4 @@
 const IMAGES = {
-    bettu: new URL('./bettu.png', import.meta.url).href,
-    raebin: new URL('./raebin.png', import.meta.url).href,
     kakao_login: new URL('./kakao_login.png', import.meta.url).href,
     비즈니스: new URL('./비즈니스.png', import.meta.url).href,
     일상: new URL('./일상.png', import.meta.url).href,
@@ -33,7 +31,16 @@ const IMAGES = {
     next: new URL('./next.png', import.meta.url).href,
     lock: new URL('./lock.png', import.meta.url).href,
     자유대화: new URL('./자유대화.png', import.meta.url).href,
-    피드백: new URL('./피드백.png', import.meta.url).href
+    피드백: new URL('./피드백.png', import.meta.url).href,
+    bettu: new URL('./bettu.png', import.meta.url).href,
+    raebin: new URL('./raebin.png', import.meta.url).href,
+    beary: new URL('./beary.png', import.meta.url).href,
+    bambi: new URL('./bambi.png', import.meta.url).href,
+    tiron: new URL('./tiron.png', import.meta.url).href,
+    marin: new URL('./marin.png', import.meta.url).href,
+    fun1: new URL('./fun1.png', import.meta.url).href,
+    fun2: new URL('./fun2.png', import.meta.url).href,
+    feedback: new URL('./feedback.png', import.meta.url).href
 };
 
 export default IMAGES;

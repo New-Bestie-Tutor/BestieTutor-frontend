@@ -2266,7 +2266,7 @@ margin-top: 3rem;
   }
 }
 
-
+/* 
 .about-body {
   display: flex;
   flex-direction: column;
@@ -2566,4 +2566,316 @@ margin-top: 3rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
     justify-self: center;
-  }
+  } */
+
+ /* 공통 */
+.about-body {
+  background-color: #6DDFC3;
+  padding: 0px 0px;
+  font-family: 'Pretendard', sans-serif;
+  color: #333;
+}
+h2, h3, h4, h5 {
+  text-align: center;
+  margin: 16px 0;
+}
+.intro-label {
+  font-size: 20px;
+  color: #FFFFFF;
+}
+.intro-title {
+  font-size: 36px;
+  color: #FFFFFF;
+  margin-bottom: 40px;
+}
+
+/* 소개 영역 */
+.about-container1 {
+  display: flex;
+  min-height: 70vh;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 200px 100px;
+  background-color: white;
+}
+.about-container1 .intro-text {
+  max-width: 800px;
+  margin: 0p;
+  text-align: left;
+  flex: 1;
+}
+.about-container1 h3 {
+  text-align: left;
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 6px 0px;
+  color: #000;
+}
+.about-container1 .한줄소개 {
+  font-size: 32px;
+  color: black;
+}
+.about-container1 p {
+  font-size: 24px;
+  color: #444;
+  margin-bottom: 10px;
+}
+.about-container1 .intro-images {
+  width: 500px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #dff8f5;
+  border-radius: 20px;
+  padding: 30px;
+  flex-shrink: 0;
+}
+.about-container1 .intro-images img {
+  width: 300px;
+  margin: 0px;
+  height: auto;
+  margin-left: -100px;
+}
+.about-container1 .intro-images img:first-child {
+  margin-left: 10px;
+}
+
+/* 핵심 가치 */
+.about-container2 {
+  display: flex;
+  min-height: 80vh;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  background-color: white;
+  padding: 60px 40px 100px;
+  border-end-start-radius: 24px;
+  border-end-end-radius: 24px;
+  flex-wrap: wrap;
+}
+.about-container2 .fun-text-box {
+  text-align: center;
+  min-width: 220px;
+}
+.about-container2 .fun-text-box p {
+  font-size: 20px;
+  margin: 6px 0;
+}
+.about-container2 .fun-text-box .fun {
+  font-size: 56px;
+  font-weight: 800;
+  color: #000;
+}
+.about-container2 .fun-text-box .fun_text {
+  font-size: 24px;
+  color: #333;
+}
+.fun-images {
+  display: flex;
+  gap: 40px;
+}
+.fun-images img {
+  width: 480px;
+  height: auto;
+  border-radius: 20px;
+}
+
+/* 단계별 대화 진행 */
+.about-container3 {
+  padding: 60px 20px;
+  text-align: center;
+}
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 20px; /* row-gap: 20px, column-gap: 10px */
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.level-card {
+  background-color: #b8f1e6;
+  border-radius: 24px;
+  padding: 24px 20px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+.chat-box {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 20px 16px;
+  margin-bottom: 16px;
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+.bubble {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 24px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: keep-all;
+  max-width: 100%;
+  text-align: left;
+}
+.bubble.question {
+  background-color: #00aa7f;
+  color: white;
+  align-self: flex-start;
+}
+.bubble.answer {
+  background-color: #00d4b2;
+  color: white;
+  align-self: flex-end;
+}
+.level-info h5 {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 6px 0;
+  color: #333;
+}
+.level-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #222;
+}
+.tags {
+  font-size: 13px;
+  color: #00695c;
+}
+.tags span {
+  margin-right: 8px;
+}
+
+/* 장점 영역 */
+.about-container4 {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 60px 20px;
+  min-height: 80vh;
+  align-items: center;
+}
+.advantages {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 100px;
+  gap: 50px;
+}
+.advantages-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.advantages button {
+  background-color: white;
+  color: #079F7A;
+  border: none;
+  min-width: 500px;
+  min-height: 50px;
+  border-radius: 20px;
+  padding: 20px 20px;
+  margin: 8px;
+  font-size: 20px;
+  font-family: 'Pretendard', sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.advantages button:first-child {
+  background-color: #079F7A;
+  color: #FFFFFF;
+}
+.advantage-image {
+  max-width: 600px;
+  margin-top: 20px;
+  border-radius: 20px;
+}
+
+/* 캐릭터 소개 */
+.about-container5 {
+  margin: 60px;
+}
+.character-list {
+  display: flex;
+  margin: 40px 40px 100px 40px;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+.character-box {
+  display: flex;
+  background: #d6f8f1;
+  border-radius: 40px;
+  padding: 20px 60px 0px 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.character-info, .character-meta {
+  flex: 1;
+}
+.character-info h4 {
+  font-size: 36px;
+  margin: 0 0 8px 0;
+}
+.character-info p {
+  font-size: 16px;
+  margin: 0;
+  color: #666666;
+}
+.character-image {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+.character-meta strong {
+  font-size: 20px;
+  color: #079F7A;
+}
+.character-meta p {
+  font-size: 16px;
+  margin: 8px 0;
+  text-align: left;
+  color: #51B19A;
+}
+
+/* 마무리 CTA */
+.about-container-end {
+  background: white;
+  min-height: 70vh;
+  padding: 40px 20px;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+}
+.about-container-end img {
+  width: 180px;
+}
+.about-container-end button {
+  color: #079F7A;
+  background-color: white;
+  border: 2px solid #079F7A;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.about-container-end p {
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 1.5;
+}
