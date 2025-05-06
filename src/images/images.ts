@@ -1,6 +1,9 @@
 const IMAGES = {
     Bettu: new URL('./Bettu.png', import.meta.url).href,
     Rabin: new URL('./Rabin.png', import.meta.url).href,
+    halfcircle: new URL('./halfcircle.png', import.meta.url).href,
+    grass: new URL('./grass.png', import.meta.url).href,
+    rainbow: new URL('./rainbow.png', import.meta.url).href,
     kakao_login: new URL('./kakao_login.png', import.meta.url).href,
     비즈니스: new URL('./비즈니스.png', import.meta.url).href,
     일상: new URL('./일상.png', import.meta.url).href,
