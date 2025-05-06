@@ -33,7 +33,6 @@ const MafiaGame = () => {
   const [killedPlayer, setKilledPlayer] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
-  const [selectedTarget, setSelectedTarget] = useState(null);
   const [aiMessage, setAiMessage] = useState(" ");
   const [messages, setMessages] = useState([]);
   const [playerMessage, setPlayerMessage] = useState(" ");
@@ -365,13 +364,11 @@ const MafiaGame = () => {
           </button>
         </div>
       </div>
-      {/* 투표/처형 버튼 */}
       {phase === "day" && (
         <div className="vote-button">
           <button className="vote-btn" onClick={openVoteModal} disabled={!voteInProgress}>투표 진행</button>
         </div>
       )}
-      {/* ✅ 투표 모달 */}
       {isVoteModalOpen && (
         <div className="mafia-modal-overlay" onClick={() => setIsVoteModalOpen(false)}>
           <div className="vote-modal" onClick={(e) => e.stopPropagation()}>

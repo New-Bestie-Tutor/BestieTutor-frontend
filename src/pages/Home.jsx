@@ -26,6 +26,7 @@ export default function Home() {
   const [lockedStages, setLockedStages] = useState([]);
   const [currentTopic, setCurrentTopic] = useState(null);
   const [selectedSubTopic, setSelectedSubTopic] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const userEmail = userInfo?.email;
   const steps = [0, 10, 30, 60, 120];
@@ -297,68 +298,59 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="header-content">
+        <div className="stage-grid">
           {topics.map((topic) => {
             const isLocked = lockedStages.find((stage) => stage.stage === topic.mainTopic)?.isLocked ?? true;
 
             return (
-              <div
-                key={topic._id}
-                className={`header-item ${isLocked ? 'locked' : 'unlocked'}`}
+              <div key={topic._id} className={`stage-card ${isLocked ? 'locked' : ''}`}>
+                <div className="stage-title">
+                  {topic.mainTopic}
+                  {isLocked && <img src={IMAGES.lock} alt="lock" className="stage-lock" />}
+                </div>
 
-                onMouseEnter={() => {
-                  if (!isLocked) {
-                    handleMouseEnter(topic);
-                  }
-                }}
-                onClick={isLocked ? null : () => console.log('Topic clicked:', topic)}
-              >
-                {topic.mainTopic}{' '}
-                {isLocked ? (
-                  <img src={IMAGES.lock} alt="lock" className="lockimg" />
-                ) : (
-                  <FontAwesomeIcon icon={faAngleDown} style={{ color: "#1c1c1c" }} size="xs" />
-                )}
-
-                {/* 드롭다운 콘텐츠 */}
-                {currentTopic && currentTopic._id === topic._id && showDropdown && (
-                  <div className="dropdown-container" ref={dropdownRef}>
-                    <div className="dropdown-content">
-                      {currentTopic.subTopics.map((subTopic) => (
-                        <div
-                          className="dropdown-subtopic"
-                          key={subTopic.name}
-                          onMouseEnter={() => handleSubTopicHover(subTopic)}
-
-                        >
-                          {subTopic.name}{' '}
-                          <FontAwesomeIcon icon={faAngleDown} rotation={270} style={{ color: "#1c1c1c", }} size="xs" />
-
-                          {/* 소주제 세부 정보 */}
-                          {selectedSubTopic && selectedSubTopic.name === subTopic.name && (
-                            <div className="subtopic-details">
-                              {selectedSubTopic.difficulties.map((difficulty) => (
-                                <div
-                                  key={difficulty.difficulty}
-                                  className={`difficulty-item ${selectedLevel === difficulty.difficulty ? 'selected' : ''
-                                    }`}
-                                  onClick={() => handleLevelSelect(difficulty.difficulty)}
-                                >
-                                  <p className="difficultyp">{difficulty.difficulty}</p>
-                                  <p className="descriptionp">{difficulty.description}</p>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                {!isLocked && (
+                  <div className="dropdown-content">
+                    {topic.subTopics.map((subTopic) => (
+                      <div
+                        key={subTopic.name}
+                        className="subtopic-name"
+                        onClick={() => {
+                          setSelectedSubTopic(subTopic);
+                          setIsModalOpen(true);
+                        }}
+                      >
+                        {subTopic.name}
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
             );
           })}
         </div>
+        {isModalOpen && selectedSubTopic && (
+          <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+            <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+              <h3 className="modal-title">{selectedSubTopic.name}</h3>
+              <div className="modal-difficulties">
+                {selectedSubTopic.difficulties.map((difficulty) => (
+                  <div
+                    key={difficulty.difficulty}
+                    className={`difficulty-item ${selectedLevel === difficulty.difficulty ? 'selected' : ''}`}
+                    onClick={() => {
+                      handleLevelSelect(difficulty.difficulty);
+                      setIsModalOpen(false);
+                    }}
+                  >
+                    <p className="difficultyp">{difficulty.difficulty}</p>
+                    <p className="descriptionp">{difficulty.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
         <div className="mafia-top-text">
           <h2 className="mafia-title">마피아 게임하기</h2>
           <p className="mafia-subtitle">Bestie Tutor만의 특별한 언어 학습 게임!</p>

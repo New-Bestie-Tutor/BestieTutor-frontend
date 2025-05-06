@@ -72,6 +72,10 @@ export default function MyPage() {
       <Header />
       <div className="mypage-container">
         <div className="profile-header">
+          <div className="mypage-topbar">
+            <Link to="/home" className="back-arrow">←</Link>
+            <h1 className="mypage-title">MyPage</h1>
+          </div>
           <img src={IMAGES.Bettu} alt="mypage Profile" className="mypage-profile" />
           <h2 className="user-name">{user ? user.nickname : "Guest"}</h2>
           <div className="profile-stats">
