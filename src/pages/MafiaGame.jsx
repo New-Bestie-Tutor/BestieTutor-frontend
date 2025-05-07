@@ -148,6 +148,7 @@ const MafiaGame = () => {
         { role: "user", content: playerMessage }, // 플레이어 메시지 추가
         ...aiResponses.map((ai) => ({
           role: ai.role,
+          name: ai.name,
           content: ai.message,
         })), // AI 응답들 추가
       ]);
@@ -349,7 +350,7 @@ const MafiaGame = () => {
         <div className="chat-messages">
           {messages.map((msg, i) => (
             <div key={i} className={`chat-bubble ${msg.role === "user" ? "user" : "ai"}`}>
-              <strong>{msg.role === "user" ? "플레이어" : msg.role}:</strong> {msg.content}
+              <strong>{msg.name === "user" ? "플레이어" : msg.name}:</strong> {msg.content}
             </div>
           ))}
         </div>
