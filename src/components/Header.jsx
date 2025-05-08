@@ -136,7 +136,7 @@ export default function Header({ totalTime }) {
           <div className="header-mypage">
             {username ? (
               <>
-                <button onClick={logout} className="logout-button"><img src={IMAGES.in} className="mypageimg" />로그아웃</button>
+                <button onClick={logout} className="logout-button"><img src={IMAGES.logoutBlack} className="mypageimg" />로그아웃</button>
                 <Link to="/mypage"><img src={IMAGES.mypage} alt="mypage" className="mypageimg" />회원정보</Link>
               </>
             ) : null}
