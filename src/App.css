@@ -704,13 +704,32 @@ body {
 }
 
 /* ChooseLanguage.css */
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background-color: #eee;
+  margin-bottom: 20px;
+}
+
+.progress-filled {
+  height: 100%;
+  background-color: #6DDFC3;
+  transition: width 0.5s ease-in-out;
+}
+
+.language-wrapper {
+  display: flex;
+  min-height: 60vh;
+  min-width: 340px;
+  align-items: center;
+  justify-content: center;
+}
+
 .language-list {
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(3, 1fr);
-  /* 기본적으로 4열 */
   justify-items: center;
-  /*grid*/
   text-align: center;
   min-width: 340px;
   align-items: flex-end;
@@ -1464,7 +1483,7 @@ body {
 }
 
 .next-button {
-  margin-top: 20px;
+  margin-top: 30px;
   padding: 10px 20px;
   width: 100%;
   max-width: 300px;
