@@ -33,7 +33,6 @@ const MafiaGame = () => {
   const [killedPlayer, setKilledPlayer] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
-  const [selectedTarget, setSelectedTarget] = useState(null);
   const [aiMessage, setAiMessage] = useState(" ");
   const [messages, setMessages] = useState([]);
   const [playerMessage, setPlayerMessage] = useState(" ");
@@ -149,6 +148,7 @@ const MafiaGame = () => {
         { role: "user", content: playerMessage }, // 플레이어 메시지 추가
         ...aiResponses.map((ai) => ({
           role: ai.role,
+          name: ai.name,
           content: ai.message,
         })), // AI 응답들 추가
       ]);
@@ -350,7 +350,7 @@ const MafiaGame = () => {
         <div className="chat-messages">
           {messages.map((msg, i) => (
             <div key={i} className={`chat-bubble ${msg.role === "user" ? "user" : "ai"}`}>
-              <strong>{msg.role === "user" ? "플레이어" : msg.role}:</strong> {msg.content}
+              <strong>{msg.name === "user" ? "플레이어" : msg.name}:</strong> {msg.content}
             </div>
           ))}
         </div>
@@ -365,13 +365,11 @@ const MafiaGame = () => {
           </button>
         </div>
       </div>
-      {/* 투표/처형 버튼 */}
       {phase === "day" && (
         <div className="vote-button">
           <button className="vote-btn" onClick={openVoteModal} disabled={!voteInProgress}>투표 진행</button>
         </div>
       )}
-      {/* ✅ 투표 모달 */}
       {isVoteModalOpen && (
         <div className="mafia-modal-overlay" onClick={() => setIsVoteModalOpen(false)}>
           <div className="vote-modal" onClick={(e) => e.stopPropagation()}>
