@@ -3,7 +3,7 @@ import { Start, UserAgreement, Register, Login, Home,
     FindPw, Conversation, RegistrationSuccess,
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
     MyPage, Profile, Review, Feedback, FreeSubject,
-    About, Event, Inquiry, Notice, Payment, MafiaSetup, MafiaGame } from "./pages";
+    About, Event, Inquiry, Notice, Payment, MafiaSetup, MafiaGame, Setting } from "./pages";
 import CombinedPage from "./pages/CombinedPage";
 
 export default function AppRoutes() {
@@ -25,6 +25,7 @@ export default function AppRoutes() {
             <Route path="/preferredTopic" element={<PreferredTopic />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/myPage" element={<MyPage />} />
+            <Route path="/setting" element={<Setting />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/review" element={<Review />} />

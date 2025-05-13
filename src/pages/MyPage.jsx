@@ -89,7 +89,7 @@ export default function MyPage() {
             <Link to="/profile"><li><span><img src={IMAGES.user} alt="icon" className="mypage-service" /></span>회원 정보 수정</li></Link>
             <Link to="/review"><li><span><img src={IMAGES.remind} alt="icon" className="mypage-service" /></span>지난 대화 복습하기</li></Link>
             <Link to="/payment"><li><span><img src={IMAGES.crown} alt="icon" className="mypage-service" /></span>프리미엄 업그레이드</li></Link>
-            <Link to="/settings"><li><span><img src={IMAGES.setting} alt="icon" className="mypage-service" /></span>설정</li></Link>
+            <Link to="/setting"><li><span><img src={IMAGES.setting} alt="icon" className="mypage-service" /></span>설정</li></Link>
             <Link to="/inquiry"><li><span><img src={IMAGES.question} alt="icon" className="mypage-service" /></span>문의하기</li></Link>
             <Link to="/about"><li><span><img src={IMAGES.introduce} alt="icon" className="mypage-service" /></span>Bestie Tutor 서비스 소개</li></Link>
           </div>

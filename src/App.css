@@ -1000,6 +1000,69 @@ body {
   margin-right: 12px;
 }
 
+/* Setting.css */
+.settings-page {
+  position: relative;
+  max-width: 640px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  transition: background 0.3s ease;
+}
+
+.settings-page h1 {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.setting-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.setting-back-arrow {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.setting-item {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.setting-item label {
+  font-weight: 500;
+  color: #444;
+  font-size: 1rem;
+}
+
+.setting-item input[type="time"],
+.setting-item select {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
 /* Profile.css */
 .profile-container {
   min-height: 78vh !important;
