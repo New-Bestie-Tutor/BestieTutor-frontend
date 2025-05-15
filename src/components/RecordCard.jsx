@@ -5,11 +5,23 @@ import '../App.css';
 
 export default function RecordCard({ record }) {
 
-const category = record.topicDescription.split(" - ")[0];
+let category = "", topic = "", level = "";
+if (record.topic_description) {
+  const parts = record.topic_description.split("-");
+  if (parts.length === 3) {
+    [category, topic, level] = parts;
+  } else {
+    // fallback for 자유 주제 등
+    category = record.topic_description;
+    topic = "자유주제 대화";
+    level = "normal"; // 또는 기본값
+  }
+}
+/* const category = record.topicDescription.split(" - ")[0];
 const topic = record.topicDescription.split(" - ")[1];
-const level = record.topicDescription.split(" - ")[2];
-const startTime = new Date(record.startTime);
-const endTime = new Date(record.endTime);
+const level = record.topicDescription.split(" - ")[2]; */
+const startTime = new Date(record.start_time);
+const endTime = record.end_time ? new Date(record.end_time) : 0;
 const time = endTime && startTime ? (endTime - startTime) / (1000 * 60) : 0; 
 
 const navigate = useNavigate();

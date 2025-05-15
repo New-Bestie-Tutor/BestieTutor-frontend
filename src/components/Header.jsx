@@ -34,7 +34,7 @@ export default function Header({ totalTime }) {
 
   const getAllLanguages = async () => {
     try{
-      const response = await axios.get('/conversation/getAllLanguages');
+      const response = await axios.get('/conversation/languages/all');
       if (response.status === 200) {
         setAllLanguages(response.data.languages);
       }
@@ -67,7 +67,7 @@ export default function Header({ totalTime }) {
   const getRecentLanguage = async () => {
     try {
         const userEmail = userInfo?.email;
-        const response = await axios.get(`/conversation/getRecentLanguage/${userEmail}`);
+        const response = await axios.get(`/conversation/languages/recent/${userEmail}`);
         if (response.status === 200) {
           const recentLanguage = response.data.conversation.selected_language;
           handleRecentLanguage(recentLanguage);

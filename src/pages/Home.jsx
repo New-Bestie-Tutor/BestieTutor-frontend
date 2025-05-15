@@ -58,6 +58,7 @@ export default function Home() {
 
   useEffect(() => {
     if (userId) {
+      console.log(userId);
       fetchUser();
     }
   }, [userId]);
@@ -89,9 +90,9 @@ export default function Home() {
 
   useEffect(() => {
     const total = conversations.reduce((sum, conversation) => {
-      const startTime = new Date(conversation.startTime);
-      const endTime = new Date(conversation.endTime);
-      const duration = endTime - startTime;
+      const startTime = new Date(conversation.start_time);
+      const endTime = conversation.end_time ? new Date(conversation.end_time) : 0;
+      const duration = endTime ? endTime - startTime : 0;
       return sum + duration / (1000 * 60);
     }, 0);
 
@@ -149,8 +150,8 @@ export default function Home() {
       <div className="main-container">
         <div className="greeting-section">
           <h2>
-            {user?.nickname
-              ? `${user.nickname}! 또 만나서 반가워요`
+            {userInfo?.nickname
+              ? `${userInfo.nickname}! 또 만나서 반가워요`
               : "사용자! 또 만나서 반가워요"}
           </h2>
 
@@ -210,7 +211,7 @@ export default function Home() {
               {Array.isArray(conversations) &&
                 conversations.slice(0, 9).map((conversation) => (
                   <RecordCard
-                    key={conversation.conversationId}
+                    key={conversation._id}
                     record={{ ...conversation }}
                   />
                 ))}

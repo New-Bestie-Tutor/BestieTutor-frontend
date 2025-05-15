@@ -69,10 +69,10 @@ export default function Review() {
             </div>
             <div>
                 {paginatedConversations.map((conversation) => {
-                    const [topic, subTopic, difficulty] = conversation.topicDescription.split(' - ');
+                    const [topic, subTopic, difficulty] = conversation.topic_description.split(' - ');
                     const description = conversation.description;
-                    const startTime = new Date(conversation.startTime);
-                    const endTime = new Date(conversation.endTime);
+                    const startTime = new Date(conversation.start_time);
+                    const endTime = new Date(conversation.end_time);
 
                     const durationInMilliseconds = endTime.getTime() - startTime.getTime();
 

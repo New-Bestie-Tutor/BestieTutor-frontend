@@ -88,7 +88,6 @@ export default function Login() {
                 navigate(redirectUrl);            
               }
         } catch (error) {
-            // console.error('카카오 로그인 실패:', error);
             alert('로그인에 실패했습니다. 다시 시도해주세요.');
             navigate('/login'); // 실패 시 로그인 페이지로 이동
         }

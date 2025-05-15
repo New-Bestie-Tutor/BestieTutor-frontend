@@ -167,14 +167,14 @@ export default function About() {
           <div className="character-list">
             {[{
               name: "Bettu",
-              desc: "#긍정적인 #외향적인",
-              role: "부담없는 상담과 함께 친근하게 대화해요!",
-              tone: "항상 긍정적이며, 실수를 학습의 일부분으로 여기게끔 도와드려요."
+              desc: "#긍정적인 #활발한",
+              role: "항상 응원하며, 실패도 학습의 일부분으로 여기게끔 유도합니다.",
+              tone: "부드럽고 상냥한 말투로 친근하게 대화합니다."
             }, {
               name: "Raebin",
               desc: "#차분한 #신뢰감있는",
-              role: "침착한 목소리로 천천히 생각하며 대화해요.",
-              tone: "학습자가 스스로 고민할 수 있도록 유도하며, 필요한 상황에는 명확한 도움을 줍니다."
+              role: "학습자가 스스로 고민할 수 있도록 유도하며, 필요한 경우에만 힌트를 제공합니다.",
+              tone: "신뢰감 있는 목소리로 논리적이고 명확하게 대화합니다."
             }, {
               name: "Bambi", desc: "#긍정적인 #외향적인", role: "부담없는 상담과 함께 친근하게 대화해요!", tone: "항상 긍정적이며, 실수를 학습의 일부분으로 여기게끔 도와드려요." },
               { name: "Tiron", desc: "#긍정적인 #외향적인", role: "부담없는 상담과 함께 친근하게 대화해요!", tone: "항상 긍정적이며, 실수를 학습의 일부분으로 여기게끔 도와드려요." },
@@ -188,9 +188,9 @@ export default function About() {
                 </div>
                 <img src={IMAGES[char.name.toLowerCase()]} alt={char.name} className="character-image" />
                 <div className="character-meta">
-                  <p><strong>말투</strong><br />{char.role}</p>
+                  <p><strong>말투</strong><br />{char.tone}</p>
                   <br />
-                  <p><strong>태도</strong><br />{char.tone}</p>
+                  <p><strong>태도</strong><br />{char.role}</p>
                 </div>
               </div>
             ))}
