@@ -4,12 +4,13 @@ import { Start, UserAgreement, Register, Login, Home,
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
     MyPage, Profile, Review, Feedback, FreeSubject,
     About, Event, Inquiry, Notice, Payment, MafiaSetup, MafiaGame } from "./pages";
+import CombinedPage from "./pages/CombinedPage";
 
 export default function AppRoutes() {
     return(
         <Routes>
             {/* Route: 컴포넌트 별로 원하는 url을 지정 */}
-            <Route path="/" element={<Start />} />
+            <Route path="/" element={<CombinedPage />} />
             <Route path="/userAgreement" element={<UserAgreement />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

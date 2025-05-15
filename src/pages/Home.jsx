@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import Footer from "../components/Footer";
@@ -6,10 +6,14 @@ import Header from "../components/Header";
 import IMAGES from "../images/images";
 import axios from "axios";
 import RecordCard from "../components/RecordCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import '../App.css';
 
 export default function Home() {
   const { userInfo } = useContext(UserContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
   const userId = userInfo?.userId;
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -18,8 +22,21 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState(0);
   const [inactiveDays, setInactiveDays] = useState(0);
   const [conversations, setConversations] = useState([]);
+  const [topics, setTopics] = useState([]);
+  const [lockedStages, setLockedStages] = useState([]);
+  const [currentTopic, setCurrentTopic] = useState(null);
+  const [selectedSubTopic, setSelectedSubTopic] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState(null);
   const userEmail = userInfo?.email;
   const steps = [0, 10, 30, 60, 120];
+
+  const stageRequirements = {
+    '1단계': 0,
+    '2단계': 10,
+    '3단계': 30,
+    '4단계': 60,
+  };
 
   // Fetch user data
   const fetchUser = async () => {
@@ -129,20 +146,96 @@ export default function Home() {
     } else {
       switch (step) {
         case 0:
-          return { image: IMAGES.time0, text: "...개구리가 우스워..?" };
+          return { image: IMAGES.BettuHome, text: "...개구리가 우스워..?" };
         case 1:
-          return { image: IMAGES.time10, text: "조금 더 친해질래..?" };
+          return { image: IMAGES.BettuHome, text: "조금 더 친해질래..?" };
         case 2:
-          return { image: IMAGES.time30, text: "조금만 더 화이팅!" };
+          return { image: IMAGES.BettuHome, text: "조금만 더 화이팅!" };
         case 3:
-          return { image: IMAGES.time60, text: "멋져!" };
+          return { image: IMAGES.BettuHome, text: "멋져!" };
         default:
-          return { image: IMAGES.time120, text: "내 둘도 없는 친구야!" };
+          return { image: IMAGES.BettuHome, text: "내 둘도 없는 친구야!" };
       }
     }
   };
 
   const { image, text } = getImageAndText(currentStep, inactiveDays);
+
+  /***주제 선택 ***/
+  useEffect(() => {
+    const fetchTopicsAndLockStatus = async () => {
+      try {
+        const topicsResponse = await axios.get('/topic/');
+        const lockedStatuses = determineLockStatus(userInfo?.total_time || 0, stageRequirements);
+        setTopics(topicsResponse.data);
+        setLockedStages(lockedStatuses);
+      } catch (error) {
+        console.error("Failed to fetch topics or lock status:", error);
+      }
+    };
+    fetchTopicsAndLockStatus();
+  }, [userInfo?.total_time]);
+
+  const handleMouseEnter = (topic) => {
+    setCurrentTopic(topic);
+    setShowDropdown(true);
+  };
+
+  useEffect(() => {
+    if (topics.length > 0) {
+      const fetchSubTopics = async () => {
+        try {
+          const response = await axios.get(`/topic/${topics}`);
+          setSubTopics(response.data);
+        } catch (error) {
+          console.error("소주제를 불러오는데 실패했습니다.", error);
+        }
+      };
+      fetchSubTopics();
+    }
+  }, [topics]);
+
+  const handleSubTopicHover = (subTopic) => {
+    setSelectedSubTopic(subTopic);
+  };
+
+  const handleLevelSelect = (level) => {
+    if (selectedSubTopic) {
+      const difficulty = selectedSubTopic.difficulties.find((d) => d.difficulty === level);
+      if (difficulty) {
+        navigate('/chooseCharacter', {
+          state: {
+            mainTopic: currentTopic?.mainTopic,
+            selectedSubTopic: selectedSubTopic.name,
+            selectedLevel: level,
+            description: difficulty.description,
+          },
+        });
+      }
+    }
+  };
+
+  const determineLockStatus = (totalTime, requirements) => {
+    const statuses = Object.keys(requirements).map((stage) => ({
+      stage,
+      isLocked: totalTime < requirements[stage],
+    }));
+    return statuses;
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown(false);
+      setCurrentTopic(null);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="Home">
@@ -185,9 +278,24 @@ export default function Home() {
             <img src={IMAGES.베튜말풍선} alt="intimacy_speechbubble" className="intimacy_speechbubble" />
             <p className="intimacy_text">{text}</p>
           </div>
+        </section>
+        <div className="greeting-section">
+          <div className="greeting-text">
+            <h2>
+              {user?.nickname
+                ? `${user.nickname}님!♥ 또 만나서 반가워요`
+                : "사용자님!♥ 또 만나서 반가워요"}
+            </h2>
 
+            <p>
+              즐거운 여행을 위해 베튜와 함께 공부해요{" "}<br></br>
+              <Link to="/edit-goals" className="edit-goal-link">
+                학습 목표 수정하기
+              </Link>
+            </p>
+          </div>
           <div className="intimacy_box">
-            <p className="time">♥ 친밀도: {totalTime.toFixed(1)}분</p>
+            <p className="time">♥ 친밀도 | {totalTime.toFixed(1)}분</p>
             <p>
               다음 목표까지:{" "}
               <span className="next-goal">
@@ -198,9 +306,81 @@ export default function Home() {
                     : "친밀도 100 달성!"}
               </span>
             </p>
+            <div className="progress-bar">
+              <div
+                className="filled"
+                style={{
+                  width: `${Math.min(100, totalTime).toFixed(1)}%`,
+                }}
+              />
+            </div>
           </div>
-        </section>
+        </div>
+        <div className="stage-grid">
+          {topics.map((topic) => {
+            const isLocked = lockedStages.find((stage) => stage.stage === topic.mainTopic)?.isLocked ?? true;
 
+            return (
+              <div key={topic._id} className={`stage-card ${isLocked ? 'locked' : ''}`}>
+                <div className="stage-title">
+                  {topic.mainTopic}
+                  {isLocked && <img src={IMAGES.lock} alt="lock" className="stage-lock" />}
+                </div>
+
+                {!isLocked && (
+                  <div className="dropdown-content">
+                    {topic.subTopics.map((subTopic) => (
+                      <div
+                        key={subTopic.name}
+                        className="subtopic-name"
+                        onClick={() => {
+                          setSelectedSubTopic(subTopic);
+                          setIsModalOpen(true);
+                        }}
+                      >
+                        {subTopic.name}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        {isModalOpen && selectedSubTopic && (
+          <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+            <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+              <h3 className="modal-title">{selectedSubTopic.name}</h3>
+              <div className="modal-difficulties">
+                {selectedSubTopic.difficulties.map((difficulty) => (
+                  <div
+                    key={difficulty.difficulty}
+                    className={`difficulty-item ${selectedLevel === difficulty.difficulty ? 'selected' : ''}`}
+                    onClick={() => {
+                      handleLevelSelect(difficulty.difficulty);
+                      setIsModalOpen(false);
+                    }}
+                  >
+                    <p className="difficultyp">{difficulty.difficulty}</p>
+                    <p className="descriptionp">{difficulty.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="mafia-top-text">
+          <h2 className="mafia-title">마피아 게임하기</h2>
+          <p className="mafia-subtitle">Bestie Tutor만의 특별한 언어 학습 게임!</p>
+        </div>
+        <div className="lets-mafia-wrapper" onClick={() => navigate('/mafiasetup')}>
+          <img src={IMAGES.LetsMafia} alt="Let's play Mafia" className="lets-mafia-img" />
+          <div className="mafia-img-text">
+            <p className="mafia-subtext">동물 친구들과 함께 아지트에 놀러온 당신!</p>
+            <h2 className="mafia-img-title">다같이 외국어로 대화하며 마피아를 찾아보세요!</h2>
+          </div>
+          <button className="mafia-button">게임 시작하기</button>
+        </div>
         <section className="records-section">
           <div className="records-top">
             <h3>기록</h3>

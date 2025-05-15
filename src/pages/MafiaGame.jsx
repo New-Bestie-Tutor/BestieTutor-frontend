@@ -1,15 +1,30 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import MafiaNight from "../images/MafiaNight.png";
+import MafiaDay from "../images/MafiaDay.png";
 import axios from "axios";
+import Bambi from "../images/Bambi.png";
+import Beary from "../images/Beary.png";
+import Bettu from "../images/Bettu.png";
+import Marin from "../images/Marin.png";
+import Rabin from "../images/Rabin.png";
+import Tiron from "../images/Tiron.png";
+import player from "../images/player.png";
 
 const MafiaGame = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState(location.state?.players || []);
   const [gameId, setGameId] = useState(location.state?.gameId || null);
   const [log, setLog] = useState([]);
-  const [discussionLog, setDiscussionLog] = useState([]);
   const [phase, setPhase] = useState("day");
+  const [round, setRound] = useState(1);
+  const [isVoteModalOpen, setIsVoteModalOpen] = useState(false);
+  const [selectedVote, setSelectedVote] = useState(null);
+  const [voteResultModalOpen, setVoteResultModalOpen] = useState(false);
+  const [voteResult, setVoteResult] = useState("");
+  const [isNightModalOpen, setIsNightModalOpen] = useState(false);
+  const [nightActionTarget, setNightActionTarget] = useState(null);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -18,13 +33,13 @@ const MafiaGame = () => {
   const [killedPlayer, setKilledPlayer] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
-  const [selectedTarget, setSelectedTarget] = useState(null);
   const [aiMessage, setAiMessage] = useState(" ");
+  const [messages, setMessages] = useState([]);
   const [playerMessage, setPlayerMessage] = useState(" ");
 
   useEffect(() => {
     if (!gameId) {
-      navigate("/game/setup");
+      navigate("/mafia/game/setup");
       return;
     }
 
@@ -34,18 +49,33 @@ const MafiaGame = () => {
         console.log("프론트엔드에서 받아온 players 데이터:", response.data.players);
         if (response.data && response.data.players) {
           setPlayers(response.data.players);
-          checkGameOver(response.data.players);
         } else {
-          navigate("/game/setup");
+          navigate("/mafia/game/setup");
         }
       } catch (error) {
         console.error("게임 데이터를 불러오는 중 오류 발생:", error);
-        navigate("/game/setup");
+        navigate("/mafia/game/setup");
       }
     };
 
     fetchGameState();
   }, [gameId, navigate]);
+
+  const handleLeaveGame = () => {
+    if (window.confirm("게임을 나가시겠습니까?")) {
+      navigate("/home");
+    }
+  };
+
+  const avatarMap = {
+    "Bambi.png": Bambi,
+    "Beary.png": Beary,
+    "Bettu.png": Bettu,
+    "Marin.png": Marin,
+    "Rabin.png": Rabin,
+    "Tiron.png": Tiron,
+    "player.png": player,
+  };
 
   useEffect(() => {
     const user = players.find((p) => p.name === "Player");
@@ -53,6 +83,22 @@ const MafiaGame = () => {
       setCurrentUser(user);
     }
   }, [players]);
+
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        setIsVoteModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  useEffect(() => {
+    if (phase === "night") {
+      handleNightActions();
+    }
+  }, [phase]);
 
   useEffect(() => {
     if (!userRole && currentUser) {
@@ -69,11 +115,6 @@ const MafiaGame = () => {
   }, [userRole, phase]);
 
   useEffect(() => {
-    if (players.length === 0) return;
-    checkGameOver();
-  }, [players]);
-
-  useEffect(() => {
     const theme = phase === "night" ? "dark" : "light";
     console.log("현재 theme 상태:", phase, "→", theme);
 
@@ -81,8 +122,6 @@ const MafiaGame = () => {
     document.body.classList.toggle("text-white", theme === "dark");
     document.body.classList.toggle("bg-gray-100", theme === "light");
     document.body.classList.toggle("text-black", theme === "light");
-
-    console.log("body 클래스 목록:", document.body.classList);
   }, [phase]);
 
   // 🔹 AI가 게임을 진행하는 메시지 가져오기
@@ -99,9 +138,21 @@ const MafiaGame = () => {
 
   // 🔹 플레이어가 입력한 메시지를 AI에게 전달
   const sendPlayerMessage = async () => {
+    if (!playerMessage.trim()) return; // 빈 메시지 방지
     try {
       const response = await axios.post("/mafia/game/playerResponse", { gameId, playerMessage });
-      setAiMessage(response.data.message);
+      const aiResponses = response.data.message; // AI 응답
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "user", content: playerMessage }, // 플레이어 메시지 추가
+        ...aiResponses.map((ai) => ({
+          role: ai.role,
+          name: ai.name,
+          content: ai.message,
+        })), // AI 응답들 추가
+      ]);
+
       setPlayerMessage(""); // 입력 필드 초기화
     } catch (error) {
       console.error("AI 반응 오류:", error);
@@ -112,27 +163,58 @@ const MafiaGame = () => {
     fetchAINarration(); // AI 메세지 페이즈마다 업데이트
   }, [phase]);
 
+  const nextPhase = async () => {
+    try {
+      const response = await axios.post(`/mafia/game/nextPhase`, { gameId });
+      if (!response.data) {
+        console.error("Error: 서버에서 응답이 없음!");
+        return;
+      }
+
+      if (!("gameOver" in response.data)) {
+        console.error("Error: gameOver 키가 응답에 없음!", response.data);
+        return;
+      }
+
+      setPhase(response.data.status);
+
+      if (response.data.gameOver === true) {
+        console.log("gameOver 상태 업데이트 전:", response.data.gameOver);
+        setGameOver(true);
+        setWinner(response.data.winner);
+      }
+    } catch (error) {
+      console.error("페이즈 전환 오류:", error.response?.data || error.message);
+    }
+  };
+
   const addLog = (message) => {
     setLog((prevLog) => [...prevLog, `사회자: ${message}`]);
   };
 
-  const addDiscussionLog = (message) => {
-    setDiscussionLog((prevLog) => [...prevLog, message]);
+  const openVoteModal = () => {
+    setIsVoteModalOpen(true);
+    setSelectedPlayer(null); // 기존 선택 초기화
   };
 
-  const handleVote = async () => {
-    if (!selectedPlayer) return console.error("Error: 선택된 플레이어가 없습니다.");
+  const handleVote = async (votedPlayer) => {
+    if (!votedPlayer) return console.error("Error: 선택된 플레이어가 없습니다.");
     if (!gameId) return console.error("Error: gameId가 없습니다.");
 
     try {
       const response = await axios.post("/mafia/game/vote", {
         gameId,
-        selectedPlayer
+        selectedPlayer: votedPlayer,
       });
 
       addLog(response.data.message);
+      setVoteResult(`${votedPlayer}가 최다 득표를 받았습니다.`);
+      setVoteResultModalOpen(true);
+
       setVoteInProgress(false);
       setExecutionPhase(true);
+      setIsVoteModalOpen(false);
+      setSelectedPlayer(null);
     } catch (error) {
       console.error("투표 오류:", error.response?.data?.message || error.message);
     }
@@ -155,47 +237,28 @@ const MafiaGame = () => {
 
       addLog(response.data.message);
 
-      if (decision === "execute" && selectedPlayer) {
-        setPlayers((prevPlayers) =>
-          prevPlayers.map((player) =>
-            player.name === selectedPlayer ? { ...player, isAlive: false } : player
-          )
-        );
-      }
+      const updatedGame = await axios.get(`/mafia/game/${gameId}`);
+      setPlayers(updatedGame.data.players);
+
       setExecutionPhase(false);
       setSelectedPlayer(null);
-      setPhase("night");
+      nextPhase();
     } catch (error) {
       console.error("최종 결정 오류:", error.response?.data?.message || error.message);
     }
   };
 
-  const handleNightActions = async () => {
-    addLog("밤이 되었습니다. 각 역할이 능력을 사용하세요.");
-
-    if (userRole === "Mafia") {
-      addLog("마피아는 공격할 대상을 선택하세요.");
-      return;
-    }
-
-    if (userRole === "Police") {
-      addLog("경찰은 조사할 대상을 선택하세요.");
-      return;
-    }
-
-    if (userRole === "Doctor") {
-      addLog("의사는 보호할 대상을 선택하세요.");
-      return;
-    }
-
-    if (userRole === "Citizen") {
+  const handleNightActions = () => {
+    if (["Mafia", "Police", "Doctor"].includes(userRole)) {
+      setIsNightModalOpen(true);
+    } else {
       addLog("시민은 밤에 특별한 행동을 할 수 없습니다.");
-      await checkNightProgress();
     }
   };
 
   const selectTarget = async (target) => {
     try {
+      if (!target) return;
       if (userRole === "Mafia") {
         await axios.post("/mafia/game/mafia", { gameId, mafiaTarget: target });
       }
@@ -206,6 +269,7 @@ const MafiaGame = () => {
         await axios.post("/mafia/game/doctor", { gameId, doctorTarget: target });
       }
       addLog(`${userRole}가 ${target}을(를) 선택했습니다.`);
+      setIsNightModalOpen(false);
       checkNightProgress();
     } catch (error) {
       console.error("선택 오류:", error);
@@ -216,130 +280,186 @@ const MafiaGame = () => {
     try {
       const response = await axios.post("/mafia/game/process", { gameId });
       addLog(response.data.message);
+      console.log(response.data)
 
       if (response.data.policeResult) {
         addLog(`경찰이 조사한 결과: ${response.data.policeResult}`);
       }
 
       if (response.data.mafiaTarget) {
-        addLog(`마피아가 ${response.data.mafiaTarget}을(를) 공격했습니다.`);
-        setKilledPlayer(response.data.mafiaTarget); // 죽은 플레이어 저장
+        if (response.data.message.includes("의사의 보호로 살아남았습니다")) {
+          addLog(`마피아가 ${response.data.mafiaTarget}을(를) 공격했지만, 의사의 보호로 살아남았습니다.`);
+          setKilledPlayer(null);
+        } else {
+          addLog(`마피아가 ${response.data.mafiaTarget}을(를) 공격했습니다.`);
+          setKilledPlayer(response.data.mafiaTarget);
+        }
+      } else {
+        setKilledPlayer(null);
       }
 
-      setPhase("day");
       setVoteInProgress(true);
+      nextPhase();
     } catch (error) {
       console.error("밤 처리 중 오류:", error);
     }
   };
 
-  const checkGameOver = (playersData = players) => {
-    if (!playersData || playersData.length === 0) return;
-
-    const mafiaCount = playersData.filter((p) => p.role === "Mafia" && p.isAlive).length;
-    const citizenCount = playersData.filter((p) => p.role !== "Mafia" && p.isAlive).length;
-
-    if (mafiaCount === 0) {
-      setGameOver(true);
-      setWinner("시민 승리!");
-    } else if (mafiaCount >= citizenCount) {
-      setGameOver(true);
-      setWinner("마피아 승리!");
-    }
-  };
-
   return (
-    <div className={`p-6 min-h-screen flex flex-col items-center transition-all duration-500 ${phase === "night" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
-      <h2 className="text-2xl font-bold mb-4">마피아 게임 진행</h2>
-      {gameOver ? (
-        <div className="w-full max-w-lg bg-white p-4 rounded shadow text-center">
-          <h3 className="text-xl font-bold mb-2">게임 종료</h3>
-          <p className="text-lg font-semibold">{winner}</p>
+    <div
+      className={`mafia-wrapper ${phase === "night" ? "text-white" : "text-black"}`}
+      style={{
+        backgroundImage: `url(${phase === "night" ? MafiaNight : MafiaDay})`,
+      }}
+    >
+      {/* 상단바 */}
+      <div className="top-bar">
+        <button onClick={handleLeaveGame} className="exit-btn">⬅ 나가기</button>
+        <div className="system-message">
+          {phase === "night" ? "🌙" : "☀️"} {round}번째 {phase === "night" ? "밤" : "낮"}
         </div>
-      ) : (
-        <>
-          <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-bold">사회자 로그</h3>
-            <ul>{log.map((entry, index) => <li key={index}>{entry}</li>)}</ul>
-          </div>
-          <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-bold">플레이어 목록</h3>
-            <ul>
-              {players.map((player) => {
-                const isDead = !player.isAlive || player.name === killedPlayer;
-
+        <div className="role-info"
+          style={{ color: phase === "night" ? "white" : "black" }}
+        >
+          내 직업 <br /><strong>{userRole}</strong>
+        </div>
+      </div>
+      {/* 사회자 로그 */}
+      <div className="moderator-log">
+        <span>🗨️ {aiMessage} </span>
+      </div>
+      {/* 플레이어 리스트 */}
+      <div className="player-list">
+        <h3>Player List</h3>
+        <div className="player-grid">
+          {players.map((player) => {
+            const isDead = !player.isAlive || player.name === killedPlayer;
+            return (
+              <div
+                key={player.name}
+                className={`player-item ${isDead ? "player-dead" : ""}`}
+              >
+                <span>●</span> {player.name}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      {/* 채팅창 */}
+      <div className="chat-panel centered-chat-panel">
+        <div className="chat-messages">
+          {messages.map((msg, i) => (
+            <div key={i} className={`chat-bubble ${msg.role === "user" ? "user" : "ai"}`}>
+              <strong>{msg.name === "user" ? "플레이어" : msg.name}:</strong> {msg.content}
+            </div>
+          ))}
+        </div>
+        <div className="chat-input">
+          <input
+            value={playerMessage}
+            onChange={(e) => setPlayerMessage(e.target.value)}
+            placeholder="메시지를 입력하세요..."
+          />
+          <button className="send-btn" onClick={sendPlayerMessage} disabled={!playerMessage?.trim()}>
+            전송
+          </button>
+        </div>
+      </div>
+      {phase === "day" && (
+        <div className="vote-button">
+          <button className="vote-btn" onClick={openVoteModal} disabled={!voteInProgress}>투표 진행</button>
+        </div>
+      )}
+      {isVoteModalOpen && (
+        <div className="mafia-modal-overlay" onClick={() => setIsVoteModalOpen(false)}>
+          <div className="vote-modal" onClick={(e) => e.stopPropagation()}>
+            <p className="vote-title">예상되는 마피아를 투표해주세요.</p>
+            <div className="vote-characters">
+              {players.filter(p => p.isAlive).map((p) => {
                 return (
-                  <li key={player.name} className={isDead ? "text-gray-500 line-through" : "text-black"}>
-                    <input
-                      type="radio"
-                      name="playerSelect"
-                      onChange={() => setSelectedPlayer(player.name)}
-                      disabled={isDead || phase !== "day" || executionPhase}
-                    />
-                    {player.name} ({player.role})
-                  </li>
+                  <div
+                    key={p._id}
+                    className={`character-icon ${selectedVote === p.name ? "selected" : ""}`}
+                    onClick={() => setSelectedVote(p.name)}
+                  >
+                    <img src={avatarMap[p.avatar]} alt={p.name} />
+                    <p>{p.name}</p>
+                  </div>
                 );
               })}
-            </ul>
-          </div>
-
-          <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-bold">플레이어 메시지</h3>
-            <input
-              type="text"
-              value={playerMessage}
-              onChange={(e) => setPlayerMessage(e.target.value)}
-              placeholder="메시지를 입력하세요..."
-              className="w-full p-2 border rounded"
-            />
+            </div>
             <button
-              className="bg-purple-500 text-white px-4 py-2 rounded mt-2"
-              onClick={sendPlayerMessage}
-              disabled={!playerMessage?.trim()} // Optional chaining으로 오류 방지
+              onClick={() => handleVote(selectedVote)}
+              disabled={!selectedVote}
+              className="confirm-btn"
             >
-              메시지 전송
+              투표하기
             </button>
           </div>
-
-          {phase === "night" && userRole !== "Citizen" && (
-            <div className="mb-4 w-full max-w-lg bg-white p-4 rounded shadow">
-              <h3 className="text-lg font-bold">{userRole} 능력 사용</h3>
-              <ul>
-                {players
-                  .filter((p) => p.isAlive && (userRole === "Doctor" || p.name !== currentUser.name))
-                  .map((player) => (
-                    <li key={player.name}>
-                      <button
-                        className={`px-4 py-2 rounded m-1 ${selectedTarget === player.name ? "bg-green-500" : "bg-blue-500"} text-white`}
-                        onClick={() => selectTarget(player.name)}
-                        disabled={!player.isAlive}
-                      >
-                        {player.name} 선택
-                      </button>
-                    </li>
-                  ))}
-              </ul>
-              {selectedTarget && <p className="mt-2">선택된 대상: {selectedTarget}</p>}
-            </div>
-          )}
-          {phase === "day" ? (
-            <>
-              <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleVote} disabled={!voteInProgress}>
-                투표 진행
-              </button>
-              <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleFinalDecision("execute")} disabled={!executionPhase || !selectedPlayer}>
+        </div>
+      )}
+      {voteResultModalOpen && (
+        <div className="modal-overlay" onClick={() => setVoteResultModalOpen(false)}>
+          <div className="vote-modal" onClick={(e) => e.stopPropagation()}>
+            <p className="vote-title">{voteResult}</p>
+            <p className="vote-subtext">해당 플레이어를 처형하시겠습니까?</p>
+            <div className="vote-actions">
+              <button
+                className="execute-btn"
+                onClick={() => {
+                  handleFinalDecision("execute");
+                  setVoteResultModalOpen(false);
+                }}
+              >
                 처형
               </button>
-              <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => handleFinalDecision("spare")} disabled={!executionPhase || !selectedPlayer}>
+              <button
+                className="spare-btn"
+                onClick={() => {
+                  handleFinalDecision("spare");
+                  setVoteResultModalOpen(false);
+                }}
+              >
                 살려주기
               </button>
-            </>
-          ) : (
-            <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleNightActions}>
-              밤 진행
+            </div>
+          </div>
+        </div>
+      )}
+      {isNightModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsNightModalOpen(false)}>
+          <div className="vote-modal" onClick={(e) => e.stopPropagation()}>
+            <p className="vote-title">
+              {userRole === "Mafia" && "공격할 대상을 선택하세요"}
+              {userRole === "Police" && "조사할 대상을 선택하세요"}
+              {userRole === "Doctor" && "보호할 대상을 선택하세요"}
+            </p>
+
+            <div className="vote-characters">
+              {players.filter(p => p.isAlive).map((p) => (
+                <div
+                  key={p.name}
+                  className={`character-icon ${nightActionTarget === p.name ? "selected" : ""}`}
+                  onClick={() => setNightActionTarget(p.name)}
+                >
+                  <img src={avatarMap[p.avatar]} alt={p.name} />
+                  <p>{p.name}</p>
+                </div>
+              ))}
+            </div>
+
+            <button
+              className="vote-button"
+              disabled={!nightActionTarget}
+              onClick={async () => {
+                await selectTarget(nightActionTarget);
+                setIsNightModalOpen(false);
+              }}
+            >
+              선택 완료
             </button>
-          )}
-        </>
+          </div>
+        </div>
       )}
     </div>
   );
