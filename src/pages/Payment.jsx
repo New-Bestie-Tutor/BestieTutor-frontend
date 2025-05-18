@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import Header from "../components/Header";
@@ -143,14 +144,44 @@ export default function Payment() {
   return (
     <div className="Home">
       <Header />
-      <div className="payment-container">
-        <h2>프리미엄 업그레이드</h2>
-        <p>프리미엄 서비스를 이용해 보세요!</p>
-        <div className="payment-details">
-          <p>결제 금액: {amount.toLocaleString()}원</p>
+      <div className="upgrade-container">
+        <div className="upgrade-top-bar">
+          <Link to="/mypage" className="upgrade-back-arrow">←</Link>
+          <h2>프리미엄 업그레이드</h2>
         </div>
-        <button onClick={handlePayment} disabled={loading}>
-          {loading ? "결제 진행 중..." : "이니시스로 결제하기"}
+        <p className="subtitle">매월 구독된 친구와 함께 무제한으로 읽으며 공부를 즐길 수 있어요.</p>
+
+        <div className="plan-table">
+          <div className="table-header">
+            <div className="header-cell feature"></div>
+            <div className="header-cell free">무료</div>
+            <div className="header-cell premium">프리미엄</div>
+          </div>
+
+          <div className="table-row">
+            <div className="cell feature">AI 채팅 학습 콘텐츠</div>
+            <div className="cell">✔️</div>
+            <div className="cell">✔️</div>
+          </div>
+          <div className="table-row">
+            <div className="cell feature">고급 화자 모델로 업그레이드</div>
+            <div className="cell">❌</div>
+            <div className="cell">✔️</div>
+          </div>
+          <div className="table-row">
+            <div className="cell feature">친구랑 함께 공부하는 그룹 채팅</div>
+            <div className="cell">❌</div>
+            <div className="cell">✔️</div>
+          </div>
+          <div className="table-row">
+            <div className="cell feature">무제한 학습 시간과 횟수</div>
+            <div className="cell">❌</div>
+            <div className="cell">✔️</div>
+          </div>
+        </div>
+
+        <button className="pay-button" onClick={handlePayment} disabled={loading}>
+          {loading ? "결제 진행 중..." : "결제하기"}
         </button>
       </div>
       <Footer />

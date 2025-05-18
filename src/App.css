@@ -1000,6 +1000,107 @@ body {
   margin-right: 12px;
 }
 
+/* Payment.css */
+.upgrade-container {
+  max-width: 600px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 0 16px;
+}
+
+.upgrade-top-bar {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.upgrade-back-arrow {
+ position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.plan-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.table-header {
+  display: flex;
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.header-cell {
+  flex: 1;
+  padding: 12px;
+  border-right: 1px solid #ddd;
+  text-align: center;
+}
+
+.header-cell.feature {
+  flex: 2;
+  text-align: left;
+  padding-left: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.header-cell.premium {
+  background-color: #079F7A;
+  color: white;
+}
+
+.table-row {
+  display: flex;
+  border-top: 1px solid #eee;
+}
+
+.cell {
+  flex: 1;
+  padding: 12px;
+  text-align: center;
+  font-size: 15px;
+}
+
+.cell.feature {
+  flex: 2;
+  text-align: left;
+  padding-left: 20px;
+  color: #333;
+}
+
+.pay-button {
+  background-color: #6DDFC3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 0;
+  font-size: 16px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pay-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Setting.css */
 .settings-page {
   position: relative;
