@@ -271,7 +271,7 @@ export default function Home() {
 
             <p>
               즐거운 여행을 위해 베튜와 함께 공부해요{" "}<br></br>
-              <Link to="/edit-goals" className="edit-goal-link">
+              <Link to="/editGoal" className="edit-goal-link">
                 학습 목표 수정하기
               </Link>
             </p>
