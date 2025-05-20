@@ -241,37 +241,20 @@ export default function Home() {
     <div className="Home">
       <Header totalTime={totalTime} />
       <div className="main-container">
-        <div className="greeting-section">
-          <h2>
-            {userInfo?.nickname
-              ? `${userInfo.nickname}! 또 만나서 반가워요`
-              : "사용자! 또 만나서 반가워요"}
-          </h2>
-
-          <p>
-            즐거운 여행을 위해 베튜와 함께 공부해요{" "}
-            <Link to="/edit-goals" className="edit-goal-link">
-              목표 수정하기
-            </Link>
-          </p>
-          <div className="gotoMafiaGame" onClick={() => navigate('/mafiasetup')}>
-            Mafia Game Start
+        <section className="friendliness-section" style={{ backgroundImage: `url(${IMAGES.homeBackground})` }}>
+          <div className="action-group">
+            <p className="logo">Free Talk♥</p>
+            <p className="gotoTopicTxt">베튜랑 더 친해지러가기</p>
+            {totalTime < 10 && (
+              <p className="lock-message">
+                내가 하고 싶은 대화 주제를 선정하여 편하게 대화해요
+              </p>
+            )}
+            <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`}
+              onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
+              <img src={IMAGES.start} alt="start" className="start" />
+            </div>
           </div>
-        </div>
-
-        <section className="friendliness-section">
-          <p className="logo">Free Talk</p>
-          <p className="gotoTopicTxt">베튜랑 더 <br />친해지러가기</p>
-          <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`}
-            onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
-            <img src={IMAGES.start} alt="start" className="start" />
-          </div>
-
-          {totalTime < 10 && (
-            <p className="lock-message">
-              2단계 잠금 해제 시 자유대화가 가능합니다.
-            </p>
-          )}
 
           <img src={image} alt="친밀도 단계 이미지" className="intimacy_image" />
           <div className="speechbubble_box">
@@ -289,7 +272,7 @@ export default function Home() {
 
             <p>
               즐거운 여행을 위해 베튜와 함께 공부해요{" "}<br></br>
-              <Link to="/edit-goals" className="edit-goal-link">
+              <Link to="/editGoal" className="edit-goal-link">
                 학습 목표 수정하기
               </Link>
             </p>

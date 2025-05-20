@@ -46,7 +46,6 @@ const MafiaGame = () => {
     const fetchGameState = async () => {
       try {
         const response = await axios.get(`/mafia/game/${gameId}`);
-        console.log("프론트엔드에서 받아온 players 데이터:", response.data.players);
         if (response.data && response.data.players) {
           setPlayers(response.data.players);
         } else {
@@ -110,14 +109,7 @@ const MafiaGame = () => {
   }, [currentUser, players]);
 
   useEffect(() => {
-    console.log("현재 역할:", userRole);
-    console.log("현재 게임 상태:", phase);
-  }, [userRole, phase]);
-
-  useEffect(() => {
     const theme = phase === "night" ? "dark" : "light";
-    console.log("현재 theme 상태:", phase, "→", theme);
-
     document.body.classList.toggle("bg-gray-900", theme === "dark");
     document.body.classList.toggle("text-white", theme === "dark");
     document.body.classList.toggle("bg-gray-100", theme === "light");
@@ -126,10 +118,8 @@ const MafiaGame = () => {
 
   // 🔹 AI가 게임을 진행하는 메시지 가져오기
   const fetchAINarration = async () => {
-    console.log("Fetching AI narration for gameId:", gameId);
     try {
       const response = await axios.post("/mafia/game/aiNarration", { gameId });
-      console.log("AI Narration Response:", response.data);
       setAiMessage(response.data.message);
     } catch (error) {
       console.error("AI 내러티브 오류:", error.response?.data || error.message);
@@ -179,7 +169,6 @@ const MafiaGame = () => {
       setPhase(response.data.status);
 
       if (response.data.gameOver === true) {
-        console.log("gameOver 상태 업데이트 전:", response.data.gameOver);
         setGameOver(true);
         setWinner(response.data.winner);
       }
@@ -280,7 +269,6 @@ const MafiaGame = () => {
     try {
       const response = await axios.post("/mafia/game/process", { gameId });
       addLog(response.data.message);
-      console.log(response.data)
 
       if (response.data.policeResult) {
         addLog(`경찰이 조사한 결과: ${response.data.policeResult}`);
