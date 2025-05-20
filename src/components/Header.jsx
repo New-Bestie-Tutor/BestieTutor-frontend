@@ -16,8 +16,8 @@ export default function Header({ totalTime }) {
 
 
   const getAllLanguages = async () => {
-    try {
-      const response = await axios.get('/conversation/getAllLanguages');
+    try{
+      const response = await axios.get('/conversation/languages/all');
       if (response.status === 200) {
         setAllLanguages(response.data.languages);
       }
@@ -49,19 +49,19 @@ export default function Header({ totalTime }) {
   // LanguageContext를 최근 대화 언어로 설정
   const getRecentLanguage = async () => {
     try {
-      const userEmail = userInfo?.email;
-      const response = await axios.get(`/conversation/getRecentLanguage/${userEmail}`);
-      if (response.status === 200) {
-        const recentLanguage = response.data.conversation.selected_language;
-        handleRecentLanguage(recentLanguage);
-        english > en
-      } else {
-        // 최근 대화가 없으면 선호도 조사 언어로 설정
-        const userId = userInfo?.userId;
-        const response = await axios.get(`/preference/${userId}`);
-        const preferenceLanguage = response.data.preferences.language;
-        handleRecentLanguage(preferenceLanguage);
-      }
+        const userEmail = userInfo?.email;
+        const response = await axios.get(`/conversation/languages/recent/${userEmail}`);
+        if (response.status === 200) {
+          const recentLanguage = response.data.conversation.selected_language;
+          handleRecentLanguage(recentLanguage);
+          english > en
+        } else {
+          // 최근 대화가 없으면 선호도 조사 언어로 설정
+            const userId = userInfo?.userId;
+            const response = await axios.get(`/preference/${userId}`);
+            const preferenceLanguage = response.data.preferences.language;
+            handleRecentLanguage(preferenceLanguage);
+        }
     } catch (error) {
       // console.error('Error fetching RecentLanguage:', error);
     }

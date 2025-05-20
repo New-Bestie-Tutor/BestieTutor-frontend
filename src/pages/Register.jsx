@@ -108,6 +108,7 @@ export default function Register() {
       setEmailMessage("이메일의 형식이 올바르지 않습니다.");
       setIsEmail(false);
       setEmailValid(false);
+      console.log('error');
     } else {
       //이메일 중복 검사
       try{
@@ -123,7 +124,7 @@ export default function Register() {
         }
         
       } catch(error){
-        // console.log("Error checking email: ", error);
+        console.log("Error checking email: ", error);
       }
     }
   }

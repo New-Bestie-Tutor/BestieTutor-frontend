@@ -50,7 +50,16 @@ const IMAGES = {
     lock: new URL('./lock.png', import.meta.url).href,
     자유대화: new URL('./자유대화.png', import.meta.url).href,
     피드백: new URL('./피드백.png', import.meta.url).href,
-    LetsMafia: new URL('./LetsMafia.png', import.meta.url).href
+    LetsMafia: new URL('./LetsMafia.png', import.meta.url).href,
+    bettu: new URL('./bettu.png', import.meta.url).href,
+    raebin: new URL('./raebin.png', import.meta.url).href,
+    beary: new URL('./beary.png', import.meta.url).href,
+    bambi: new URL('./bambi.png', import.meta.url).href,
+    tiron: new URL('./tiron.png', import.meta.url).href,
+    marin: new URL('./marin.png', import.meta.url).href,
+    fun1: new URL('./fun1.png', import.meta.url).href,
+    fun2: new URL('./fun2.png', import.meta.url).href,
+    feedback: new URL('./feedback.png', import.meta.url).href
 };
 
 export default IMAGES;

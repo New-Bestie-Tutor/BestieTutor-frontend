@@ -61,7 +61,7 @@ export default function Home() {
         console.error('이메일 값이 없습니다.');
         return;
       }
-      const response = await axios.get(`/conversation/getConversationHistory/${userEmail}`);
+      const response = await axios.get(`/conversation/${userEmail}/history`);
       if (response.status === 200) {
         const data = response.data;
         setConversations(data.conversations);
@@ -75,6 +75,7 @@ export default function Home() {
 
   useEffect(() => {
     if (userId) {
+      console.log(userId);
       fetchUser();
     }
   }, [userId]);
@@ -106,9 +107,9 @@ export default function Home() {
 
   useEffect(() => {
     const total = conversations.reduce((sum, conversation) => {
-      const startTime = new Date(conversation.startTime);
-      const endTime = new Date(conversation.endTime);
-      const duration = endTime - startTime;
+      const startTime = new Date(conversation.start_time);
+      const endTime = conversation.end_time ? new Date(conversation.end_time) : 0;
+      const duration = endTime ? endTime - startTime : 0;
       return sum + duration / (1000 * 60);
     }, 0);
 
@@ -240,20 +241,37 @@ export default function Home() {
     <div className="Home">
       <Header totalTime={totalTime} />
       <div className="main-container">
-        <section className="friendliness-section" style={{ backgroundImage: `url(${IMAGES.homeBackground})` }}>
-          <div className="action-group">
-            <p className="logo">Free Talk ♥</p>
-            <p className="gotoTopicTxt">베튜랑 더 친해지러가기</p>
-            {totalTime < 10 && (
-              <p className="lock-message">
-                내가 하고 싶은 대화 주제를 선정하여 편하게 대화해요
-              </p>
-            )}
-            <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`}
-              onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
-              <img src={IMAGES.start} alt="start" className="start" />
-            </div>
+        <div className="greeting-section">
+          <h2>
+            {userInfo?.nickname
+              ? `${userInfo.nickname}! 또 만나서 반가워요`
+              : "사용자! 또 만나서 반가워요"}
+          </h2>
+
+          <p>
+            즐거운 여행을 위해 베튜와 함께 공부해요{" "}
+            <Link to="/edit-goals" className="edit-goal-link">
+              목표 수정하기
+            </Link>
+          </p>
+          <div className="gotoMafiaGame" onClick={() => navigate('/mafiasetup')}>
+            Mafia Game Start
           </div>
+        </div>
+
+        <section className="friendliness-section">
+          <p className="logo">Free Talk</p>
+          <p className="gotoTopicTxt">베튜랑 더 <br />친해지러가기</p>
+          <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`}
+            onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
+            <img src={IMAGES.start} alt="start" className="start" />
+          </div>
+
+          {totalTime < 10 && (
+            <p className="lock-message">
+              2단계 잠금 해제 시 자유대화가 가능합니다.
+            </p>
+          )}
 
           <img src={image} alt="친밀도 단계 이미지" className="intimacy_image" />
           <div className="speechbubble_box">
@@ -373,7 +391,7 @@ export default function Home() {
               {Array.isArray(conversations) &&
                 conversations.slice(0, 9).map((conversation) => (
                   <RecordCard
-                    key={conversation.conversationId}
+                    key={conversation._id}
                     record={{ ...conversation }}
                   />
                 ))}

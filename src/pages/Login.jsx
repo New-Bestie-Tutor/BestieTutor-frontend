@@ -82,16 +82,15 @@ export default function Login() {
         // 로컬 스토리지에 토큰 저장
         localStorage.setItem('accessToken', accessToken);
 
-        // 사용자 정보 업데이트
-        setUserInfo(user);
-        navigate(redirectUrl);
-      }
-    } catch (error) {
-      // console.error('카카오 로그인 실패:', error);
-      alert('로그인에 실패했습니다. 다시 시도해주세요.');
-      navigate('/login'); // 실패 시 로그인 페이지로 이동
+                // 사용자 정보 업데이트
+                setUserInfo(user); 
+                navigate(redirectUrl);            
+              }
+        } catch (error) {
+            alert('로그인에 실패했습니다. 다시 시도해주세요.');
+            navigate('/login'); // 실패 시 로그인 페이지로 이동
+        }
     }
-  }
 
   return (
     <div className="login-container">
