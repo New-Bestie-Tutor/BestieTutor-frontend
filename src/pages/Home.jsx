@@ -265,8 +265,8 @@ export default function Home() {
         <div className="greeting-section">
           <div className="greeting-text">
             <h2>
-              {user?.nickname
-                ? `${user.nickname}님!♥ 또 만나서 반가워요`
+              {userInfo?.nickname
+                ? `${userInfo.nickname}님!♥ 또 만나서 반가워요`
                 : "사용자님!♥ 또 만나서 반가워요"}
             </h2>
 
