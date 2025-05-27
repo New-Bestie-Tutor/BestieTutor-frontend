@@ -17,29 +17,32 @@ export default function Feedback() {
     selectedLevel, 
     description, 
     selectedCharacter,
-    converseId 
+    conversationId
   } = useMemo(() => ({
       mainTopic: location.state?.mainTopic,
       selectedSubTopic: location.state?.selectedSubTopic,
       selectedLevel: location.state?.selectedLevel,
       description: location.state?.description,
       selectedCharacter: location.state?.selectedCharacter,
-      converseId: location.state?.conversationId
+      conversationId: location.state?.conversationId
   }), [location.state]);
+
+  useEffect(() => {
+  console.log("location.state:", location.state);
+}, [location.state]);
 
   // 기본 이미지 설정
   const characterImage = selectedCharacter 
     ? IMAGES[selectedCharacter] 
-    : IMAGES['bettu']; // 'bettu'가 기본 이미지 키라고 가정
+    : IMAGES['bettu'];
 
-  // converse_id 로 대화 기록 가져오기 
+  // 대화 기록 조회
   useEffect(() => {
     const fetchConversation = async() => {
       try {
-        const response = await axios.get(`/conversation/getConversationById/${converseId}`);
+        const response = await axios.get(`/conversation/${conversationId}`);
         const { conversation } = response.data;
 
-        // 데이터 설정
         setMessages(conversation.messages);
         setFeedbacks(conversation.feedbacks);
         setConversation({
@@ -52,7 +55,7 @@ export default function Feedback() {
     };
 
     fetchConversation();
-  }, [converseId]);
+  }, [conversationId]);
 
   // 메시지와 피드백 매핑
   const messagesWithFeedback = messages.map((message) => ({

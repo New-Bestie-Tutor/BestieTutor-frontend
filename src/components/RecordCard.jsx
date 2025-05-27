@@ -1,33 +1,38 @@
-// components/RecordCard.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import '../App.css';
 
 export default function RecordCard({ record }) {
+  const navigate = useNavigate();
 
-let category = "", topic = "", level = "";
-if (record.topic_description) {
-  const parts = record.topic_description.split("-");
-  if (parts.length === 3) {
-    [category, topic, level] = parts;
-  } else {
-    // fallback for 자유 주제 등
-    category = record.topic_description;
-    topic = "자유주제 대화";
-    level = "normal"; // 또는 기본값
+  let category = "", topic = "", level = "";
+  if (record.topic_description) {
+    const parts = record.topic_description.split(" - ");
+    if (parts.length === 3) {
+      [category, topic, level] = parts;
+    } else {
+      category = record.topic_description;
+      topic = "자유주제 대화";
+      level = "normal";
+    }
   }
-}
-/* const category = record.topicDescription.split(" - ")[0];
-const topic = record.topicDescription.split(" - ")[1];
-const level = record.topicDescription.split(" - ")[2]; */
-const startTime = new Date(record.start_time);
-const endTime = record.end_time ? new Date(record.end_time) : 0;
-const time = endTime && startTime ? (endTime - startTime) / (1000 * 60) : 0; 
 
-const navigate = useNavigate();
-const reviewHandler = (conversationId, description) => {
-  navigate('/feedback', { state: { conversationId, description } }); 
-};
+  const startTime = new Date(record.start_time);
+  const endTime = record.end_time ? new Date(record.end_time) : 0;
+  const time = endTime && startTime ? (endTime - startTime) / (1000 * 60) : 0; 
+
+  const reviewHandler = () => {
+    navigate('/feedback', {
+      state: {
+        conversationId: record.converse_id,
+        description: record.description,
+        mainTopic: topic,
+        selectedSubTopic: topic,
+        selectedLevel: level,
+        selectedCharacter: record.selected_character,
+      },
+    });
+  };
 
   return (
     <div className="record-card" onClick={() => reviewHandler(record.conversationId, record.description)}>
