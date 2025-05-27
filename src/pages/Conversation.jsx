@@ -9,7 +9,7 @@ import { LanguageContext } from "../LanguageContext";
 import axios from '../axiosConfig'; 
 
 export default function Conversation() {
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
   const location = useLocation();
   const {
     mainTopic,
@@ -32,7 +32,7 @@ export default function Conversation() {
 
   const [status, setStatus] = useState('');
   const [messages, setMessages] = useState([]);
-  const [typingVisible, setTypingVisible] = useState(false); // 타이핑 모드에서 input창 표시
+  const [typingVisible, setTypingVisible] = useState(false);
   const [typingInput, setTypingInput] = useState(''); // 사용자 입력 텍스트를 저장
   const chatEndRef = useRef(null);
   const { userLanguage } = useContext(LanguageContext);
@@ -128,7 +128,7 @@ export default function Conversation() {
       if (addUserMessageResponse.status === 200) {
         const { messageId, conversationId } = addUserMessageResponse.data;
         
-        // 🔒 conversationId가 새로 생성된 경우에만 업데이트
+        // conversationId가 새로 생성된 경우에만 업데이트
         if (conversationId) {
           setConverseId(conversationId);
         }

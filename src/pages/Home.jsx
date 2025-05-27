@@ -94,7 +94,7 @@ export default function Home() {
         });
 
         if (response.status === 200) {
-          console.log("총 사용 시간이 성공적으로 업데이트되었습니다.");
+          console.log("총 사용 시간이 성공적으로 업데이트 되었습니다.");
         } else {
           console.error("총 사용 시간 업데이트 실패:", response.status);
         }
