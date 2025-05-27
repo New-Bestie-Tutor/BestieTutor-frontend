@@ -16,6 +16,7 @@ export default function Home() {
   const dropdownRef = useRef(null);
   const userId = userInfo?.userId;
   const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
   const [totalTime, setTotalTime] = useState(0);
   const [nextGoal, setNextGoal] = useState(0);
@@ -24,10 +25,10 @@ export default function Home() {
   const [conversations, setConversations] = useState([]);
   const [topics, setTopics] = useState([]);
   const [lockedStages, setLockedStages] = useState([]);
-  const [currentTopic, setCurrentTopic] = useState(null);
   const [selectedSubTopic, setSelectedSubTopic] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(null);
+
   const userEmail = userInfo?.email;
   const steps = [0, 10, 30, 60, 120];
 
@@ -38,7 +39,6 @@ export default function Home() {
     '4단계': 60,
   };
 
-  // Fetch user data
   const fetchUser = async () => {
     try {
       const response = await axios.get("/user/getUser", {
@@ -75,7 +75,6 @@ export default function Home() {
 
   useEffect(() => {
     if (userId) {
-      console.log(userId);
       fetchUser();
     }
   }, [userId]);
@@ -91,11 +90,11 @@ export default function Home() {
       if (userId) {
         const response = await axios.put("/user/updateTotalTime", {
           userId,
-          totalTime: totalTime.toFixed(1), // 소수점 첫째 자리로 고정
+          totalTime: totalTime.toFixed(1),
         });
 
         if (response.status === 200) {
-          console.log("총 사용 시간이 성공적으로 업데이트되었습니다.");
+          console.log("총 사용 시간이 성공적으로 업데이트 되었습니다.");
         } else {
           console.error("총 사용 시간 업데이트 실패:", response.status);
         }
@@ -161,7 +160,7 @@ export default function Home() {
 
   const { image, text } = getImageAndText(currentStep, inactiveDays);
 
-  /***주제 선택 ***/
+// 주제 선택
   useEffect(() => {
     const fetchTopicsAndLockStatus = async () => {
       try {
@@ -176,25 +175,6 @@ export default function Home() {
     fetchTopicsAndLockStatus();
   }, [userInfo?.total_time]);
 
-  const handleMouseEnter = (topic) => {
-    setCurrentTopic(topic);
-    setShowDropdown(true);
-  };
-
-  useEffect(() => {
-    if (topics.length > 0) {
-      const fetchSubTopics = async () => {
-        try {
-          const response = await axios.get(`/topic/${topics}`);
-          setSubTopics(response.data);
-        } catch (error) {
-          console.error("소주제를 불러오는데 실패했습니다.", error);
-        }
-      };
-      fetchSubTopics();
-    }
-  }, [topics]);
-
   const handleSubTopicHover = (subTopic) => {
     setSelectedSubTopic(subTopic);
   };
@@ -205,7 +185,7 @@ export default function Home() {
       if (difficulty) {
         navigate('/chooseCharacter', {
           state: {
-            mainTopic: currentTopic?.mainTopic,
+            mainTopic: selectedSubTopic.mainTopic,
             selectedSubTopic: selectedSubTopic.name,
             selectedLevel: level,
             description: difficulty.description,
@@ -226,7 +206,6 @@ export default function Home() {
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setShowDropdown(false);
-      setCurrentTopic(null);
     }
   };
 
@@ -243,7 +222,7 @@ export default function Home() {
       <div className="main-container">
         <section className="friendliness-section" style={{ backgroundImage: `url(${IMAGES.homeBackground})` }}>
           <div className="action-group">
-            <p className="logo">Free Talk♥</p>
+            <p className="logo">Free Talk ♥</p>
             <p className="gotoTopicTxt">베튜랑 더 친해지러가기</p>
             {totalTime < 10 && (
               <p className="lock-message">
@@ -317,7 +296,10 @@ export default function Home() {
                         key={subTopic.name}
                         className="subtopic-name"
                         onClick={() => {
-                          setSelectedSubTopic(subTopic);
+                          setSelectedSubTopic({
+                            ...subTopic,
+                            mainTopic: topic.mainTopic,
+                          });
                           setIsModalOpen(true);
                         }}
                       >
