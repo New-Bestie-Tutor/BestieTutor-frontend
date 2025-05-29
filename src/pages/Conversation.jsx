@@ -297,7 +297,7 @@ export default function Conversation() {
     <div className="container conversation-container">
       <div className="conversation-header">
         <GoBack className="conversation-goBack" />
-        <p className="conversation-title">{description}</p>
+        <p className="conversation-title">{description || freeTopic}</p>
       </div>
 
       <div className="chat-container">
