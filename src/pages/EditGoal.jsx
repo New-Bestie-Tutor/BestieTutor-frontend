@@ -31,8 +31,12 @@ export default function EditGoal() {
     ];
 
     const handleSave = async () => {
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
+
         const userData = {
-            userId,
             language,
             learningGoals: goals,
             currentSkillLevel: level,
@@ -40,13 +44,8 @@ export default function EditGoal() {
         };
 
         try {
-            const response = await fetch('/preference', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
-            });
-            const result = await response.json();
-            if (result.message === '선호도 조사 완료') {
+            const response = await axios.put(`/preference/${userId}`, userData);
+            if (response.data.message === '선호도 수정 완료') {
                 navigate('/home');
             } else {
                 alert('저장 중 오류가 발생했습니다.');
