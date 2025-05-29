@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Start, UserAgreement, Register, Login, Home, 
     FindPw, Conversation, RegistrationSuccess,
     ChooseCharacter, ChooseLanguage, LearningGoal, CurrentLevel, PreferredTopic,
-    MyPage, Profile, Review, Feedback, FreeSubject,
+    MyPage, Profile, Review, Feedback,
     About, Event, Inquiry, Notice, Payment, MafiaSetup, MafiaGame, Setting, EditGoal } from "./pages";
 import CombinedPage from "./pages/CombinedPage";
 
@@ -30,7 +30,6 @@ export default function AppRoutes() {
             <Route path="/payment" element={<Payment />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/review" element={<Review />} />
-            <Route path="/FreeSubject" element={<FreeSubject />} />
             <Route path="/about" element={<About />} />
             <Route path="/notice" element={<Notice />} />
             <Route path="/inquiry" element={<Inquiry />} />
