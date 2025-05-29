@@ -22,6 +22,7 @@ export default function Home() {
   const [nextGoal, setNextGoal] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [inactiveDays, setInactiveDays] = useState(0);
+  const [freeTopicInput, setFreeTopicInput] = useState("");
   const [conversations, setConversations] = useState([]);
   const [topics, setTopics] = useState([]);
   const [lockedStages, setLockedStages] = useState([]);
@@ -160,7 +161,7 @@ export default function Home() {
 
   const { image, text } = getImageAndText(currentStep, inactiveDays);
 
-// 주제 선택
+  // 주제 선택
   useEffect(() => {
     const fetchTopicsAndLockStatus = async () => {
       try {
@@ -229,9 +230,26 @@ export default function Home() {
                 내가 하고 싶은 대화 주제를 선정하여 편하게 대화해요
               </p>
             )}
-            <div className={`gotoTopic ${totalTime >= 10 ? '' : 'disabled'}`}
-              onClick={totalTime >= 10 ? () => navigate('/freeSubject') : null}>
-              <img src={IMAGES.start} alt="start" className="start" />
+            <div className="free-topic-input-area">
+              <input
+                className="freeSubjectInputBox"
+                type="text"
+                value={freeTopicInput}
+                onChange={(e) => setFreeTopicInput(e.target.value)}
+                placeholder="자유 대화 주제를 입력하세요"
+              />
+              <button
+                className="fs-next-button"
+                onClick={() => {
+                  if (freeTopicInput.trim()) {
+                    navigate('/chooseCharacter', { state: { freeSubject: freeTopicInput } });
+                  } else {
+                    alert("주제를 입력해주세요!");
+                  }
+                }}
+              >
+                대화 시작하기
+              </button>
             </div>
           </div>
 

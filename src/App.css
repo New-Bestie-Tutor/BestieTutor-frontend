@@ -2327,6 +2327,13 @@ display: grid;
   margin-bottom: 0.75rem;
 }
 
+.free-topic-input-area {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .edit-goal-link {
   color: #fff;
   background-color: #4ED8B7;
