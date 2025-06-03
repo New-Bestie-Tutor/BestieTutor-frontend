@@ -21,21 +21,16 @@ export default function RecordCard({ record }) {
   const endTime = record.end_time ? new Date(record.end_time) : 0;
   const time = endTime && startTime ? (endTime - startTime) / (1000 * 60) : 0; 
 
-  const reviewHandler = () => {
-    navigate('/feedback', {
+  const handleClick = () => {
+    navigate('/review', {
       state: {
-        conversationId: record.converse_id,
-        description: record.description,
-        mainTopic: topic,
-        selectedSubTopic: topic,
-        selectedLevel: level,
-        selectedCharacter: record.selected_character,
+        selectedConversation: record
       },
     });
   };
 
   return (
-    <div className="record-card" onClick={() => reviewHandler(record.conversationId, record.description)}>
+    <div className="record-card" onClick={handleClick}>
       <div className="record-header">
         <div className="record-header-top">
           <p className="record-category">{category}</p>
