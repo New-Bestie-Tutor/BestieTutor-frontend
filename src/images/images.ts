@@ -59,7 +59,8 @@ const IMAGES = {
     marin: new URL('./marin.png', import.meta.url).href,
     fun1: new URL('./fun1.png', import.meta.url).href,
     fun2: new URL('./fun2.png', import.meta.url).href,
-    feedback: new URL('./feedback.png', import.meta.url).href
+    feedback: new URL('./feedback.png', import.meta.url).href,
+    alert: new URL('./alert.png', import.meta.url).href
 };
 
 export default IMAGES;

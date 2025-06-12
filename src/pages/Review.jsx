@@ -14,7 +14,7 @@ export default function Review() {
   const { userInfo } = useContext(UserContext);
   const [conversations, setConversations] = useState([]);
   const preselectedConversation = location.state?.selectedConversation || null;
-  const [selectedConversation, setSelectedConversation] = useState(pre);
+  const [selectedConversation, setSelectedConversation] = useState(preselectedConversation);
   const [conversationDetail, setConversationDetail] = useState({ messages: [], feedbacks: [] });
 
   /* 전체 대화 목록 */
@@ -75,16 +75,26 @@ export default function Review() {
               {list.map((conv) => (
                 <div 
                     key={conv.converse_id} 
-                    className="conversation-item"
+                    className={`conversation-item${selectedConversation && 
+                      selectedConversation.converse_id === conv.converse_id ? ' active' : ''}`}
                     onClick={() => setSelectedConversation(conv)}
                 >
-                  <p>{conv.description}</p>
-                  <span>{((new Date(conv.end_time) - new Date(conv.start_time)) / 60000).toFixed(1)}분</span>
+                    <p className='subTopic'>{conv.description}</p>
+                    <div className='conversation-detail-line'>
+                      <span className='detail'>{conv.topic_description}</span>
+                      <span className='duration'>
+                        {(() => {
+                          const duration = (new Date(conv.end_time) - new Date(conv.start_time)) / 60000;
+                          return (duration < 0 ? 0 : duration).toFixed(1);
+                        })()}분
+                      </span>
+                    </div>
                 </div>
               ))}
             </div>
           ))}
         </div>
+
          <div className="main-panel">
           {/* 메인 콘텐츠 */}
 
@@ -131,6 +141,11 @@ export default function Review() {
                       {message.message_type === "USER" && message.feedback && (
                         <div className="chatBubble feedbackBubbleRight">
                           <p className="userChatText">{message.feedback.feedback}</p>
+                          <img 
+                            src={IMAGES.alert} 
+                            alt="alert" 
+                            className="feedbackIcon"
+                          />
                         </div>
                       )}
                     </div>
